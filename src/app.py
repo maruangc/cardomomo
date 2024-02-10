@@ -10,6 +10,13 @@ from api.models import db
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from api.routes_user import routes as routes_user
+from api.routes_category import routes as routes_category
+from api.routes_professional import routes as routes_professional
+from api.routes_customer import routes as routes_customer
+from api.routes_case import routes as routes_case
+from api.routes_tablas import routes as routes_tablas
 
 # from models import Person
 
@@ -39,6 +46,16 @@ setup_commands(app)
 
 # Add all endpoints form the API with a "api" prefix
 app.register_blueprint(api, url_prefix='/api')
+app.register_blueprint(routes_user, url_prefix='/user')
+app.register_blueprint(routes_category, url_prefix='/category')
+app.register_blueprint(routes_professional, url_prefix='/professional')
+app.register_blueprint(routes_customer, url_prefix='/customer')
+app.register_blueprint(routes_case, url_prefix='/case')
+app.register_blueprint(routes_tablas, url_prefix='/tablas')
+
+# JWT envirenment value
+app.config['JWT_SECRET_KEY']=os.environ.get('JWT')
+jwt=JWTManager(app)
 
 # Handle/serialize errors like a JSON object
 
