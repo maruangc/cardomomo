@@ -10,7 +10,7 @@ routes = Blueprint('routes_user', __name__)
 CORS(routes)
 
 #----------------------------------------------- /user
-@routes.route('/register', methods=['POST'])
+@routes.route('/register',endpoint='user_register', methods=['POST'])
 def user_register():
     body=request.json
     email=body.get('email', None)
@@ -49,7 +49,7 @@ def user_register():
         db.session.rollback()
         return jsonify({'ok':False,'error': 'internal server error','status':500}),500
 
-@routes.route('/edit', methods=['PUT'])
+@routes.route('/edit',endpoint='edit_user', methods=['PUT'])
 @jwt_required()
 def edit_user():
     current_user = get_jwt_identity()
@@ -61,10 +61,11 @@ def edit_user():
     texto=""
     if name is None:
         texto=texto+'nombre debe existir en la solicitud '+chr(10)
-    elif len(name)==0:
+    if name.strip()=="":
         texto=texto+'nombre debe tener un valor '
+
     if len(texto)>0:
-        return jsonify({'ok':False,'error': texto,'status':400}),
+        return jsonify({'ok':False,'error': texto,'status':400}),400
         
     print('--*-*-*PUT:', user.serialize())
     user.name=name
@@ -77,24 +78,24 @@ def edit_user():
         db.session.rollback()
         return jsonify({'ok':False,'error': 'internal server error','status':500}),500
 
-@routes.route('/<int:id>', methods=['GET'])
-# @jwt_required
+@routes.route('/<int:id>',endpoint='get_user', methods=['GET'])
+@jwt_required
 def get_user(id):
     user=User.query.filter_by(id=id).one_or_none()
     if user is None:
         return jsonify({'ok':False,'error': 'user not found','status':404})
-    return jsonify({'ok':True,'status':200},user.serialize())
-    
-@routes.route('/list', methods=['GET'])
+    return jsonify({'data':[user.serialize()],'ok':True,'status':200})
+
+@routes.route('/list',endpoint='get_users', methods=['GET'])
 @jwt_required
 def get_users():
     users=User.query.all()
     if users is None:
         return jsonify({'ok':False,'error':'No data','status':404})
     user_list=[user.serialize() for user in users]
-    return jsonify({'ok':True,'status':200},user_list),200
+    return jsonify({'data':user_list,'ok':True,'status':200}),200
 
-@routes.route('/login', methods=['POST'])
+@routes.route('/login',endpoint='login', methods=['POST'])
 def login():
     body=request.json
     email=body.get('email', None)

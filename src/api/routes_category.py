@@ -38,17 +38,17 @@ def add_category():
 
 #-----------------------------------
 @routes_category.route('/<int:id>',endpoint='get_category', methods=['GET'])
-@jwt_required
+# @jwt_required
 def get_category(id):
     category_filter=Category.query.filter_by(id=id).one_or_none()
     if category_filter is None:
         return jsonify({'ok':False,'error':'category id not found ','status':404}),404
     dic={'ok':True,'status':200}
-    dic['data']=category_filter.serialize()
+    dic['data']=[category_filter.serialize()]
     return jsonify(dic)
 
-@routes_category.route('/', endpoint='get_categories', methods=['GET'])
-@jwt_required
+@routes_category.route('/list', endpoint='get_categories', methods=['GET'])
+# @jwt_required
 def get_categories():
     category_filter=Category.query.all()
     dic={'ok':True,'status':200}

@@ -12,7 +12,7 @@ CORS(routes)
 
 #--------------------------------------------- /customer
 @routes.route('/new',endpoint='add_customer', methods=['POST'])
-# @jwt_required
+@jwt_required
 def add_customer():
     body=request.json
     name=body.get('name', None)
@@ -52,7 +52,7 @@ def add_customer():
         return jsonify({'ok':False, 'error': 'internal server error','status':500}),500
 
 @routes.route('/<int:id>',endpoint='get_customer', methods=['GET'])
-# @jwt_required
+@jwt_required
 def get_customer(id):
     customer_filter=Customer.query.filter_by(id=id).one_or_none()
     if customer_filter is None:
@@ -62,7 +62,7 @@ def get_customer(id):
     return jsonify(dic)
 
 @routes.route('/all', endpoint='get_customers', methods=['GET'])
-# @jwt_required
+@jwt_required
 def get_customers():
     customers_filter=Customer.query.all()
     dic={'ok':True,'status':200}
@@ -70,7 +70,7 @@ def get_customers():
     return jsonify(dic)
 
 @routes.route('/filter',endpoint='filter_customer', methods=['GET'])
-# @jwt_required
+@jwt_required
 def filter_customer():
     body=request.json
     name=body.get('name', None) if body.get('name', None) is not None else ''
@@ -132,7 +132,7 @@ def filter_customer():
     # return jsonify(dic)
 
 @routes.route('/edit/<int:id>',endpoint='edit_customer', methods=['PUT'])
-# @jwt_required
+@jwt_required
 def edit_customer(id):
     body=request.json
     name=body.get('name', None) if body.get('name', None) is not None else ''
