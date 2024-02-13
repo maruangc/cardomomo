@@ -4,6 +4,10 @@ import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+//prime react
+import { PrimeReactProvider } from "primereact/api";
+import "primereact/resources/themes/lara-light-cyan/theme.css";
+import "primeicons/primeicons.css";
 
 import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
@@ -25,7 +29,7 @@ const Layout = () => {
   return (
     <div>
       <BrowserRouter basename={basename}>
-        <ScrollToTop>
+        <PrimeReactProvider>
           <Navbar />
           <ToastContainer />
           <Routes>
@@ -35,7 +39,7 @@ const Layout = () => {
             <Route element={<h1>Not found!</h1>} />
           </Routes>
           <Footer />
-        </ScrollToTop>
+        </PrimeReactProvider>
       </BrowserRouter>
     </div>
   );
