@@ -31,11 +31,11 @@ def user_register():
     elif len(name)==0:
         texto=texto+'nombre debe tener un valor '
     if len(texto)>0:
-        return jsonify({'error': texto}),400
+        return jsonify({'ok':False,'error': texto,'status':400}),400
     
     resp=User.query.filter_by(email = email).one_or_none()
     if resp is not None:
-        return jsonify({'error': 'email/user allready exists'}),409
+        return jsonify({'ok':False,'error': 'email/user allready exists','status':409}),409
     
     password_hash=generate_password_hash(password)
     new_user=User(email=email, password=password_hash, name=name, is_active=True)
@@ -43,11 +43,11 @@ def user_register():
     try:
         # db.session.begin_nested() # crea un checkpoint
         db.session.commit()
-        return jsonify({'data': 'user created'}),201
+        return jsonify({'ok':True,'data': 'user created','status':201}),201
     except Exception as error:
         print ('-*-*-*-*Register error:', error)
         db.session.rollback()
-        return jsonify({'error': 'internal server error'}),500
+        return jsonify({'ok':False,'error': 'internal server error','status':500}),500
 
 @routes.route('/edit', methods=['PUT'])
 @jwt_required()
@@ -55,7 +55,7 @@ def edit_user():
     current_user = get_jwt_identity()
     user=User.query.filter_by(id=current_user['id']).one_or_none()
     if user is None:
-        return jsonify({'error': 'user not found'})
+        return jsonify({'ok':False,'error': 'user not found','status':404}),404
     body=request.json
     name=body.get('name', None)
     texto=""
@@ -64,35 +64,35 @@ def edit_user():
     elif len(name)==0:
         texto=texto+'nombre debe tener un valor '
     if len(texto)>0:
-        return jsonify({'error': texto}),
+        return jsonify({'ok':False,'error': texto,'status':400}),
         
     print('--*-*-*PUT:', user.serialize())
     user.name=name
     try:
         # db.session.begin_nested() # crea un checkpoint
         db.session.commit()
-        return jsonify({'data': 'user updated'}),201
+        return jsonify({'ok':True,'data': 'user updated','status':201}),201
     except Exception as error:
         print ('-*-*-*-*Update error:', error)
         db.session.rollback()
-        return jsonify({'error': 'internal server error'}),500
+        return jsonify({'ok':False,'error': 'internal server error','status':500}),500
 
 @routes.route('/<int:id>', methods=['GET'])
 # @jwt_required
 def get_user(id):
     user=User.query.filter_by(id=id).one_or_none()
     if user is None:
-        return jsonify({'error': 'user not found'})
-    return jsonify(user.serialize())
+        return jsonify({'ok':False,'error': 'user not found','status':404})
+    return jsonify({'ok':True,'status':200},user.serialize())
     
 @routes.route('/list', methods=['GET'])
 @jwt_required
 def get_users():
     users=User.query.all()
     if users is None:
-        return jsonify('No data')
+        return jsonify({'ok':False,'error':'No data','status':404})
     user_list=[user.serialize() for user in users]
-    return jsonify(user_list)
+    return jsonify({'ok':True,'status':200},user_list),200
 
 @routes.route('/login', methods=['POST'])
 def login():
@@ -109,14 +109,14 @@ def login():
     elif len(password)==0:
         texto=texto+'password debe tener un valor '+chr(10)
     if len(texto)>0:
-        return jsonify({'error': texto}),400
+        return jsonify({'ok':False,'error': texto, 'status':400}),400
     
     user=User.query.filter_by(email=email).one_or_none()
     if user is None:
-        return jsonify({'error': 'email does not exist'}),404
+        return jsonify({'ok':False,'error': 'email does not exist', 'status':404}),404
     pass_match=check_password_hash(user.password,password)
     if not pass_match:
-        return jsonify({'error': 'invalid password'}),401
+        return jsonify({'ok':False,'error': 'invalid password', 'status':401}),401
     
     token=create_access_token({'email': user.email, 'id': user.id})
-    return jsonify({'token': token}),200
+    return jsonify({'ok':True,'token': token, 'status':200}),200

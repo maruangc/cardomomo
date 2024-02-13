@@ -12,7 +12,7 @@ from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from api.routes_user import routes as routes_user
-from api.routes_category import routes as routes_category
+from api.routes_category import routes_category as routes_category
 from api.routes_professional import routes as routes_professional
 from api.routes_customer import routes as routes_customer
 from api.routes_case import routes as routes_case
