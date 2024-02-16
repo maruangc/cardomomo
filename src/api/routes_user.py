@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
+from datetime import timedelta
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -19,17 +20,17 @@ def user_register():
 
     texto=""
     if email is None:
-        texto=texto+'email debe existir en la solicitud '+chr(10)
+        texto=texto+'email must exist in the request '+chr(10)
     elif len(email)==0:
-        texto=texto+'email debe tener un valor '+chr(10)
+        texto=texto+'email must not be empty '+chr(10)
     if password is None:
-        texto=texto+'password debe existir en la solicitud '+chr(10)
+        texto=texto+'password must exist in the request '+chr(10)
     elif len(password)==0:
-        texto=texto+'password debe tener un valor '+chr(10)
+        texto=texto+'password must not be empty '+chr(10)
     if name is None:
-        texto=texto+'nombre debe existir en la solicitud '+chr(10)
+        texto=texto+'name must exist in the request '+chr(10)
     elif len(name)==0:
-        texto=texto+'nombre debe tener un valor '
+        texto=texto+'name should not be empty '
     if len(texto)>0:
         return jsonify({'ok':False,'error': texto,'status':400}),400
     
@@ -119,5 +120,7 @@ def login():
     if not pass_match:
         return jsonify({'ok':False,'error': 'invalid password', 'status':401}),401
     
-    token=create_access_token({'email': user.email, 'id': user.id})
+    # token=create_access_token({'email': user.email, 'id': user.id})
+    expires = timedelta(minutes=60)
+    token = create_access_token(identity={'email': user.email, 'id': user.id}, expires_delta=expires)
     return jsonify({'ok':True,'token': token, 'status':200}),200
