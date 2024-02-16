@@ -26,18 +26,21 @@ class User(db.Model):
 class Case(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     created = db.Column(db.DateTime, default=datetime.datetime.now(), unique=False, nullable=False)
-    is_active = db.Column(db.Boolean(), unique=False, nullable=False)
+    is_active = db.Column(db.Boolean(), unique=False, default=True, nullable=False)
     customer_id = db.Column(db.Integer, db.ForeignKey("customer.id"), nullable=False)
     professional_id = db.Column(db.Integer, db.ForeignKey("professional.id"), nullable=True)
     category_id = db.Column(db.Integer, db.ForeignKey("category.id"), nullable=False)
-    date_init = db.Column(db.DateTime, unique=False, nullable=False)
-    typeservice_id = db.Column(db.Integer, db.ForeignKey("typeservice.id"), nullable=False)
-    status_id = db.Column(db.Integer, db.ForeignKey("status.id"), nullable=False) #se asigna en el route
+    started=db.Column(db.Boolean(), unique=False, default=False, nullable=False)
+    date_init = db.Column(db.DateTime, default=datetime.datetime.now(), unique=False, nullable=True)
+    typeservice_id = db.Column(db.Integer, db.ForeignKey("typeservice.id"), default=1, nullable=False)
+    status_id = db.Column(db.Integer, db.ForeignKey("status.id"), default=1, nullable=False) #se asigna en el route
     initial_note = db.Column(db.String(400), nullable=True)
     description = db.Column(db.String(400), nullable=True)
-    close_date = db.Column(db.DateTime, unique=False, nullable=False)
+    closed=db.Column(db.Boolean(), unique=False, default=False, nullable=False)
+    close_date = db.Column(db.DateTime, default=datetime.datetime.now(), unique=False, nullable=True)
     close_description = db.Column(db.String(400), nullable=True)
-    delivered_date = db.Column(db.DateTime, unique=False, nullable=False)
+    delivered=db.Column(db.Boolean(), unique=False, default=False, nullable=False)
+    delivered_date = db.Column(db.DateTime, default=datetime.datetime.now(), unique=False, nullable=True)
     delivered_description = db.Column(db.String(400), nullable=True)
 
     def serialize(self):
@@ -48,13 +51,16 @@ class Case(db.Model):
             "customer_id": self.customer_id,
             "professional_id": self.professional_id,
             "category_id": self.category_id,
+            "started": self.started,
             "date_init": self.date_init,
             "typeservice_id": self.typeservice_id,
             "status_id": self.status_id,
             "initial_note": self.initial_note,
             "description": self.description,
+            "closed": self.closed,
             "close_date": self.close_date,
             "close_description": self.close_description,
+            "delivered": self.delivered,
             "delivered_date": self.delivered_date,
             "delivered_description": self.delivered_description,
         }
@@ -103,10 +109,22 @@ class Customer(db.Model):
             "address": self.address,
             "comment": self.comment,
         }
+    def serialize_full(self):
+        return {
+            "id": self.id,
+            "created": self.created,
+            "name": self.name,
+            "identification": self.identification,
+            "phone": self.phone,
+            "email": self.email,
+            "address": self.address,
+            "comment": self.comment,
+            "cases": [case.serialize() for  case in self.case]
+        }
 
 class Professional(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    created = db.Column(db.DateTime, unique=False, nullable=False)
+    created = db.Column(db.DateTime, default=datetime.datetime.now(), unique=False, nullable=False)
     name = db.Column(db.String(150), unique=False, nullable=False)
     identification = db.Column(db.String(30), unique=True, nullable=False)
     phone = db.Column(db.String(100), unique=False, nullable=True)

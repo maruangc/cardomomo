@@ -50,25 +50,135 @@ def add_customer():
         print("-*-*-*-*commit error: ", error)
         db.session.rollback()
         return jsonify({'ok':False, 'error': 'internal server error','status':500}),500
+# some data returned from this endpoint
+"""
+{
+  "data": "customer created",
+  "ok": true,
+  "status": 201
+}
 
-@routes.route('/<int:id>',endpoint='get_customer', methods=['GET'])
+{
+  "error": "the name must exist in the request \n",
+  "ok": false,
+  "status": 400
+}
+
+{
+  "error": "name allready exists ",
+  "ok": false,
+  "status": 400
+}
+"""
+
+@routes.route('/<int:id>', endpoint='get_customer', methods=['GET'])
 @jwt_required
 def get_customer(id):
     customer_filter=Customer.query.filter_by(id=id).one_or_none()
     if customer_filter is None:
         return jsonify({'ok':False,'error':'customer id not found ','status':404}),404
     dic={'ok':True,'status':200}
-    dic['data']=[customer_filter.serialize()]
+    dic['data']=customer_filter.serialize()
     return jsonify(dic)
+# some data returned from this endpoint
+"""
+{
+  "data": {
+    "address": "Algun lugar Barquisimeto",
+    "comment": "Na guara",
+    "created": "Wed, 14 Feb 2024 21:35:48 GMT",
+    "email": "elguaro@hotmail.com",
+    "id": 6,
+    "identification": "V11458958",
+    "name": "cliente Guaro",
+    "phone": "02511245578"
+  },
+  "ok": true,
+  "status": 200
+}
 
-@routes.route('/all', endpoint='get_customers', methods=['GET'])
+{
+  "error": "customer id not found ",
+  "ok": false,
+  "status": 404
+}
+"""
+@routes.route('/all',endpoint='get_customers', methods=['GET'])
 @jwt_required
 def get_customers():
     customers_filter=Customer.query.all()
     dic={'ok':True,'status':200}
     dic['data']=[customer.serialize() for customer in customers_filter]
     return jsonify(dic)
-
+# some data returned from this endpoint
+"""
+{
+  "data": [
+    {
+      "address": "alguna calle de algun lugar",
+      "comment": "no hay comentario",
+      "created": "Tue, 13 Feb 2024 23:28:35 GMT",
+      "email": "alguien@hotmail.com",
+      "id": 1,
+      "identification": "23441234",
+      "name": "CLIENTE NUMERO 1",
+      "phone": "0414857557"
+    },
+    {
+      "address": "sin calle con un numero de casa",
+      "comment": null,
+      "created": "Tue, 13 Feb 2024 23:28:35 GMT",
+      "email": "otro@hotmail.com",
+      "id": 2,
+      "identification": "45877752",
+      "name": "Cliente numero 2",
+      "phone": "0416577448"
+    },
+    {
+      "address": "no se cual calle, tampoco la casa",
+      "comment": null,
+      "created": "Tue, 13 Feb 2024 23:28:35 GMT",
+      "email": "otromas@gmail.com",
+      "id": 3,
+      "identification": "44778899",
+      "name": "otro cliente",
+      "phone": "0212554778996"
+    },
+    {
+      "address": "calle 2 nro 14, parroquia las flores",
+      "comment": "este cliente tiene un comentario",
+      "created": "Tue, 13 Feb 2024 23:28:35 GMT",
+      "email": "alguno@gmail.com",
+      "id": 4,
+      "identification": "12365478",
+      "name": "otro cliente numero 2",
+      "phone": "02814152632"
+    },
+    {
+      "address": "",
+      "comment": "",
+      "created": "Wed, 14 Feb 2024 21:31:37 GMT",
+      "email": "",
+      "id": 5,
+      "identification": "V11444158",
+      "name": "cliente numero 12",
+      "phone": ""
+    },
+    {
+      "address": "Algun lugar Barquisimeto",
+      "comment": "Na guara",
+      "created": "Wed, 14 Feb 2024 21:35:48 GMT",
+      "email": "elguaro@hotmail.com",
+      "id": 6,
+      "identification": "V11458958",
+      "name": "cliente Guaro",
+      "phone": "02511245578"
+    }
+  ],
+  "ok": true,
+  "status": 200
+}
+"""
 @routes.route('/filter',endpoint='filter_customer', methods=['GET'])
 @jwt_required
 def filter_customer():
@@ -104,7 +214,7 @@ def filter_customer():
     dic={'ok':True,'status':200}
     dic['data']=[customer.serialize() for customer in filter]
     return jsonify(dic)
-
+    # --------- Notas para consideraciones futuras Maruan ----------
     # w="WHERE id>0 "
     # w+="AND name iLIKE '%"+name+"%' " if len(name)>0 else ''
     # w+="AND identification iLIKE '%"+identification+"%' " if len(identification)>0 else ''
@@ -130,6 +240,57 @@ def filter_customer():
     #         })
     # dic={"data":data,'ok':True,'status':200}
     # return jsonify(dic)
+# some data returned from this endpoint
+"""
+{
+  "data": [
+    {
+      "address": "alguna calle de algun lugar",
+      "comment": "no hay comentario",
+      "created": "Tue, 13 Feb 2024 23:28:35 GMT",
+      "email": "alguien@hotmail.com",
+      "id": 1,
+      "identification": "23441234",
+      "name": "CLIENTE NUMERO 1",
+      "phone": "0414857557"
+    },
+    {
+      "address": "sin calle con un numero de casa",
+      "comment": null,
+      "created": "Tue, 13 Feb 2024 23:28:35 GMT",
+      "email": "otro@hotmail.com",
+      "id": 2,
+      "identification": "45877752",
+      "name": "Cliente numero 2",
+      "phone": "0416577448"
+    },
+    {
+      "address": "Algun lugar Barquisimeto",
+      "comment": "Na guara",
+      "created": "Wed, 14 Feb 2024 21:35:48 GMT",
+      "email": "elguaro@hotmail.com",
+      "id": 6,
+      "identification": "V11458958",
+      "name": "cliente Guaro",
+      "phone": "02511245578"
+    }
+  ],
+  "ok": true,
+  "status": 200
+}
+
+{
+  "data": [],
+  "ok": true,
+  "status": 200
+}
+
+{
+  "error": "all fields are missing ",
+  "ok": false,
+  "status": 400
+}
+"""
 
 @routes.route('/edit/<int:id>',endpoint='edit_customer', methods=['PUT'])
 @jwt_required
@@ -167,3 +328,35 @@ def edit_customer(id):
         print('-*-*-*-*Update Error:', error)
         db.session.rollback()
         return jsonify({'ok':False,'error': 'internal server error','status':500}),500
+# some data returned from this endpoint
+"""
+{
+  "data": "customer id updated - name:Cliente Modificado, ",
+  "ok": true,
+  "status": 201
+}
+{
+  "error": "customer id not found ",
+  "ok": false,
+  "status": 404
+}
+{
+  "error": "all fields are missing ",
+  "ok": false,
+  "status": 400
+}
+"""
+@routes.route('/DELETE/<int:id>',endpoint='del_customer', methods=['DELETE'])
+@jwt_required
+def del_customer(id):
+    filter=Customer.query.filter_by(id=id).one_or_none()
+    if filter is None:
+        return jsonify({'ok':False,'error':f'customer id:{id} not found ','status':404}),404
+    db.session.delete(filter)
+    try: 
+      db.session.commit()
+      return jsonify({'ok':True,'data': f'customer id:{id} DELETED','status':202}),202
+    except Exception as error:
+      print('-*-*-*-*--- DELETE Error:', error)
+      db.session.rollback()
+      return jsonify({'ok':False,'error': 'internal server error','status':500}),500
