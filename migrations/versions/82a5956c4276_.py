@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 565a0b3fac42
+Revision ID: 82a5956c4276
 Revises: 
-Create Date: 2024-02-12 22:10:53.172878
+Create Date: 2024-02-13 23:28:22.489058
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '565a0b3fac42'
+revision = '82a5956c4276'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -78,14 +78,17 @@ def upgrade():
     sa.Column('customer_id', sa.Integer(), nullable=False),
     sa.Column('professional_id', sa.Integer(), nullable=True),
     sa.Column('category_id', sa.Integer(), nullable=False),
-    sa.Column('date_init', sa.DateTime(), nullable=False),
+    sa.Column('started', sa.Boolean(), nullable=False),
+    sa.Column('date_init', sa.DateTime(), nullable=True),
     sa.Column('typeservice_id', sa.Integer(), nullable=False),
     sa.Column('status_id', sa.Integer(), nullable=False),
     sa.Column('initial_note', sa.String(length=400), nullable=True),
     sa.Column('description', sa.String(length=400), nullable=True),
-    sa.Column('close_date', sa.DateTime(), nullable=False),
+    sa.Column('closed', sa.Boolean(), nullable=False),
+    sa.Column('close_date', sa.DateTime(), nullable=True),
     sa.Column('close_description', sa.String(length=400), nullable=True),
-    sa.Column('delivered_date', sa.DateTime(), nullable=False),
+    sa.Column('delivered', sa.Boolean(), nullable=False),
+    sa.Column('delivered_date', sa.DateTime(), nullable=True),
     sa.Column('delivered_description', sa.String(length=400), nullable=True),
     sa.ForeignKeyConstraint(['category_id'], ['category.id'], ),
     sa.ForeignKeyConstraint(['customer_id'], ['customer.id'], ),
