@@ -5,10 +5,40 @@ from flask_cors import CORS
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy import or_,text
 from datetime import datetime
+import string
+import random
 
 routes = Blueprint('routes_customer',__name__)
 
 CORS(routes)
+
+def genera_string(longitud):
+    letras = string.ascii_lowercase
+    return ''.join(random.choice(letras) for i in range(longitud))
+
+def generar_numero(longitud):
+    numeros = '0123456789'
+    return ''.join(random.choice(numeros) for i in range(longitud))
+
+def aleatorio(minimo, maximo):
+    return random.randint(minimo, maximo)
+
+@routes.route('/create/<int:count>',endpoint='create_customers', methods=['POST'])
+def create_customer(count):
+    for i in range(count):
+        db.session.add(Customer(name=genera_string(aleatorio(5,10))+' '+genera_string(aleatorio(5,10)),
+                                identification=generar_numero(8),
+                                phone=generar_numero(11),
+                                email=genera_string(aleatorio(5,10))+'@'+genera_string(aleatorio(5,10))+'.'+genera_string(3),
+                                address=genera_string(aleatorio(5,10))+' '+genera_string(aleatorio(5,20))+' '+genera_string(aleatorio(5,10)),
+                                comment=genera_string(aleatorio(3,10))+' '+genera_string(aleatorio(10,20))+' '+genera_string(aleatorio(5,10))))
+        try:
+            db.session.commit()
+        except Exception as error:
+            print("-*-*-*-*commit error: ", error)
+            db.session.rollback()
+            return jsonify({'ok':False, 'error': 'internal server error','status':500}),500
+    return jsonify({'ok':True, 'data': str(count)+' customers created', 'status':201}),201
 
 #--------------------------------------------- /customer
 @routes.route('/new',endpoint='add_customer', methods=['POST'])
@@ -50,26 +80,6 @@ def add_customer():
         print("-*-*-*-*commit error: ", error)
         db.session.rollback()
         return jsonify({'ok':False, 'error': 'internal server error','status':500}),500
-# some data returned from this endpoint
-"""
-{
-  "data": "customer created",
-  "ok": true,
-  "status": 201
-}
-
-{
-  "error": "the name must exist in the request \n",
-  "ok": false,
-  "status": 400
-}
-
-{
-  "error": "name allready exists ",
-  "ok": false,
-  "status": 400
-}
-"""
 
 @routes.route('/<int:id>', endpoint='get_customer', methods=['GET'])
 @jwt_required
@@ -80,105 +90,19 @@ def get_customer(id):
     dic={'ok':True,'status':200}
     dic['data']=customer_filter.serialize()
     return jsonify(dic)
-# some data returned from this endpoint
-"""
-{
-  "data": {
-    "address": "Algun lugar Barquisimeto",
-    "comment": "Na guara",
-    "created": "Wed, 14 Feb 2024 21:35:48 GMT",
-    "email": "elguaro@hotmail.com",
-    "id": 6,
-    "identification": "V11458958",
-    "name": "cliente Guaro",
-    "phone": "02511245578"
-  },
-  "ok": true,
-  "status": 200
-}
 
-{
-  "error": "customer id not found ",
-  "ok": false,
-  "status": 404
-}
-"""
 @routes.route('/all',endpoint='get_customers', methods=['GET'])
 @jwt_required
+# http://127.0.0.1:3001/customer/all/?limit=1&offset=1
 def get_customers():
-    customers_filter=Customer.query.all()
+    limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
+    offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
+    customers_filter=Customer.query.offset(offset).limit(limit).all()
     dic={'ok':True,'status':200}
     dic['data']=[customer.serialize() for customer in customers_filter]
+    dic['offset']=int(offset)+int(limit)
     return jsonify(dic)
-# some data returned from this endpoint
-"""
-{
-  "data": [
-    {
-      "address": "alguna calle de algun lugar",
-      "comment": "no hay comentario",
-      "created": "Tue, 13 Feb 2024 23:28:35 GMT",
-      "email": "alguien@hotmail.com",
-      "id": 1,
-      "identification": "23441234",
-      "name": "CLIENTE NUMERO 1",
-      "phone": "0414857557"
-    },
-    {
-      "address": "sin calle con un numero de casa",
-      "comment": null,
-      "created": "Tue, 13 Feb 2024 23:28:35 GMT",
-      "email": "otro@hotmail.com",
-      "id": 2,
-      "identification": "45877752",
-      "name": "Cliente numero 2",
-      "phone": "0416577448"
-    },
-    {
-      "address": "no se cual calle, tampoco la casa",
-      "comment": null,
-      "created": "Tue, 13 Feb 2024 23:28:35 GMT",
-      "email": "otromas@gmail.com",
-      "id": 3,
-      "identification": "44778899",
-      "name": "otro cliente",
-      "phone": "0212554778996"
-    },
-    {
-      "address": "calle 2 nro 14, parroquia las flores",
-      "comment": "este cliente tiene un comentario",
-      "created": "Tue, 13 Feb 2024 23:28:35 GMT",
-      "email": "alguno@gmail.com",
-      "id": 4,
-      "identification": "12365478",
-      "name": "otro cliente numero 2",
-      "phone": "02814152632"
-    },
-    {
-      "address": "",
-      "comment": "",
-      "created": "Wed, 14 Feb 2024 21:31:37 GMT",
-      "email": "",
-      "id": 5,
-      "identification": "V11444158",
-      "name": "cliente numero 12",
-      "phone": ""
-    },
-    {
-      "address": "Algun lugar Barquisimeto",
-      "comment": "Na guara",
-      "created": "Wed, 14 Feb 2024 21:35:48 GMT",
-      "email": "elguaro@hotmail.com",
-      "id": 6,
-      "identification": "V11458958",
-      "name": "cliente Guaro",
-      "phone": "02511245578"
-    }
-  ],
-  "ok": true,
-  "status": 200
-}
-"""
+
 @routes.route('/filter',endpoint='filter_customer', methods=['GET'])
 @jwt_required
 def filter_customer():
@@ -240,57 +164,6 @@ def filter_customer():
     #         })
     # dic={"data":data,'ok':True,'status':200}
     # return jsonify(dic)
-# some data returned from this endpoint
-"""
-{
-  "data": [
-    {
-      "address": "alguna calle de algun lugar",
-      "comment": "no hay comentario",
-      "created": "Tue, 13 Feb 2024 23:28:35 GMT",
-      "email": "alguien@hotmail.com",
-      "id": 1,
-      "identification": "23441234",
-      "name": "CLIENTE NUMERO 1",
-      "phone": "0414857557"
-    },
-    {
-      "address": "sin calle con un numero de casa",
-      "comment": null,
-      "created": "Tue, 13 Feb 2024 23:28:35 GMT",
-      "email": "otro@hotmail.com",
-      "id": 2,
-      "identification": "45877752",
-      "name": "Cliente numero 2",
-      "phone": "0416577448"
-    },
-    {
-      "address": "Algun lugar Barquisimeto",
-      "comment": "Na guara",
-      "created": "Wed, 14 Feb 2024 21:35:48 GMT",
-      "email": "elguaro@hotmail.com",
-      "id": 6,
-      "identification": "V11458958",
-      "name": "cliente Guaro",
-      "phone": "02511245578"
-    }
-  ],
-  "ok": true,
-  "status": 200
-}
-
-{
-  "data": [],
-  "ok": true,
-  "status": 200
-}
-
-{
-  "error": "all fields are missing ",
-  "ok": false,
-  "status": 400
-}
-"""
 
 @routes.route('/edit/<int:id>',endpoint='edit_customer', methods=['PUT'])
 @jwt_required
@@ -328,24 +201,7 @@ def edit_customer(id):
         print('-*-*-*-*Update Error:', error)
         db.session.rollback()
         return jsonify({'ok':False,'error': 'internal server error','status':500}),500
-# some data returned from this endpoint
-"""
-{
-  "data": "customer id updated - name:Cliente Modificado, ",
-  "ok": true,
-  "status": 201
-}
-{
-  "error": "customer id not found ",
-  "ok": false,
-  "status": 404
-}
-{
-  "error": "all fields are missing ",
-  "ok": false,
-  "status": 400
-}
-"""
+
 @routes.route('/DELETE/<int:id>',endpoint='del_customer', methods=['DELETE'])
 @jwt_required
 def del_customer(id):

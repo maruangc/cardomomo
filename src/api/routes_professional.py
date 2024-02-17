@@ -45,27 +45,6 @@ def add_professional():
         print("-*-*-*-*commit error: ", error)
         db.session.rollback()
         return jsonify({'ok':False, 'error': 'internal server error','status':500}),500
-    
-# --some data returned by this endpoint
-""" 
-{
-  "data": "professional created",
-  "ok": true,
-  "status": 201
-}
-
-{
-  "error": "name allready exists ",
-  "ok": false,
-  "status": 400
-}
-
-{
-  "error": "the identification must exist in the request \n",
-  "ok": false,
-  "status": 400
-}
-"""
 
 @routes.route('/<int:id>',endpoint='get_professional', methods=['GET'])
 @jwt_required
@@ -76,30 +55,6 @@ def get_professional(id):
     dic={'ok':True,'status':200}
     dic['data']=filter.serialize()
     return jsonify(dic)
-# some data returned from this endpoint
-"""
-{
-  "data":
-    {
-      "address": "",
-      "comment": "",
-      "created": "Tue, 13 Feb 2024 14:38:46 GMT",
-      "email": "",
-      "id": 3,
-      "identification": "V11445778",
-      "name": "Profesional numero 8",
-      "phone": ""
-    },
-  "ok": true,
-  "status": 200
-}
-
-{
-  "error": "professional id not found ",
-  "ok": false,
-  "status": 404
-}
-"""
 
 @routes.route('/all',endpoint='get_professionals', methods=['GET'])
 @jwt_required
@@ -108,65 +63,6 @@ def get_professionals():
     dic={'ok':True,'status':200}
     dic['data']=[professional.serialize() for professional in filter]
     return jsonify(dic)
-# some data returned from this endpoint
-"""
-{
-  "data": [
-    {
-      "address": "",
-      "comment": "",
-      "created": "Tue, 13 Feb 2024 14:38:46 GMT",
-      "email": "",
-      "id": 3,
-      "identification": "V11445778",
-      "name": "Profesional numero 8",
-      "phone": ""
-    },
-    {
-      "address": "",
-      "comment": "",
-      "created": "Tue, 13 Feb 2024 14:40:28 GMT",
-      "email": "",
-      "id": 4,
-      "identification": "J256774889",
-      "name": "Empresa XYZ CA",
-      "phone": ""
-    },
-    {
-      "address": "",
-      "comment": "",
-      "created": "Tue, 13 Feb 2024 14:40:28 GMT",
-      "email": "",
-      "id": 5,
-      "identification": "J44577851",
-      "name": "Otra empresa prestadora de servicios CA",
-      "phone": ""
-    },
-    {
-      "address": "",
-      "comment": "",
-      "created": "Tue, 13 Feb 2024 14:49:58 GMT",
-      "email": "",
-      "id": 6,
-      "identification": "V1548772",
-      "name": "Persona Albañil",
-      "phone": ""
-    },
-    {
-      "address": "Algun lugar",
-      "comment": "No hay comentarios",
-      "created": "Tue, 13 Feb 2024 14:52:22 GMT",
-      "email": "plomero@gmail.com",
-      "id": 7,
-      "identification": "V44115225",
-      "name": "Juan Gonzalez",
-      "phone": "04125526634"
-    }
-  ],
-  "ok": true,
-  "status": 200
-}
-"""
 
 @routes.route('/filter',endpoint='filter_professional', methods=['GET'])
 @jwt_required
@@ -203,41 +99,6 @@ def filter_professional():
     dic={'ok':True,'status':200}
     dic['data']=[professional.serialize() for professional in filter]
     return jsonify(dic)
-# some data returned from this endpoint
-"""
-{
-  "data": [
-    {
-      "address": "",
-      "comment": "",
-      "created": "Tue, 13 Feb 2024 14:40:28 GMT",
-      "email": "",
-      "id": 4,
-      "identification": "J256774889",
-      "name": "Empresa XYZ CA",
-      "phone": ""
-    },
-    {
-      "address": "",
-      "comment": "",
-      "created": "Tue, 13 Feb 2024 14:40:28 GMT",
-      "email": "",
-      "id": 5,
-      "identification": "J44577851",
-      "name": "Otra empresa prestadora de servicios CA",
-      "phone": ""
-    }
-  ],
-  "ok": true,
-  "status": 200
-}
-
-{
-  "error": "all fields are missing ",
-  "ok": false,
-  "status": 400
-}
-"""
 
 @routes.route('/edit/<int:id>',endpoint='edit_professional', methods=['PUT'])
 @jwt_required
@@ -275,26 +136,7 @@ def edit_professional(id):
         print('-*-*-*-*Update Error:', error)
         db.session.rollback()
         return jsonify({'ok':False,'error': 'internal server error','status':500}),500
-# some data returned from this endpoint  
-"""
-{
-  "data": "professional id updated - name:Nombre nuevo, ",
-  "ok": true,
-  "status": 201
-}
 
-{
-  "error": "professional id not found ",
-  "ok": false,
-  "status": 404
-}
-
-{
-  "error": "all fields are missing ",
-  "ok": false,
-  "status": 400
-}
-"""
 @routes.route('/DELETE/<int:id>',endpoint='del_professional', methods=['DELETE'])
 @jwt_required
 def del_professional(id):
