@@ -4,7 +4,7 @@ from datetime import timedelta
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, jwt_required , get_jwt_identity
 
 routes = Blueprint('routes_user', __name__)
 # Allow CORS requests to this API
@@ -80,15 +80,15 @@ def edit_user():
         return jsonify({'ok':False,'error': 'internal server error','status':500}),500
 
 @routes.route('/<int:id>',endpoint='get_user', methods=['GET'])
-@jwt_required
+@jwt_required()
 def get_user(id):
     user=User.query.filter_by(id=id).one_or_none()
     if user is None:
         return jsonify({'ok':False,'error': 'user not found','status':404})
     return jsonify({'data':[user.serialize()],'ok':True,'status':200})
 
-@routes.route('/list',endpoint='get_users', methods=['GET'])
-@jwt_required
+@routes.route('/all',endpoint='get_users', methods=['GET'])
+@jwt_required()
 def get_users():
     users=User.query.all()
     if users is None:

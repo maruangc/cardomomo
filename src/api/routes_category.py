@@ -10,7 +10,7 @@ CORS(routes_category)
 
 #----------------------------------------------- /category
 @routes_category.route('/new',endpoint='add_category', methods=['POST'])
-@jwt_required
+@jwt_required()
 def add_category():
     body=request.json
     category=body.get('category', None)
@@ -38,7 +38,7 @@ def add_category():
 
 #-----------------------------------
 @routes_category.route('/<int:id>',endpoint='get_category', methods=['GET'])
-# @jwt_required
+@jwt_required()
 def get_category(id):
     category_filter=Category.query.filter_by(id=id).one_or_none()
     if category_filter is None:
@@ -48,7 +48,7 @@ def get_category(id):
     return jsonify(dic)
 
 @routes_category.route('/all', endpoint='get_categories', methods=['GET'])
-@jwt_required
+@jwt_required()
 def get_categories():
     category_filter=Category.query.all()
     dic={'ok':True,'status':200}
@@ -56,7 +56,7 @@ def get_categories():
     return jsonify(dic)
 
 @routes_category.route('/filter',endpoint='filter_category', methods=['GET'])
-@jwt_required
+@jwt_required()
 def filter_category():
     body=request.json
     category=body.get('category', None)
@@ -73,7 +73,7 @@ def filter_category():
 
 
 @routes_category.route('/edit/<int:id>',endpoint='edit_category', methods=['PUT'])
-@jwt_required
+@jwt_required()
 def edit_category(id):
     body=request.json
     category=body.get('category', None)
@@ -100,7 +100,7 @@ def edit_category(id):
         return jsonify({'ok':False,'error': 'internal server error','status':500}),500
 
 @routes_category.route('/DELETE/<int:id>',endpoint='del_category', methods=['DELETE'])
-@jwt_required
+@jwt_required()
 def del_category(id):
     filter=Category.query.filter_by(id=id).one_or_none()
     if filter is None:

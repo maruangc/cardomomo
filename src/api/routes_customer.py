@@ -42,7 +42,7 @@ def create_customer(count):
 
 #--------------------------------------------- /customer
 @routes.route('/new',endpoint='add_customer', methods=['POST'])
-@jwt_required
+@jwt_required()
 def add_customer():
     body=request.json
     name=body.get('name', None)
@@ -82,7 +82,7 @@ def add_customer():
         return jsonify({'ok':False, 'error': 'internal server error','status':500}),500
 
 @routes.route('/<int:id>', endpoint='get_customer', methods=['GET'])
-@jwt_required
+@jwt_required()
 def get_customer(id):
     customer_filter=Customer.query.filter_by(id=id).one_or_none()
     if customer_filter is None:
@@ -92,9 +92,9 @@ def get_customer(id):
     return jsonify(dic)
 
 @routes.route('/all',endpoint='get_customers', methods=['GET'])
-@jwt_required
-# http://127.0.0.1:3001/customer/all/?limit=1&offset=1
+@jwt_required()
 def get_customers():
+# http://127.0.0.1:3001/customer/all/?limit=1&offset=1
     limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
     offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
     customers_filter=Customer.query.offset(offset).limit(limit).all()
@@ -104,7 +104,7 @@ def get_customers():
     return jsonify(dic)
 
 @routes.route('/filter',endpoint='filter_customer', methods=['GET'])
-@jwt_required
+@jwt_required()
 def filter_customer():
     body=request.json
     name=body.get('name', None) if body.get('name', None) is not None else ''
@@ -166,7 +166,7 @@ def filter_customer():
     # return jsonify(dic)
 
 @routes.route('/edit/<int:id>',endpoint='edit_customer', methods=['PUT'])
-@jwt_required
+@jwt_required()
 def edit_customer(id):
     body=request.json
     name=body.get('name', None) if body.get('name', None) is not None else ''
@@ -203,7 +203,7 @@ def edit_customer(id):
         return jsonify({'ok':False,'error': 'internal server error','status':500}),500
 
 @routes.route('/DELETE/<int:id>',endpoint='del_customer', methods=['DELETE'])
-@jwt_required
+@jwt_required()
 def del_customer(id):
     filter=Customer.query.filter_by(id=id).one_or_none()
     if filter is None:

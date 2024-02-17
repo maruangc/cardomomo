@@ -10,7 +10,7 @@ CORS(routes)
 
 #---------------------------------------------type
 @routes.route('/type/<int:id>',endpoint='get_typeservice', methods=['GET'])
-@jwt_required
+@jwt_required()
 def get_typeservice(id):
     filter=Typeservice.query.filter_by(id=id).one_or_none()
     if filter is None:
@@ -20,7 +20,7 @@ def get_typeservice(id):
     return jsonify(dic)
 
 @routes.route('/type/all',endpoint='get_typeservices', methods=['GET'])
-@jwt_required
+@jwt_required()
 def get_typeservices():
     filter=Typeservice.query.all()
     dic={'ok':True,'status':200}
@@ -29,7 +29,7 @@ def get_typeservices():
 
 #---------------------------------------------status
 @routes.route('/status/<int:id>',endpoint='get_status', methods=['GET'])
-@jwt_required
+@jwt_required()
 def get_status(id):
     filter=Status.query.filter_by(id=id).one_or_none()
     if filter is None:
@@ -39,7 +39,7 @@ def get_status(id):
     return jsonify(dic)
 
 @routes.route('/status/all',endpoint='get_all_status', methods=['GET'])
-@jwt_required
+@jwt_required()
 def get_all_status():
     filter=Status.query.all()
     dic={'ok':True,'status':200}

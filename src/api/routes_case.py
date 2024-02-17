@@ -12,7 +12,7 @@ CORS(routes)
 
 #---------------------------------------------case
 @routes.route('/new',endpoint='add_case', methods=['POST'])
-@jwt_required
+@jwt_required()
 def add_case():
     body=request.json
     customer_id=body.get('customer_id', None) #requerido
@@ -82,23 +82,9 @@ def add_case():
         print("-*-*-*-*commit error: ", error)
         db.session.rollback()
         return jsonify({'ok':False, 'error': 'internal server error','status':500}),500
-# some data returned from this endpoint
-"""
-{
-  "data": "case created",
-  "ok": true,
-  "status": 201
-}
-
-{
-  "error": "date_init - time data '2023/02/13 09:40:14' does not match format '%Y-%m-%d %H:%M:%S'\n",
-  "ok": false,
-  "status": 400
-}
-"""
 
 @routes.route('/<int:id>', endpoint='get_case', methods=['GET'])
-@jwt_required
+@jwt_required()
 def get_case(id):
     filter=Case.query.filter_by(id=id).one_or_none()
     if filter is None:
@@ -136,72 +122,9 @@ def get_case(id):
     else:
         dic['data']['status']=filter.serialize()
     return jsonify(dic),200
-# some data returned from this endpoint
-"""
-{
-  "error": "case id not found",
-  "ok": false,
-  "status": 404
-}
-
-{
-  "data": {
-    "case": {
-      "category_id": 1,
-      "close_date": "Wed, 14 Feb 2024 16:53:11 GMT",
-      "close_description": "",
-      "closed": false,
-      "created": "Wed, 14 Feb 2024 16:51:40 GMT",
-      "customer_id": 1,
-      "date_init": "Mon, 13 Feb 2023 09:40:14 GMT",
-      "delivered": false,
-      "delivered_date": "Wed, 14 Feb 2024 16:53:11 GMT",
-      "delivered_description": "",
-      "description": "",
-      "id": 13,
-      "initial_note": "",
-      "is_active": true,
-      "professional_id": null,
-      "started": false,
-      "status_id": 1,
-      "typeservice_id": 1
-    },
-    "category": {
-      "category": "REPARACION DE AIRE ACONDICIONADO",
-      "description": null,
-      "id": 1
-    },
-    "customer": {
-      "address": "alguna calle de algun lugar",
-      "comment": "no hay comentario",
-      "created": "Tue, 13 Feb 2024 23:28:35 GMT",
-      "email": "alguien@hotmail.com",
-      "id": 1,
-      "identification": "23441234",
-      "name": "CLIENTE NUMERO 1",
-      "phone": "0414857557"
-    },
-    "professional": {
-      "error": "professional id not found ",
-      "ok": false,
-      "status": 404
-    },
-    "status": {
-      "id": 1,
-      "status": "1.- CREADO"
-    },
-    "typeservice": {
-      "id": 1,
-      "type_service": "FACTURABLE"
-    }
-  },
-  "ok": true,
-  "status": 200
-}
-"""
 
 @routes.route('/all', endpoint='get_cases', methods=['GET'])
-@jwt_required
+@jwt_required()
 def get_cases():
     filter=Case.query.all()
     dic={'ok':True,'status':200,'data':[]}
@@ -246,7 +169,7 @@ def get_cases():
     return jsonify(dic),200
 
 @routes.route('/edit/<int:id>', endpoint='edit_case', methods=['PUT'])
-@jwt_required
+@jwt_required()
 def edit_case(id):
     filter=Case.query.filter_by(id=id).one_or_none()
     if filter is None:
@@ -359,7 +282,7 @@ def edit_case(id):
        return jsonify({'ok':False,'error': 'internal server error '+chr(10)+texto,'status':500}),500
     
 @routes.route('/filter', endpoint='filter_cases', methods=['GET'])
-@jwt_required
+@jwt_required()
 def filter_cases():
     body=request.json
     if body=={}:
@@ -509,7 +432,7 @@ def filter_cases():
     return jsonify(dic),200
 
 @routes.route('/DELETE/<int:id>', endpoint='del_case', methods=['DELETE'])
-@jwt_required
+@jwt_required()
 def del_case(id):
     filter=Case.query.filter_by(id=id).one_or_none()
     if filter is None:
