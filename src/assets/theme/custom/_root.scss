@@ -1,10 +1,21 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  margin-bottom: 0;
+}
+
 :root {
   font-family: "Montserrat", sans-serif;
   --font-family: "Montserrat", sans-serif;
   --text-color: #4b5563;
   --text-color-secondary: #6b7280;
-  --primary-color: #647657;
+  --primary-color: #6c6868;
   --primary-color-text: #ffffff;
+  --black-primary: #231f20;
 }
 
 @font-face {
@@ -23,13 +34,23 @@
   font-style: italic;
 }
 
+/* Button */
 .p-button {
   color: #ffffff;
   background: var(--primary-color);
   border: 1px solid var(--primary-color);
-  padding: 0.75rem 1.25rem;
-  font-size: 1rem;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
-    box-shadow 0.2s;
-  border-radius: 6px;
+}
+
+/* Colors */
+.bg-black-primary {
+  background-color: var(--black-primary);
+}
+
+/* Sizes */
+.max-container-width {
+  max-width: 1400px;
+}
+
+.p-menubar .p-submenu-list {
+  z-index: 2;
 }
