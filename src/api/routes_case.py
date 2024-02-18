@@ -126,8 +126,15 @@ def get_case(id):
 @routes.route('/all', endpoint='get_cases', methods=['GET'])
 @jwt_required()
 def get_cases():
-    filter=Case.query.all()
-    dic={'ok':True,'status':200,'data':[]}
+    limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
+    offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
+
+    if limit=='0':
+        filter=Case.query.all()
+    else:
+        filter=Case.query.offset(offset).limit(limit).all()
+    dic={'ok':True,'status':200,'data':[],'count':len(filter)}
+
     for eachcase in filter:
       customer_id=eachcase.customer_id
       professional_id=eachcase.professional_id
@@ -284,6 +291,8 @@ def edit_case(id):
 @routes.route('/filter', endpoint='filter_cases', methods=['GET'])
 @jwt_required()
 def filter_cases():
+    limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
+    offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
     body=request.json
     if body=={}:
        return jsonify({'ok':False,'error':'body is empty ','status':400}),400
@@ -370,9 +379,8 @@ def filter_cases():
           texto+="delivered_date_end - "+str(error)+chr(10)
     if len(texto)>0:
         return jsonify({'ok':False,'error':texto,'status':400}),400
-
     filter=Case.query.filter(
-      Case.customer_id==customer_id if customer_id is not None else ((Case.customer_id==customer_id) | (Case.customer_id is None)),
+      Case.customer_id==customer_id if customer_id is not None else (Case.id > 0),
       Case.category_id==category_id if category_id is not None else (Case.id > 0),
       Case.typeservice_id==typeservice_id if typeservice_id is not None else (Case.id > 0),
       Case.status_id==status_id if status_id is not None else (Case.id > 0),
@@ -388,9 +396,13 @@ def filter_cases():
       Case.close_description.ilike('%'+close_description+'%') if close_description is not None else (Case.id > 0),
       Case.delivered==delivered if delivered is not None else (Case.id > 0),
       Case.delivered_description.ilike('%'+delivered_description+'%') if delivered_description is not None else (Case.id > 0)
-      ).all()
-    
-    dic={'ok':True,'status':200,'data':[]}
+      )
+    if limit=='0':
+        filter=filter.all()
+    else:
+        filter=filter.offset(offset).limit(limit).all()
+    dic={'ok':True,'status':200,'data':[],'count':len(filter)}
+
     for eachcase in filter:
       customer_id=eachcase.customer_id
       professional_id=eachcase.professional_id

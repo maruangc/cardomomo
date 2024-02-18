@@ -97,15 +97,20 @@ def get_customers():
 # http://127.0.0.1:3001/customer/all/?limit=1&offset=1
     limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
     offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
-    customers_filter=Customer.query.offset(offset).limit(limit).all()
-    dic={'ok':True,'status':200}
-    dic['data']=[customer.serialize() for customer in customers_filter]
+    if limit=='0':
+        filter=Customer.query.all()
+    else:
+        filter=Customer.query.offset(offset).limit(limit).all()
+    dic={'ok':True,'status':200,'count':len(filter)}
+    dic['data']=[customer.serialize() for customer in filter]
     dic['offset']=int(offset)+int(limit)
     return jsonify(dic)
 
 @routes.route('/filter',endpoint='filter_customer', methods=['GET'])
 @jwt_required()
 def filter_customer():
+    limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
+    offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
     body=request.json
     name=body.get('name', None) if body.get('name', None) is not None else ''
     identification=body.get('identification', None) if body.get('identification', None) is not None else ''
@@ -134,8 +139,12 @@ def filter_customer():
         Customer.address.ilike('%'+address+'%') if address != '' else Customer.address.ilike('%'+address+'%') | (Customer.address==None),
         Customer.comment.ilike('%'+comment+'%') if comment != '' else Customer.comment.ilike('%'+comment+'%') | (Customer.comment==None),
         Customer.created.between(fd,fh) if created_from != '' else Customer.created.between('1901-01-01','3100-12-31')
-        ).all()
-    dic={'ok':True,'status':200}
+        )
+    if limit=='0':
+        filter=filter.all()
+    else:
+        filter=filter.offset(offset).limit(limit).all()
+    dic={'ok':True,'status':200,'count':len(filter)}
     dic['data']=[customer.serialize() for customer in filter]
     return jsonify(dic)
     # --------- Notas para consideraciones futuras Maruan ----------

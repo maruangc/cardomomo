@@ -50,14 +50,21 @@ def get_category(id):
 @routes_category.route('/all', endpoint='get_categories', methods=['GET'])
 @jwt_required()
 def get_categories():
-    category_filter=Category.query.all()
-    dic={'ok':True,'status':200}
+    limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
+    offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
+    if limit=='0':
+        filter=Category.query.all()
+    else:
+        filter=Category.query.offset(offset).limit(limit).all()
+    dic={'ok':True,'status':200,'count':len(filter)}
     dic['data']=[category.serialize() for category in category_filter]
     return jsonify(dic)
 
 @routes_category.route('/filter',endpoint='filter_category', methods=['GET'])
 @jwt_required()
 def filter_category():
+    limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
+    offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
     body=request.json
     category=body.get('category', None)
     description=body.get('description', None)
@@ -66,8 +73,12 @@ def filter_category():
     filter=Category.query.filter(
         Category.category.ilike('%'+category+'%') if category is not None else (Category.id>0),
         Category.description.ilike('%'+description+'%') if description is not None else (Category.id>0)
-    ).all()
-    dic={'ok':True,'status':200}
+    )
+    if limit=='0':
+        filter=filter.all()
+    else:
+        filter=filter.offset(offset).limit(limit).all()
+    dic={'ok':True,'status':200,'count':len(filter)}
     dic['data']=[category.serialize() for category in filter]
     return jsonify(dic)
 

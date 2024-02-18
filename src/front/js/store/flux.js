@@ -169,6 +169,74 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
         return;
       },
+      getFilter: async (table, fields, limit, offset) => {
+        // http://127.0.0.1:3001/customer/all/?limit=1&offset=1
+        let urlextend = "0";
+        if (limit > 0) {
+          urlextend = `?limit=${limit}&offset=${offset}`;
+        }
+        try {
+          const store = getStore();
+          const resp = await fetch(
+            process.env.BACKEND_URL + "/" + table + "/filter/" + urlextend,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+              body: JSON.stringify(fields),
+            }
+          );
+          const data = await resp.json();
+          if (data.error) {
+            toast(data.error);
+          }
+          setStore({
+            ...store,
+            dataById: { ...store.dataById, [table]: data },
+          });
+        } catch (error) {
+          console.log(
+            `Error en funcion getFilter(${table}, ${fields}, ${limit}, ${offset})`,
+            error
+          );
+        }
+        return;
+      },
+      getAll: async (table, limit, offset) => {
+        let urlextend = "0";
+        if (limit > 0) {
+          urlextend = `?limit=${limit}&offset=${offset}`;
+        }
+        try {
+          const store = getStore();
+          const resp = await fetch(
+            process.env.BACKEND_URL + "/" + table + "/all/" + urlextend,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
+          const data = await resp.json();
+          if (data.error) {
+            toast(data.error);
+          }
+          setStore({
+            ...store,
+            dataById: { ...store.dataById, [table]: data },
+          });
+        } catch (error) {
+          console.log(
+            `Error en funcion getAll(${table}, ${limit}, ${offset})`,
+            error
+          );
+        }
+        return;
+      },
     },
   };
 };

@@ -16,6 +16,7 @@ def add_professional():
     body=request.json
     name=body.get('name', None)
     identification=body.get('identification', None)
+    profession=body.get('profession', None)
     phone=body.get('phone', None) if body.get('phone', None) is not None else ''
     email=body.get('email', None) if body.get('email', None) is not None else ''
     address=body.get('address', None) if body.get('address', None) is not None else ''
@@ -37,7 +38,7 @@ def add_professional():
     filter=Professional.query.filter_by(identification=identification).one_or_none()
     if filter is not None:
         return jsonify({'ok':False,'error':'identification allready exists ','status':400}),400
-    db.session.add(Professional(name=name,identification=identification,phone=phone,email=email,address=address,comment=comment))
+    db.session.add(Professional(name=name,identification=identification,profession=profession,phone=phone,email=email,address=address,comment=comment))
     try:
         db.session.commit()
         return jsonify({'ok':True, 'data': 'professional created', 'status':201}),201
@@ -59,24 +60,32 @@ def get_professional(id):
 @routes.route('/all',endpoint='get_professionals', methods=['GET'])
 @jwt_required()
 def get_professionals():
-    filter=Professional.query.all()
-    dic={'ok':True,'status':200}
+    limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
+    offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
+    if limit=='0':
+        filter=Professional.query.all()
+    else:
+        filter=Professional.query.offset(offset).limit(limit).all()
+    dic={'ok':True,'status':200,'count':len(filter)}
     dic['data']=[professional.serialize() for professional in filter]
     return jsonify(dic)
 
 @routes.route('/filter',endpoint='filter_professional', methods=['GET'])
 @jwt_required()
 def filter_professional():
+    limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
+    offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
     body=request.json
     name=body.get('name', None) if body.get('name', None) is not None else ''
     identification=body.get('identification', None) if body.get('identification', None) is not None else ''
+    profession=body.get('profession', None) if body.get('profession', None) is not None else ''
     phone=body.get('phone', None) if body.get('phone', None) is not None else ''
     email=body.get('email', None) if body.get('email', None) is not None else ''
     address=body.get('address', None) if body.get('address', None) is not None else ''
     comment=body.get('comment', None) if body.get('comment', None) is not None else ''
     created_from=body.get('created_from', None) if body.get('created_from', None) is not None else ''
     created_until=body.get('created_until', None) if body.get('created_until', None) is not None else ''
-    if (name+identification+phone+email+address+comment).strip()=="":
+    if (name+identification+phone+email+address+comment+profession).strip()=="":
         return jsonify({'ok':False,'error':'all fields are missing ','status':400}),400
     
     if len(created_from)>0 and len(created_until)>0:
@@ -91,12 +100,17 @@ def filter_professional():
         Professional.name.ilike('%'+name+'%') if name != '' else Professional.name.ilike('%'+name+'%') | (Professional.name==None),
         Professional.phone.ilike('%'+phone+'%') if phone != '' else Professional.phone.ilike('%'+phone+'%') | (Professional.phone==None),
         Professional.identification.ilike('%'+identification+'%') if identification != '' else Professional.identification.ilike('%'+identification+'%') | (Professional.identification == None),
+        Professional.profession.ilike('%'+profession+'%') if profession != '' else Professional.profession.ilike('%'+profession+'%') | (Professional.profession == None),
         Professional.email.ilike('%'+email+'%') if email != '' else Professional.email.ilike('%'+email+'%') | (Professional.email==None),
         Professional.address.ilike('%'+address+'%') if address != '' else Professional.address.ilike('%'+address+'%') | (Professional.address==None),
         Professional.comment.ilike('%'+comment+'%') if comment != '' else Professional.comment.ilike('%'+comment+'%') | (Professional.comment==None),
         Professional.created.between(fd,fh) if created_from != '' else Professional.created.between('1901-01-01','3100-12-31')
-        ).all()
-    dic={'ok':True,'status':200}
+        )
+    if limit=='0':
+        filter=filter.all()
+    else:
+        filter=filter.offset(offset).limit(limit).all()
+    dic={'ok':True,'status':200,'count':len(filter)}
     dic['data']=[professional.serialize() for professional in filter]
     return jsonify(dic)
 
@@ -106,6 +120,7 @@ def edit_professional(id):
     body=request.json
     name=body.get('name', None) if body.get('name', None) is not None else ''
     identification=body.get('identification', None) if body.get('identification', None) is not None else ''
+    profession=body.get('profession', None) if body.get('profession', None) is not None else ''
     phone=body.get('phone', None) if body.get('phone', None) is not None else ''
     email=body.get('email', None) if body.get('email', None) is not None else ''
     address=body.get('address', None) if body.get('address', None) is not None else ''
@@ -119,6 +134,7 @@ def edit_professional(id):
     
     filter.name=name if len(name)>0 else filter.name
     filter.identification=identification if len(identification)>0 else filter.identification
+    filter.profession=profession if len(profession)>0 else filter.profession
     filter.phone=phone if len(phone)>0 else filter.phone
     filter.email=email if len(email)>0 else filter.email
     filter.address=address if len(address)>0 else filter.address
@@ -127,6 +143,7 @@ def edit_professional(id):
         db.session.commit()
         texto='name:'+name+', ' if name != '' else ''
         texto+='identification:'+identification+', ' if identification != '' else ''
+        texto+='profession:'+profession+', ' if profession != '' else ''
         texto+='phone:'+phone+', ' if phone != '' else ''
         texto+='email:'+email+', ' if email != '' else ''
         texto+='address:'+address+', ' if address != '' else ''

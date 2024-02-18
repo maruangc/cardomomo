@@ -127,6 +127,7 @@ class Professional(db.Model):
     created = db.Column(db.DateTime, default=datetime.datetime.now(), unique=False, nullable=False)
     name = db.Column(db.String(150), unique=False, nullable=False)
     identification = db.Column(db.String(30), unique=True, nullable=False)
+    profession=db.Column(db.String(100), unique=False, nullable=True)
     phone = db.Column(db.String(100), unique=False, nullable=True)
     email = db.Column(db.String(120), unique=False, nullable=True)
     address = db.Column(db.String(200), unique=False, nullable=True)
@@ -139,6 +140,7 @@ class Professional(db.Model):
             "created": self.created,
             "name": self.name,
             "identification": self.identification,
+            "profession": self.profession,
             "phone": self.phone,
             "email": self.email,
             "address": self.address,
