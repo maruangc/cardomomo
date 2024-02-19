@@ -9,11 +9,9 @@ import "/style.scss";
 //prime react
 import { PrimeReactProvider } from "primereact/api";
 
-import { Home } from "./pages/home";
-import { Demo } from "./pages/demo";
-import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
-import ClientDetail from "./pages/clientView/ClientDetail.jsx";
+import LandingPage from "./pages/landingPage/LandingPage.jsx";
+import Login from "./pages/login/Login.jsx";
 
 //create your first component
 const Layout = () => {
@@ -30,10 +28,8 @@ const Layout = () => {
         <PrimeReactProvider>
           <ToastContainer />
           <Routes>
-            <Route element={<Home />} path="/" />
-            <Route element={<Demo />} path="/demo" />
-            <Route element={<Single />} path="/single/:theid" />
-            <Route element={<ClientDetail />} path="/client/detail" />
+            <Route element={<LandingPage />} path="/" />
+            <Route element={<Login />} path="/login" />
             <Route element={<h1>Not found!</h1>} path="*" />
           </Routes>
         </PrimeReactProvider>
