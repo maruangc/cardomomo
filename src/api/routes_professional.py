@@ -11,7 +11,7 @@ CORS(routes)
 
 #---------------------------------------------- /professional
 @routes.route('/new',endpoint='add_professional', methods=['POST'])
-@jwt_required
+@jwt_required()
 def add_professional():
     body=request.json
     name=body.get('name', None)
@@ -68,7 +68,7 @@ def add_professional():
 """
 
 @routes.route('/<int:id>',endpoint='get_professional', methods=['GET'])
-@jwt_required
+@jwt_required()
 def get_professional(id):
     filter=Professional.query.filter_by(id=id).one_or_none()
     if filter is None:
@@ -102,7 +102,7 @@ def get_professional(id):
 """
 
 @routes.route('/all',endpoint='get_professionals', methods=['GET'])
-@jwt_required
+@jwt_required()
 def get_professionals():
     filter=Professional.query.all()
     dic={'ok':True,'status':200}
@@ -169,7 +169,7 @@ def get_professionals():
 """
 
 @routes.route('/filter',endpoint='filter_professional', methods=['GET'])
-@jwt_required
+@jwt_required()
 def filter_professional():
     body=request.json
     name=body.get('name', None) if body.get('name', None) is not None else ''
@@ -240,7 +240,7 @@ def filter_professional():
 """
 
 @routes.route('/edit/<int:id>',endpoint='edit_professional', methods=['PUT'])
-@jwt_required
+@jwt_required()
 def edit_professional(id):
     body=request.json
     name=body.get('name', None) if body.get('name', None) is not None else ''
@@ -296,7 +296,7 @@ def edit_professional(id):
 }
 """
 @routes.route('/DELETE/<int:id>',endpoint='del_professional', methods=['DELETE'])
-@jwt_required
+@jwt_required()
 def del_professional(id):
     filter=Professional.query.filter_by(id=id).one_or_none()
     if filter is None:

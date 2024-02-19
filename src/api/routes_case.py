@@ -12,7 +12,7 @@ CORS(routes)
 
 #---------------------------------------------case
 @routes.route('/new',endpoint='add_case', methods=['POST'])
-@jwt_required
+@jwt_required()
 def add_case():
     body=request.json
     customer_id=body.get('customer_id', None) #requerido
@@ -98,7 +98,7 @@ def add_case():
 """
 
 @routes.route('/<int:id>', endpoint='get_case', methods=['GET'])
-@jwt_required
+@jwt_required()
 def get_case(id):
     filter=Case.query.filter_by(id=id).one_or_none()
     if filter is None:
@@ -201,7 +201,7 @@ def get_case(id):
 """
 
 @routes.route('/all', endpoint='get_cases', methods=['GET'])
-@jwt_required
+@jwt_required()
 def get_cases():
     filter=Case.query.all()
     dic={'ok':True,'status':200,'data':[]}
@@ -246,7 +246,7 @@ def get_cases():
     return jsonify(dic),200
 
 @routes.route('/edit/<int:id>', endpoint='edit_case', methods=['PUT'])
-@jwt_required
+@jwt_required()
 def edit_case(id):
     filter=Case.query.filter_by(id=id).one_or_none()
     if filter is None:
@@ -359,7 +359,7 @@ def edit_case(id):
        return jsonify({'ok':False,'error': 'internal server error '+chr(10)+texto,'status':500}),500
     
 @routes.route('/filter', endpoint='filter_cases', methods=['GET'])
-@jwt_required
+@jwt_required()
 def filter_cases():
     body=request.json
     if body=={}:
@@ -509,7 +509,7 @@ def filter_cases():
     return jsonify(dic),200
 
 @routes.route('/DELETE/<int:id>', endpoint='del_case', methods=['DELETE'])
-@jwt_required
+@jwt_required()
 def del_case(id):
     filter=Case.query.filter_by(id=id).one_or_none()
     if filter is None:

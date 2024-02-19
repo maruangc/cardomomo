@@ -16,6 +16,7 @@ p {
   --primary-color: #6c6868;
   --primary-color-text: #ffffff;
   --black-primary: #231f20;
+  --succsess-primary: white;
 }
 
 @font-face {
@@ -41,6 +42,15 @@ p {
   border: 1px solid var(--primary-color);
 }
 
+.p-button.p-button-success,
+.p-buttonset.p-button-success > .p-button,
+.p-splitbutton.p-button-success > .p-button,
+.p-fileupload-choose.p-button-success {
+  color: #ffffff;
+  background: #1e984b;
+  border: 1px solid #22c55e;
+}
+
 /* Colors */
 .bg-black-primary {
   background-color: var(--black-primary);
@@ -48,7 +58,7 @@ p {
 
 /* Sizes */
 .max-container-width {
-  max-width: 1400px;
+  max-width: 90vw;
 }
 
 .p-menubar .p-submenu-list {

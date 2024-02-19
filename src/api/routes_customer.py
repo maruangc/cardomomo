@@ -12,9 +12,10 @@ CORS(routes)
 
 #--------------------------------------------- /customer
 @routes.route('/new',endpoint='add_customer', methods=['POST'])
-@jwt_required
+@jwt_required()
 def add_customer():
     body=request.json
+    
     name=body.get('name', None)
     identification=body.get('identification', None)
     phone=body.get('phone', None)
@@ -22,6 +23,7 @@ def add_customer():
     address=body.get('address', None)
     comment=body.get('comment', None)
     texto=""
+    
     if name is None:
         texto="the name must exist in the request "+chr(10)
     elif len(name)==0 or name.strip()=="":
@@ -72,7 +74,7 @@ def add_customer():
 """
 
 @routes.route('/<int:id>', endpoint='get_customer', methods=['GET'])
-@jwt_required
+@jwt_required()
 def get_customer(id):
     customer_filter=Customer.query.filter_by(id=id).one_or_none()
     if customer_filter is None:
@@ -104,7 +106,7 @@ def get_customer(id):
 }
 """
 @routes.route('/all',endpoint='get_customers', methods=['GET'])
-@jwt_required
+@jwt_required()
 def get_customers():
     customers_filter=Customer.query.all()
     dic={'ok':True,'status':200}
@@ -180,7 +182,7 @@ def get_customers():
 }
 """
 @routes.route('/filter',endpoint='filter_customer', methods=['GET'])
-@jwt_required
+@jwt_required()
 def filter_customer():
     body=request.json
     name=body.get('name', None) if body.get('name', None) is not None else ''
@@ -293,7 +295,7 @@ def filter_customer():
 """
 
 @routes.route('/edit/<int:id>',endpoint='edit_customer', methods=['PUT'])
-@jwt_required
+@jwt_required()
 def edit_customer(id):
     body=request.json
     name=body.get('name', None) if body.get('name', None) is not None else ''
@@ -347,7 +349,7 @@ def edit_customer(id):
 }
 """
 @routes.route('/DELETE/<int:id>',endpoint='del_customer', methods=['DELETE'])
-@jwt_required
+@jwt_required()
 def del_customer(id):
     filter=Customer.query.filter_by(id=id).one_or_none()
     if filter is None:

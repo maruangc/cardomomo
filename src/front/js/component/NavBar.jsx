@@ -10,7 +10,7 @@ export default function Navbar() {
       items: [
         {
           label: "detalles casos",
-          url: "/case/detail",
+          url: "/detail",
         },
         {
           label: "lista clientes",

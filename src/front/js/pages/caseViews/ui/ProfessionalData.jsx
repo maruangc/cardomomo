@@ -1,6 +1,8 @@
 import React from "react";
+/* data */
 
-const ProfessionalData = () => {
+const ProfessionalData = ({ professional }) => {
+  const { name, phone, email, carrier, identification } = professional;
   return (
     <>
       <section className="flex flex-column gap-3">
@@ -11,23 +13,23 @@ const ProfessionalData = () => {
         >
           <div className="col flex flex-column">
             <span className="text-sm">Nombre del profesional :</span>
-            <p className="text-lg	font-bold">Kevin pacheco</p>
+            <p className="text-lg	font-bold">{name}</p>
           </div>
           <div className="col flex flex-column">
             <span className="text-sm">Numero de contacto :</span>
-            <p className="text-lg font-bold">+00 000 00 00</p>
+            <p className="text-lg font-bold">{phone}</p>
           </div>
           <div className="col flex flex-column">
             <span className="text-sm">Correo electronico :</span>
-            <p className="text-lg	font-bold">example@example.com</p>
+            <p className="text-lg	font-bold">{email}</p>
           </div>
           <div className="col flex flex-column">
             <span className="text-sm">Profesion :</span>
-            <p className="text-lg	font-bold">Ingeniero</p>
+            <p className="text-lg	font-bold">{carrier}</p>
           </div>
           <div className="col flex flex-column">
             <span className="text-sm">Rif :</span>
-            <p className="text-lg	font-bold">0000-0000-000</p>
+            <p className="text-lg	font-bold">{identification}</p>
           </div>
         </div>
       </section>

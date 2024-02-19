@@ -19,12 +19,11 @@ const rickMortyColumns = [
 ];
 
 const CustomerList = () => {
-  const [selectedProduct, setSelectedProduct] = useState(null);
   const [characterList, setCharacterList] = useState([]);
   const [metaData, setMetaData] = useState({});
-  const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(10);
+  const [first, setFirst] = useState(1);
   const [page, setPage] = useState(0);
+  const [rows, setRows] = useState(10);
 
   const getRickAndMortyCharacters = async (
     endpoint = "https://rickandmortyapi.com/api/character"
@@ -47,7 +46,7 @@ const CustomerList = () => {
     getRickAndMortyCharacters();
   }, []);
   return (
-    <div className="w-full flex flex-column justify-content-center max-container-width mx-auto">
+    <div className=" max-container-width mx-auto">
       <DataTable
         value={characterList}
         tableStyle={{ minWidth: "70rem" }}
@@ -75,14 +74,12 @@ const CustomerList = () => {
         rows={rows}
         totalRecords={metaData?.count}
         onPageChange={(e) => {
-          if (e.page > page) {
-            getRickAndMortyCharacters(metaData?.next);
-          } else if (e.page < page) {
-            getRickAndMortyCharacters(metaData?.prev);
-          }
           setFirst(e.first);
           setPage(e.page);
-          setRows(e.rows);
+          getRickAndMortyCharacters(
+            `https://rickandmortyapi.com/api/character?page=${e.page + 1}`
+          );
+          console.log("pagina :", page);
         }}
       />
     </div>
