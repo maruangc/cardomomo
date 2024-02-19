@@ -8,6 +8,26 @@ routes = Blueprint('routes_tablas',__name__)
 
 CORS(routes)
 
+#---------------------------------------------Inicializacion de Tablas
+@routes.route('/init',endpoint='init_tables', methods=['POST'])
+@jwt_required()
+def init_tables():
+    db.session.add(Typeservice(type_service="Facturable"))
+    db.session.add(Typeservice(type_service="Garantia"))
+    db.session.add(Typeservice(type_service="Reclamo"))
+    db.session.add(Status(status="Recibido"))
+    db.session.add(Status(status="Iniciado"))
+    db.session.add(Status(status="Terminado"))
+    db.session.add(Status(status="Entregado"))
+    try:
+        db.session.commit()
+        return jsonify({'ok':True, 'data': 'tables typeservice an status filled', 'status':201}),201
+    except Exception as error:
+        print("-*-*-*-*commit error: ", error)
+        db.session.rollback()
+        return jsonify({'ok':False, 'error': 'internal server error','status':500}),500
+
+
 #---------------------------------------------type
 @routes.route('/type/<int:id>',endpoint='get_typeservice', methods=['GET'])
 @jwt_required()
@@ -18,22 +38,6 @@ def get_typeservice(id):
     dic={'ok':True,'status':200}
     dic['data']=filter.serialize()
     return jsonify(dic)
-# some data returned from this endpoint
-"""
-{
-  "data": {
-    "id": 1,
-    "type_service": "FACTURABLE"
-  },
-  "ok": true,
-  "status": 200
-}
-{
-  "error": "typeservice id not found ",
-  "ok": false,
-  "status": 404
-}
-"""
 
 @routes.route('/type/all',endpoint='get_typeservices', methods=['GET'])
 @jwt_required()
@@ -42,27 +46,7 @@ def get_typeservices():
     dic={'ok':True,'status':200}
     dic['data']=[typeservice.serialize() for typeservice in filter]
     return jsonify(dic)
-# some data returned from this endpoint
-"""
-{
-  "data": [
-    {
-      "id": 1,
-      "type_service": "FACTURABLE"
-    },
-    {
-      "id": 2,
-      "type_service": "GARANTIA"
-    },
-    {
-      "id": 3,
-      "type_service": "RECLAMO"
-    }
-  ],
-  "ok": true,
-  "status": 200
-}
-"""
+
 #---------------------------------------------status
 @routes.route('/status/<int:id>',endpoint='get_status', methods=['GET'])
 @jwt_required()
@@ -73,22 +57,6 @@ def get_status(id):
     dic={'ok':True,'status':200}
     dic['data']=filter.serialize()
     return jsonify(dic)
-# some data returned from this endpoint
-"""
-{
-  "data": {
-    "id": 1,
-    "status": "1.- CREADO"
-  },
-  "ok": true,
-  "status": 200
-}
-{
-  "error": "status id not found ",
-  "ok": false,
-  "status": 404
-}
-"""
 
 @routes.route('/status/all',endpoint='get_all_status', methods=['GET'])
 @jwt_required()
@@ -97,28 +65,3 @@ def get_all_status():
     dic={'ok':True,'status':200}
     dic['data']=[status.serialize() for status in filter]
     return jsonify(dic)
-# some data returned from this endpoint
-"""
-{
-  "data": [
-    {
-      "id": 1,
-      "status": "1.- CREADO"
-    },
-    {
-      "id": 2,
-      "status": "2.- INICIADO"
-    },
-    {
-      "id": 3,
-      "status": "3.- COMPLETADO"
-    },
-    {
-      "id": 4,
-      "status": "4.- ENTREGADO"
-    }
-  ],
-  "ok": true,
-  "status": 200
-}
-"""

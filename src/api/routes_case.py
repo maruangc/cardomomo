@@ -82,20 +82,6 @@ def add_case():
         print("-*-*-*-*commit error: ", error)
         db.session.rollback()
         return jsonify({'ok':False, 'error': 'internal server error','status':500}),500
-# some data returned from this endpoint
-"""
-{
-  "data": "case created",
-  "ok": true,
-  "status": 201
-}
-
-{
-  "error": "date_init - time data '2023/02/13 09:40:14' does not match format '%Y-%m-%d %H:%M:%S'\n",
-  "ok": false,
-  "status": 400
-}
-"""
 
 @routes.route('/<int:id>', endpoint='get_case', methods=['GET'])
 @jwt_required()
@@ -136,75 +122,19 @@ def get_case(id):
     else:
         dic['data']['status']=filter.serialize()
     return jsonify(dic),200
-# some data returned from this endpoint
-"""
-{
-  "error": "case id not found",
-  "ok": false,
-  "status": 404
-}
-
-{
-  "data": {
-    "case": {
-      "category_id": 1,
-      "close_date": "Wed, 14 Feb 2024 16:53:11 GMT",
-      "close_description": "",
-      "closed": false,
-      "created": "Wed, 14 Feb 2024 16:51:40 GMT",
-      "customer_id": 1,
-      "date_init": "Mon, 13 Feb 2023 09:40:14 GMT",
-      "delivered": false,
-      "delivered_date": "Wed, 14 Feb 2024 16:53:11 GMT",
-      "delivered_description": "",
-      "description": "",
-      "id": 13,
-      "initial_note": "",
-      "is_active": true,
-      "professional_id": null,
-      "started": false,
-      "status_id": 1,
-      "typeservice_id": 1
-    },
-    "category": {
-      "category": "REPARACION DE AIRE ACONDICIONADO",
-      "description": null,
-      "id": 1
-    },
-    "customer": {
-      "address": "alguna calle de algun lugar",
-      "comment": "no hay comentario",
-      "created": "Tue, 13 Feb 2024 23:28:35 GMT",
-      "email": "alguien@hotmail.com",
-      "id": 1,
-      "identification": "23441234",
-      "name": "CLIENTE NUMERO 1",
-      "phone": "0414857557"
-    },
-    "professional": {
-      "error": "professional id not found ",
-      "ok": false,
-      "status": 404
-    },
-    "status": {
-      "id": 1,
-      "status": "1.- CREADO"
-    },
-    "typeservice": {
-      "id": 1,
-      "type_service": "FACTURABLE"
-    }
-  },
-  "ok": true,
-  "status": 200
-}
-"""
 
 @routes.route('/all', endpoint='get_cases', methods=['GET'])
 @jwt_required()
 def get_cases():
-    filter=Case.query.all()
-    dic={'ok':True,'status':200,'data':[]}
+    limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
+    offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
+
+    if limit=='0':
+        filter=Case.query.all()
+    else:
+        filter=Case.query.offset(offset).limit(limit).all()
+    dic={'ok':True,'status':200,'data':[],'count':len(filter)}
+
     for eachcase in filter:
       customer_id=eachcase.customer_id
       professional_id=eachcase.professional_id
@@ -361,6 +291,8 @@ def edit_case(id):
 @routes.route('/filter', endpoint='filter_cases', methods=['GET'])
 @jwt_required()
 def filter_cases():
+    limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
+    offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
     body=request.json
     if body=={}:
        return jsonify({'ok':False,'error':'body is empty ','status':400}),400
@@ -447,9 +379,8 @@ def filter_cases():
           texto+="delivered_date_end - "+str(error)+chr(10)
     if len(texto)>0:
         return jsonify({'ok':False,'error':texto,'status':400}),400
-
     filter=Case.query.filter(
-      Case.customer_id==customer_id if customer_id is not None else ((Case.customer_id==customer_id) | (Case.customer_id is None)),
+      Case.customer_id==customer_id if customer_id is not None else (Case.id > 0),
       Case.category_id==category_id if category_id is not None else (Case.id > 0),
       Case.typeservice_id==typeservice_id if typeservice_id is not None else (Case.id > 0),
       Case.status_id==status_id if status_id is not None else (Case.id > 0),
@@ -465,9 +396,13 @@ def filter_cases():
       Case.close_description.ilike('%'+close_description+'%') if close_description is not None else (Case.id > 0),
       Case.delivered==delivered if delivered is not None else (Case.id > 0),
       Case.delivered_description.ilike('%'+delivered_description+'%') if delivered_description is not None else (Case.id > 0)
-      ).all()
-    
-    dic={'ok':True,'status':200,'data':[]}
+      )
+    if limit=='0':
+        filter=filter.all()
+    else:
+        filter=filter.offset(offset).limit(limit).all()
+    dic={'ok':True,'status':200,'data':[],'count':len(filter)}
+
     for eachcase in filter:
       customer_id=eachcase.customer_id
       professional_id=eachcase.professional_id
