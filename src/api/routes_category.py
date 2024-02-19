@@ -10,7 +10,7 @@ CORS(routes_category)
 
 #----------------------------------------------- /category
 @routes_category.route('/new',endpoint='add_category', methods=['POST'])
-@jwt_required
+@jwt_required()
 def add_category():
     body=request.json
     category=body.get('category', None)
@@ -38,7 +38,7 @@ def add_category():
 
 #-----------------------------------
 @routes_category.route('/<int:id>',endpoint='get_category', methods=['GET'])
-# @jwt_required
+@jwt_required()
 def get_category(id):
     category_filter=Category.query.filter_by(id=id).one_or_none()
     if category_filter is None:
@@ -47,16 +47,44 @@ def get_category(id):
     dic['data']=[category_filter.serialize()]
     return jsonify(dic)
 
-@routes_category.route('/list', endpoint='get_categories', methods=['GET'])
-# @jwt_required
+@routes_category.route('/all', endpoint='get_categories', methods=['GET'])
+@jwt_required()
 def get_categories():
-    category_filter=Category.query.all()
-    dic={'ok':True,'status':200}
+    limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
+    offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
+    if limit=='0':
+        filter=Category.query.all()
+    else:
+        filter=Category.query.offset(offset).limit(limit).all()
+    dic={'ok':True,'status':200,'count':len(filter)}
     dic['data']=[category.serialize() for category in category_filter]
     return jsonify(dic)
 
+@routes_category.route('/filter',endpoint='filter_category', methods=['GET'])
+@jwt_required()
+def filter_category():
+    limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
+    offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
+    body=request.json
+    category=body.get('category', None)
+    description=body.get('description', None)
+    if category is None and description is None:
+        return jsonify({'ok':False,'error':'at least one field is required ','status':400}),400
+    filter=Category.query.filter(
+        Category.category.ilike('%'+category+'%') if category is not None else (Category.id>0),
+        Category.description.ilike('%'+description+'%') if description is not None else (Category.id>0)
+    )
+    if limit=='0':
+        filter=filter.all()
+    else:
+        filter=filter.offset(offset).limit(limit).all()
+    dic={'ok':True,'status':200,'count':len(filter)}
+    dic['data']=[category.serialize() for category in filter]
+    return jsonify(dic)
+
+
 @routes_category.route('/edit/<int:id>',endpoint='edit_category', methods=['PUT'])
-@jwt_required
+@jwt_required()
 def edit_category(id):
     body=request.json
     category=body.get('category', None)
@@ -81,3 +109,18 @@ def edit_category(id):
         print('-*-*-*-*Update Error:', error)
         db.session.rollback()
         return jsonify({'ok':False,'error': 'internal server error','status':500}),500
+
+@routes_category.route('/DELETE/<int:id>',endpoint='del_category', methods=['DELETE'])
+@jwt_required()
+def del_category(id):
+    filter=Category.query.filter_by(id=id).one_or_none()
+    if filter is None:
+        return jsonify({'ok':False,'error':f'category id:{id} not found ','status':404}),404
+    db.session.delete(filter)
+    try: 
+      db.session.commit()
+      return jsonify({'ok':True,'data': f'category id:{id} DELETED','status':202}),202
+    except Exception as error:
+      print('-*-*-*-*--- DELETE Error:', error)
+      db.session.rollback()
+      return jsonify({'ok':False,'error': 'internal server error, check if this category is present in a case','status':500}),500

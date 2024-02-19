@@ -1,9 +1,10 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
+from datetime import timedelta
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, jwt_required , get_jwt_identity
 
 routes = Blueprint('routes_user', __name__)
 # Allow CORS requests to this API
@@ -19,17 +20,17 @@ def user_register():
 
     texto=""
     if email is None:
-        texto=texto+'email debe existir en la solicitud '+chr(10)
+        texto=texto+'email must exist in the request '+chr(10)
     elif len(email)==0:
-        texto=texto+'email debe tener un valor '+chr(10)
+        texto=texto+'email must not be empty '+chr(10)
     if password is None:
-        texto=texto+'password debe existir en la solicitud '+chr(10)
+        texto=texto+'password must exist in the request '+chr(10)
     elif len(password)==0:
-        texto=texto+'password debe tener un valor '+chr(10)
+        texto=texto+'password must not be empty '+chr(10)
     if name is None:
-        texto=texto+'nombre debe existir en la solicitud '+chr(10)
+        texto=texto+'name must exist in the request '+chr(10)
     elif len(name)==0:
-        texto=texto+'nombre debe tener un valor '
+        texto=texto+'name should not be empty '
     if len(texto)>0:
         return jsonify({'ok':False,'error': texto,'status':400}),400
     
@@ -79,15 +80,15 @@ def edit_user():
         return jsonify({'ok':False,'error': 'internal server error','status':500}),500
 
 @routes.route('/<int:id>',endpoint='get_user', methods=['GET'])
-@jwt_required
+@jwt_required()
 def get_user(id):
     user=User.query.filter_by(id=id).one_or_none()
     if user is None:
         return jsonify({'ok':False,'error': 'user not found','status':404})
     return jsonify({'data':[user.serialize()],'ok':True,'status':200})
 
-@routes.route('/list',endpoint='get_users', methods=['GET'])
-@jwt_required
+@routes.route('/all',endpoint='get_users', methods=['GET'])
+@jwt_required()
 def get_users():
     users=User.query.all()
     if users is None:
@@ -119,5 +120,7 @@ def login():
     if not pass_match:
         return jsonify({'ok':False,'error': 'invalid password', 'status':401}),401
     
-    token=create_access_token({'email': user.email, 'id': user.id})
+    # token=create_access_token({'email': user.email, 'id': user.id})
+    expires = timedelta(minutes=60)
+    token = create_access_token(identity={'email': user.email, 'id': user.id}, expires_delta=expires)
     return jsonify({'ok':True,'token': token, 'status':200}),200
