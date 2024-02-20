@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 5d2ea10644b6
+Revision ID: 96da0e81fa4c
 Revises: 
-Create Date: 2024-02-08 20:19:08.408694
+Create Date: 2024-02-19 17:51:56.679389
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '5d2ea10644b6'
+revision = '96da0e81fa4c'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -42,6 +42,7 @@ def upgrade():
     sa.Column('created', sa.DateTime(), nullable=False),
     sa.Column('name', sa.String(length=150), nullable=False),
     sa.Column('identification', sa.String(length=30), nullable=False),
+    sa.Column('profession', sa.String(length=100), nullable=True),
     sa.Column('phone', sa.String(length=100), nullable=True),
     sa.Column('email', sa.String(length=120), nullable=True),
     sa.Column('address', sa.String(length=200), nullable=True),
@@ -78,14 +79,17 @@ def upgrade():
     sa.Column('customer_id', sa.Integer(), nullable=False),
     sa.Column('professional_id', sa.Integer(), nullable=True),
     sa.Column('category_id', sa.Integer(), nullable=False),
-    sa.Column('date_init', sa.DateTime(), nullable=False),
+    sa.Column('started', sa.Boolean(), nullable=False),
+    sa.Column('date_init', sa.DateTime(), nullable=True),
     sa.Column('typeservice_id', sa.Integer(), nullable=False),
     sa.Column('status_id', sa.Integer(), nullable=False),
     sa.Column('initial_note', sa.String(length=400), nullable=True),
     sa.Column('description', sa.String(length=400), nullable=True),
-    sa.Column('close_date', sa.DateTime(), nullable=False),
+    sa.Column('closed', sa.Boolean(), nullable=False),
+    sa.Column('close_date', sa.DateTime(), nullable=True),
     sa.Column('close_description', sa.String(length=400), nullable=True),
-    sa.Column('delivered_date', sa.DateTime(), nullable=False),
+    sa.Column('delivered', sa.Boolean(), nullable=False),
+    sa.Column('delivered_date', sa.DateTime(), nullable=True),
     sa.Column('delivered_description', sa.String(length=400), nullable=True),
     sa.ForeignKeyConstraint(['category_id'], ['category.id'], ),
     sa.ForeignKeyConstraint(['customer_id'], ['customer.id'], ),

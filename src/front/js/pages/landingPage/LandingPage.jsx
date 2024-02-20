@@ -8,6 +8,8 @@ import Navbar from "./Navbar.jsx";
 import Cards from "./Cards.jsx";
 import Grid from "./Grid.jsx";
 import MidleCard from "./MidleCard.jsx";
+import Midle from "./Midle.jsx";
+import Footer from "../../component/Footer.jsx";
 
 import "primeicons/primeicons.css";
 
@@ -24,9 +26,11 @@ const LandingPage = () => {
       <Navbar />
       <div className="max-container-width mx-auto bg-blue-100 bg-cover">
         <Carousel />
-        <Grid />
         <MidleCard />
+        <Grid />
+        <Midle />
         <Cards />
+        <Footer />
       </div>
     </div>
   );
