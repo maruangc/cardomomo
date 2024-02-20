@@ -9,14 +9,18 @@ import "/style.scss";
 //prime react
 import { PrimeReactProvider } from "primereact/api";
 
-import injectContext from "./store/appContext";
 import LandingPage from "./pages/landingPage/LandingPage.jsx";
 import Login from "./pages/login/Login.jsx";
+/* Components */
+import injectContext from "./store/appContext";
+import CaseDetail from "./pages/caseViews/CaseDetail.jsx";
+import Navbar from "./component/NavBar.jsx";
+import CustomerDetails from "./pages/customerView/CustomerDetails.jsx";
+import ProfessionalDetail from "./pages/professionalView/ProfessionalDetail.jsx";
+import CustomerList from "./pages/customerView/CustomerList.jsx";
+import CaseEdit from "./pages/caseViews/CaseEdit.jsx";
 
-//create your first component
 const Layout = () => {
-  //the basename is used when your project is published in a subdirectory and not in the root of the domain
-  // you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
   const basename = process.env.BASENAME || "";
 
   if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "")
@@ -28,9 +32,36 @@ const Layout = () => {
         <PrimeReactProvider>
           <ToastContainer />
           <Routes>
+            {/* Landing page / login */}
             <Route element={<LandingPage />} path="/" />
             <Route element={<Login />} path="/login" />
-            <Route element={<h1>Not found!</h1>} path="*" />
+
+            {/* CASES ROUTES */}
+            <Route element={<Navbar />} path="/">
+              <Route
+                path=""
+                element={<h1 className="text-center">Lista de casos</h1>}
+              />
+              <Route path="detail" element={<CaseDetail />} />
+              <Route path="edit/:id" element={<CaseEdit />} />
+              <Route element={<h1>Not found Casos!</h1>} path="*" />
+            </Route>
+
+            {/* CUSTOMER ROUTES  */}
+            <Route element={<Navbar />} path="/customer">
+              <Route path="" element={<CustomerList />} />
+              <Route path="detail" element={<CustomerDetails />} />
+              <Route element={<h1>Not found Clientes!</h1>} path="*" />
+            </Route>
+
+            {/* PROFESSIONAL ROUTES */}
+            <Route element={<Navbar />} path="/professional">
+              <Route path="" element={<CustomerList />} />
+              <Route path="detail" element={<ProfessionalDetail />} />
+              <Route element={<h1>Not found Professional!</h1>} path="*" />
+            </Route>
+
+            <Route element={<h1>Not found General!</h1>} path="*" />
           </Routes>
         </PrimeReactProvider>
       </BrowserRouter>

@@ -23,6 +23,24 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
     },
     actions: {
+      /* utilitarias  */
+
+      /* mostrar horas y minutos y segundos */
+
+      getDate: (date) => {
+        const fecha = new Date(date);
+
+        const año = fecha.getFullYear();
+        const mes = fecha.getMonth() + 1;
+        const dia = fecha.getDate();
+
+        const fechaFormateada = `${dia}/${mes}/${año}`;
+
+        return fechaFormateada;
+      },
+
+      /* Peticiones  */
+
       register: async (e) => {
         try {
           const resp = await fetch(process.env.BACKEND_URL + "/user/register", {
@@ -150,20 +168,26 @@ const getState = ({ getStore, getActions, setStore }) => {
               },
             }
           );
+
           const data = await resp.json();
+
           if (data.error) {
             toast(data.error);
           }
+
           setStore({
             ...store,
             dataById: { ...store.dataById, [table]: data },
           });
+
+          /*
           console.log(
             store.dataById.customer.data.name,
             store.dataById.customer.data.identification
-          );
-          table = "customer";
+          ); 
           console.log(store.dataById[table].data.name);
+          table = "customer";
+          */
         } catch (error) {
           console.log(`Error en funcion getById(${table}, ${id}):`, error);
         }

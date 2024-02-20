@@ -45,6 +45,7 @@ def create_customer(count):
 @jwt_required()
 def add_customer():
     body=request.json
+    
     name=body.get('name', None)
     identification=body.get('identification', None)
     phone=body.get('phone', None)
@@ -52,6 +53,7 @@ def add_customer():
     address=body.get('address', None)
     comment=body.get('comment', None)
     texto=""
+    
     if name is None:
         texto="the name must exist in the request "+chr(10)
     elif len(name)==0 or name.strip()=="":

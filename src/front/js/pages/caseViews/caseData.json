@@ -1,0 +1,58 @@
+{
+  "data": {
+    "case": {
+      "category_id": 1,
+      "close_date": "Wed, 14 Feb 2024 16:53:11 GMT",
+      "close_description": "",
+      "closed": false,
+      "created": "Wed, 14 Feb 2024 16:51:40 GMT",
+      "customer_id": 1,
+      "date_init": "Mon, 13 Feb 2023 09:40:14 GMT",
+      "delivered": false,
+      "delivered_date": "Wed, 14 Feb 2024 16:53:11 GMT",
+      "delivered_description": "",
+      "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.Excepturi expedita sequi eveniet id natus, illum veniam distinctio aspernatur earum aliquid dignissimos quisquam! Nulla sint facere,maxime provident itaque quo iste",
+      "id": 13,
+      "initial_note": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.Excepturi expedita sequi eveniet id natus, illum veniam distinctio aspernatur earum aliquid dignissimos quisquam! Nulla sint facere,maxime provident itaque quo iste",
+      "is_active": true,
+      "professional_id": null,
+      "started": false,
+      "status_id": 1,
+      "typeservice_id": 1
+    },
+    "category": {
+      "category": "REPARACION DE AIRE ACONDICIONADO",
+      "description": null,
+      "id": 1
+    },
+    "customer": {
+      "address": "alguna calle de algun lugar",
+      "comment": "no hay comentario",
+      "created": "Tue, 13 Feb 2024 23:28:35 GMT",
+      "email": "alguien@hotmail.com",
+      "id": 1,
+      "identification": "23441234",
+      "name": "CLIENTE NUMERO 1",
+      "phone": "0414857557"
+    },
+    "professional": {
+      "address": "alguna calle de algun lugar",
+      "comment": "no hay comentario",
+      "created": "Mon, 13 Feb 2024 23:28:35 GMT",
+      "email": "professional@hotmail.com",
+      "id": 1,
+      "identification": "P-14344134",
+      "name": "profesional1",
+      "phone": "0414857557",
+      "carrier": "Ingeniero"
+    },
+    "status": {
+      "id": 1,
+      "status": "CREADO"
+    },
+    "typeservice": {
+      "id": 1,
+      "type_service": "FACTURABLE"
+    }
+  }
+}
