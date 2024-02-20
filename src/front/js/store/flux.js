@@ -1,9 +1,28 @@
+import { data } from "jquery";
 import { toast } from "react-toastify";
 
 const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {},
     actions: {
+      /* utilitarias  */
+
+      /* mostrar horas y minutos y segundos */
+
+      getDate: (date) => {
+        const fecha = new Date(date);
+
+        const año = fecha.getFullYear();
+        const mes = fecha.getMonth() + 1;
+        const dia = fecha.getDate();
+
+        const fechaFormateada = `${dia}/${mes}/${año}`;
+
+        return fechaFormateada;
+      },
+
+      /* Peticiones  */
+
       register: async (e) => {
         try {
           const resp = await fetch(process.env.BACKEND_URL + "/user/register", {
@@ -109,9 +128,8 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
         if (!data.ok) {
           toast(data.error);
-          return false;
         }
-        return true;
+        return data;
       },
       getById: async (table, id) => {
         try {
@@ -138,7 +156,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
         if (!data.ok) {
           toast(data.error);
-          return false;
         }
         return data;
       },

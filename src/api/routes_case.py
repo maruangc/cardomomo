@@ -84,7 +84,7 @@ def add_case():
         return jsonify({'ok':False, 'error': 'internal server error','status':500}),500
 
 @routes.route('/<int:id>', endpoint='get_case', methods=['GET'])
-@jwt_required()
+#@jwt_required()
 def get_case(id):
     filter=Case.query.filter_by(id=id).one_or_none()
     if filter is None:
