@@ -11,16 +11,20 @@ const Login = () => {
   const navigate = useNavigate();
   const { store, actions } = useContext(Context);
 
-  const handleSubmit = (e) => {
+  const handleLogin = async () => {
+    const response = await actions.login();
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    actions.login({
+    const response = await actions.login({
       email: e.target.email.value,
       password: e.target.password.value,
     });
-    if (store) {
-      navigate("/");
+    if (response) {
+      navigate("/customer");
     } else {
-      navigate("/login");
+      return;
     }
   };
 

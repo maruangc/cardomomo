@@ -19,6 +19,7 @@ const CaseDetail = () => {
   const [closeModalvalue, setCloseModalValue] = useState("");
   const [deliverModalvalue, setDeliverModalValue] = useState("");
   const { actions, store } = useContext(Context);
+  const [dataCase, setDataCase] = useState({});
 
   const handleClose = () => {
     if (!isClose) {
@@ -26,10 +27,15 @@ const CaseDetail = () => {
     }
   };
 
+  const getData = async () => {
+    setDataCase(await actions.getById("case", 1));
+  };
+
   useEffect(() => {
-    actions.getById("case", 1);
+    getData();
   }, []);
 
+  console.log(dataCase);
   return (
     <>
       <div className="w-full flex justify-content-center">

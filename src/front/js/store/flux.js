@@ -2,26 +2,7 @@ import { toast } from "react-toastify";
 
 const getState = ({ getStore, getActions, setStore }) => {
   return {
-    store: {
-      dataById: {
-        case: {},
-        typeservice: {},
-        status: {},
-        customer: {},
-        professional: {},
-        category: {},
-        user: {},
-      },
-      dataList: {
-        case: [],
-        typeservice: [],
-        status: [],
-        customer: [],
-        professional: [],
-        category: [],
-        user: [],
-      },
-    },
+    store: {},
     actions: {
       /* utilitarias  */
 
@@ -66,16 +47,16 @@ const getState = ({ getStore, getActions, setStore }) => {
             body: JSON.stringify(e),
           });
           const data = await resp.json();
-          if (data.error) {
+          if (!data.ok) {
             toast(data.error);
-            return;
+            return false;
           }
           localStorage.setItem("token", data.token);
           toast("granted access, token generated");
+          return true;
         } catch (error) {
           console.log(`Error en funcion login(${e}):`, error);
         }
-        return;
       },
       insertInTable: async (table, fields) => {
         try {
@@ -168,30 +149,14 @@ const getState = ({ getStore, getActions, setStore }) => {
               },
             }
           );
-
           const data = await resp.json();
-
-          if (data.error) {
+          if (!data.ok) {
             toast(data.error);
           }
-
-          setStore({
-            ...store,
-            dataById: { ...store.dataById, [table]: data },
-          });
-
-          /*
-          console.log(
-            store.dataById.customer.data.name,
-            store.dataById.customer.data.identification
-          ); 
-          console.log(store.dataById[table].data.name);
-          table = "customer";
-          */
+          return data;
         } catch (error) {
           console.log(`Error en funcion getById(${table}, ${id}):`, error);
         }
-        return;
       },
       getFilter: async (table, fields, limit, offset) => {
         // http://127.0.0.1:3001/customer/all/?limit=1&offset=1
