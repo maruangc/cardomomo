@@ -24,7 +24,7 @@ const LandingPage = () => {
   return (
     <div className="w-full">
       <Navbar />
-      <div className="max-container-width mx-auto bg-blue-100 bg-cover">
+      <div className=" mx-auto bg-blue-100 bg-cover">
         <Carousel />
         <MidleCard />
         <Grid />
