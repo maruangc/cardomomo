@@ -1,4 +1,5 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { Context } from "../../store/appContext.js";
 import CostumerData from "./ui/CostumerData.jsx";
 import ProfessionalData from "./ui/ProfessionalData.jsx";
 import StateDetail from "./ui/StateDetail.jsx";
@@ -17,12 +18,17 @@ const CaseDetail = () => {
   const [isDelivered, setIsDelivered] = useState(caseDelivered);
   const [closeModalvalue, setCloseModalValue] = useState("");
   const [deliverModalvalue, setDeliverModalValue] = useState("");
+  const { actions, store } = useContext(Context);
 
   const handleClose = () => {
     if (!isClose) {
       setIsClose(true);
     }
   };
+
+  useEffect(() => {
+    actions.getById("case", 1);
+  }, []);
 
   return (
     <>

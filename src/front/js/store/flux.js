@@ -168,20 +168,26 @@ const getState = ({ getStore, getActions, setStore }) => {
               },
             }
           );
+
           const data = await resp.json();
+
           if (data.error) {
             toast(data.error);
           }
+
           setStore({
             ...store,
             dataById: { ...store.dataById, [table]: data },
           });
+
+          /*
           console.log(
             store.dataById.customer.data.name,
             store.dataById.customer.data.identification
-          );
-          table = "customer";
+          ); 
           console.log(store.dataById[table].data.name);
+          table = "customer";
+          */
         } catch (error) {
           console.log(`Error en funcion getById(${table}, ${id}):`, error);
         }

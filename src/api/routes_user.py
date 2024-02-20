@@ -87,11 +87,7 @@ def get_user(id):
         return jsonify({'ok':False,'error': 'user not found','status':404})
     return jsonify({'data':[user.serialize()],'ok':True,'status':200})
 
-<<<<<<< HEAD
-@routes.route('/list',endpoint='get_users', methods=['GET'])
-=======
 @routes.route('/all',endpoint='get_users', methods=['GET'])
->>>>>>> fad209ad1968eb424f5327fc0de7ecf0e7401ab1
 @jwt_required()
 def get_users():
     users=User.query.all()
