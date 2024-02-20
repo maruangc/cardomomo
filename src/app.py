@@ -51,7 +51,7 @@ app.register_blueprint(routes_category, url_prefix='/category')
 app.register_blueprint(routes_professional, url_prefix='/professional')
 app.register_blueprint(routes_customer, url_prefix='/customer')
 app.register_blueprint(routes_case, url_prefix='/case')
-app.register_blueprint(routes_tablas, url_prefix='/tablas')
+app.register_blueprint(routes_tablas, url_prefix='/tables')
 
 # JWT envirenment value
 app.config['JWT_SECRET_KEY']=os.environ.get('JWT')

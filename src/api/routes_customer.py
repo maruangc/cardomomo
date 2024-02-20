@@ -5,16 +5,47 @@ from flask_cors import CORS
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy import or_,text
 from datetime import datetime
+import string
+import random
 
 routes = Blueprint('routes_customer',__name__)
 
 CORS(routes)
 
+def genera_string(longitud):
+    letras = string.ascii_lowercase
+    return ''.join(random.choice(letras) for i in range(longitud))
+
+def generar_numero(longitud):
+    numeros = '0123456789'
+    return ''.join(random.choice(numeros) for i in range(longitud))
+
+def aleatorio(minimo, maximo):
+    return random.randint(minimo, maximo)
+
+@routes.route('/create/<int:count>',endpoint='create_customers', methods=['POST'])
+def create_customer(count):
+    for i in range(count):
+        db.session.add(Customer(name=genera_string(aleatorio(5,10))+' '+genera_string(aleatorio(5,10)),
+                                identification=generar_numero(8),
+                                phone=generar_numero(11),
+                                email=genera_string(aleatorio(5,10))+'@'+genera_string(aleatorio(5,10))+'.'+genera_string(3),
+                                address=genera_string(aleatorio(5,10))+' '+genera_string(aleatorio(5,20))+' '+genera_string(aleatorio(5,10)),
+                                comment=genera_string(aleatorio(3,10))+' '+genera_string(aleatorio(10,20))+' '+genera_string(aleatorio(5,10))))
+        try:
+            db.session.commit()
+        except Exception as error:
+            print("-*-*-*-*commit error: ", error)
+            db.session.rollback()
+            return jsonify({'ok':False, 'error': 'internal server error','status':500}),500
+    return jsonify({'ok':True, 'data': str(count)+' customers created', 'status':201}),201
+
 #--------------------------------------------- /customer
 @routes.route('/new',endpoint='add_customer', methods=['POST'])
-@jwt_required
+@jwt_required()
 def add_customer():
     body=request.json
+    
     name=body.get('name', None)
     identification=body.get('identification', None)
     phone=body.get('phone', None)
@@ -22,6 +53,7 @@ def add_customer():
     address=body.get('address', None)
     comment=body.get('comment', None)
     texto=""
+    
     if name is None:
         texto="the name must exist in the request "+chr(10)
     elif len(name)==0 or name.strip()=="":
@@ -51,27 +83,36 @@ def add_customer():
         db.session.rollback()
         return jsonify({'ok':False, 'error': 'internal server error','status':500}),500
 
-@routes.route('/<int:id>',endpoint='get_customer', methods=['GET'])
-@jwt_required
+@routes.route('/<int:id>', endpoint='get_customer', methods=['GET'])
+@jwt_required()
 def get_customer(id):
     customer_filter=Customer.query.filter_by(id=id).one_or_none()
     if customer_filter is None:
         return jsonify({'ok':False,'error':'customer id not found ','status':404}),404
     dic={'ok':True,'status':200}
-    dic['data']=[customer_filter.serialize()]
+    dic['data']=customer_filter.serialize()
     return jsonify(dic)
 
-@routes.route('/all', endpoint='get_customers', methods=['GET'])
-@jwt_required
+@routes.route('/all',endpoint='get_customers', methods=['GET'])
+@jwt_required()
 def get_customers():
-    customers_filter=Customer.query.all()
-    dic={'ok':True,'status':200}
-    dic['data']=[customer.serialize() for customer in customers_filter]
+# http://127.0.0.1:3001/customer/all/?limit=1&offset=1
+    limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
+    offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
+    if limit=='0':
+        filter=Customer.query.all()
+    else:
+        filter=Customer.query.offset(offset).limit(limit).all()
+    dic={'ok':True,'status':200,'count':len(filter)}
+    dic['data']=[customer.serialize() for customer in filter]
+    dic['offset']=int(offset)+int(limit)
     return jsonify(dic)
 
 @routes.route('/filter',endpoint='filter_customer', methods=['GET'])
-@jwt_required
+@jwt_required()
 def filter_customer():
+    limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
+    offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
     body=request.json
     name=body.get('name', None) if body.get('name', None) is not None else ''
     identification=body.get('identification', None) if body.get('identification', None) is not None else ''
@@ -100,11 +141,15 @@ def filter_customer():
         Customer.address.ilike('%'+address+'%') if address != '' else Customer.address.ilike('%'+address+'%') | (Customer.address==None),
         Customer.comment.ilike('%'+comment+'%') if comment != '' else Customer.comment.ilike('%'+comment+'%') | (Customer.comment==None),
         Customer.created.between(fd,fh) if created_from != '' else Customer.created.between('1901-01-01','3100-12-31')
-        ).all()
-    dic={'ok':True,'status':200}
+        )
+    if limit=='0':
+        filter=filter.all()
+    else:
+        filter=filter.offset(offset).limit(limit).all()
+    dic={'ok':True,'status':200,'count':len(filter)}
     dic['data']=[customer.serialize() for customer in filter]
     return jsonify(dic)
-
+    # --------- Notas para consideraciones futuras Maruan ----------
     # w="WHERE id>0 "
     # w+="AND name iLIKE '%"+name+"%' " if len(name)>0 else ''
     # w+="AND identification iLIKE '%"+identification+"%' " if len(identification)>0 else ''
@@ -132,7 +177,7 @@ def filter_customer():
     # return jsonify(dic)
 
 @routes.route('/edit/<int:id>',endpoint='edit_customer', methods=['PUT'])
-@jwt_required
+@jwt_required()
 def edit_customer(id):
     body=request.json
     name=body.get('name', None) if body.get('name', None) is not None else ''
@@ -167,3 +212,18 @@ def edit_customer(id):
         print('-*-*-*-*Update Error:', error)
         db.session.rollback()
         return jsonify({'ok':False,'error': 'internal server error','status':500}),500
+
+@routes.route('/DELETE/<int:id>',endpoint='del_customer', methods=['DELETE'])
+@jwt_required()
+def del_customer(id):
+    filter=Customer.query.filter_by(id=id).one_or_none()
+    if filter is None:
+        return jsonify({'ok':False,'error':f'customer id:{id} not found ','status':404}),404
+    db.session.delete(filter)
+    try: 
+      db.session.commit()
+      return jsonify({'ok':True,'data': f'customer id:{id} DELETED','status':202}),202
+    except Exception as error:
+      print('-*-*-*-*--- DELETE Error:', error)
+      db.session.rollback()
+      return jsonify({'ok':False,'error': 'internal server error','status':500}),500
