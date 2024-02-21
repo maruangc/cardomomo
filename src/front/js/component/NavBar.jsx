@@ -75,7 +75,7 @@ export default function Navbar() {
             <div className="w-full">
               <Button
                 className="w-full bg-primary-900 border-none border-primary-500 border-bottom-1 border-top-1  mb-4 text-white font-bold"
-                onClick={() => navigate("/detail")}
+                onClick={() => navigate("/customer/detail")}
               >
                 Detalles casos
               </Button>
