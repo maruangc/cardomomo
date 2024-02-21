@@ -1,19 +1,9 @@
+import { data } from "jquery";
 import { toast } from "react-toastify";
 
 const getState = ({ getStore, getActions, setStore }) => {
   return {
-    store: {
-      dataById: {},
-      dataList: {
-        case: [],
-        typeservice: [],
-        status: [],
-        customer: [],
-        professional: [],
-        category: [],
-        user: [],
-      },
-    },
+    store: {},
     actions: {
       /* utilitarias  */
 
@@ -44,11 +34,11 @@ const getState = ({ getStore, getActions, setStore }) => {
         } catch (error) {
           console.log(`Error en funcion register(${e}):`, error);
         }
-        if (data.error) {
+        if (!data.ok) {
           toast(data.error);
         }
         toast(data.data);
-        return;
+        return data;
       },
       login: async (e) => {
         try {
@@ -58,17 +48,16 @@ const getState = ({ getStore, getActions, setStore }) => {
             body: JSON.stringify(e),
           });
           const data = await resp.json();
-          if (data.error) {
+          if (!data.ok) {
             toast(data.error);
-            return;
-            console.log(store.dataById);
+          } else {
+            localStorage.setItem("token", data.token);
+            toast("granted access, token generated");
           }
-          localStorage.setItem("token", data.token);
-          toast("granted access, token generated");
         } catch (error) {
           console.log(`Error en funcion login(${e}):`, error);
         }
-        return;
+        return data;
       },
       insertInTable: async (table, fields) => {
         try {
@@ -90,10 +79,10 @@ const getState = ({ getStore, getActions, setStore }) => {
             error
           );
         }
-        if (data.error) {
+        if (!data.ok) {
           toast(data.error);
         }
-        return;
+        return data;
       },
       updateById: async (table, id, fields) => {
         try {
@@ -110,16 +99,16 @@ const getState = ({ getStore, getActions, setStore }) => {
             }
           );
           const data = await resp.json();
-          if (data.error) {
-            toast(data.error);
-          }
         } catch (error) {
           console.log(
             `Error en funcion updateTable(${table}, ${id}, ${fields})`,
             error
           );
         }
-        return;
+        if (!data.ok) {
+          toast(data.error);
+        }
+        return data;
       },
       deleteById: async (table, id) => {
         try {
@@ -134,13 +123,13 @@ const getState = ({ getStore, getActions, setStore }) => {
             }
           );
           const data = await resp.json();
-          if (data.error) {
-            toast(data.error);
-          }
         } catch (error) {
           console.log(`Error en funcion deleteById(${table}, ${id}):`, error);
         }
-        return;
+        if (!data.ok) {
+          toast(data.error);
+        }
+        return data;
       },
       getById: async (table, id) => {
         try {
@@ -161,18 +150,14 @@ const getState = ({ getStore, getActions, setStore }) => {
               },
             }
           );
-
           const data = await resp.json();
-
-          if (data.error) {
-            toast(data.error);
-          }
-
-          return data;
         } catch (error) {
           console.log(`Error en funcion getById(${table}, ${id}):`, error);
         }
-        return;
+        if (!data.ok) {
+          toast(data.error);
+        }
+        return data;
       },
       getFilter: async (table, fields, limit, offset) => {
         // http://127.0.0.1:3001/customer/all/?limit=1&offset=1
@@ -194,20 +179,16 @@ const getState = ({ getStore, getActions, setStore }) => {
             }
           );
           const data = await resp.json();
-          if (data.error) {
-            toast(data.error);
-          }
-          setStore({
-            ...store,
-            dataById: { ...store.dataById, [table]: data },
-          });
         } catch (error) {
           console.log(
             `Error en funcion getFilter(${table}, ${fields}, ${limit}, ${offset})`,
             error
           );
         }
-        return;
+        if (!data.ok) {
+          toast(data.error);
+        }
+        return data;
       },
       getAll: async (table, limit, offset) => {
         let urlextend = "0";
@@ -227,20 +208,16 @@ const getState = ({ getStore, getActions, setStore }) => {
             }
           );
           const data = await resp.json();
-          if (data.error) {
-            toast(data.error);
-          }
-          setStore({
-            ...store,
-            dataById: { ...store.dataById, [table]: data },
-          });
         } catch (error) {
           console.log(
             `Error en funcion getAll(${table}, ${limit}, ${offset})`,
             error
           );
         }
-        return;
+        if (!data.ok) {
+          toast(data.error);
+        }
+        return data;
       },
     },
   };

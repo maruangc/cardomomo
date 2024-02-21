@@ -189,21 +189,20 @@ def edit_case(id):
     typeservice_id=body.get('typeservice_id', None) 
     status_id=body.get('status_id', None) 
     is_active=body.get('is_active', None) 
-    started=body.get('started', None) 
-    date_init=body.get('date_init', None) 
+    # started=body.get('started', None) 
+    # date_init=body.get('date_init', None) 
     professional_id=body.get('professional_id', None) 
     initial_note=body.get('initial_note', None) 
     description=body.get('description', None) 
-    closed=body.get('closed', None) 
-    close_date=body.get('close_date', None) 
+    # closed=body.get('closed', None) 
+    # close_date=body.get('close_date', None) 
     close_description=body.get('close_description', None) 
-    delivered=body.get('delivered', None) 
-    delivered_date=body.get('delivered_date', None) 
+    # delivered=body.get('delivered', None) 
+    # delivered_date=body.get('delivered_date', None) 
     delivered_description=body.get('delivered_description', None) 
     if customer_id is None and category_id is None and typeservice_id is None and status_id is None:
-       if is_active is None and started is None and date_init is None and professional_id is None:
-          if initial_note is None and description is None and closed is None and close_date is None:
-             if close_description is None and delivered is None and delivered_date is None and delivered_description is None:
+       if is_active is None and professional_id is None and initial_note is None and description is None:
+             if close_description is None and delivered_description is None:
                 return jsonify({'ok':False,'error':"no fields-name valid in body, you must send any field: example: {'is_active':False}",'status':400}),400
     if customer_id is not None and type(customer_id)!=int:
        return jsonify({'ok':False,'error':'customer_id must be a integer ','status':400}),400
@@ -215,14 +214,14 @@ def edit_case(id):
        return jsonify({'ok':False,'error':'status_id must be a integer ','status':400}),400
     if is_active is not None and type(is_active)!=bool:
        return jsonify({'ok':False,'error':'is_active must be a boolean ','status':400}),400
-    if started is not None and type(started)!=bool:
-       return jsonify({'ok':False,'error':'started must be a boolean ','status':400}),400
     if professional_id is not None and type(professional_id)!=int:
       return jsonify({'ok':False,'error':'professional_id must be a integer ','status':400}),400
-    if closed is not None and type(closed)!=bool:
-      return jsonify({'ok':False,'error':'closed must be a boolean ','status':400}),400
-    if delivered is not None and type(delivered)!=bool:
-      return jsonify({'ok':False,'error':'delivered must be a boolean ','status':400}),400        
+    # if started is not None and type(started)!=bool:
+      #  return jsonify({'ok':False,'error':'started must be a boolean ','status':400}),400
+    # if closed is not None and type(closed)!=bool:
+      # return jsonify({'ok':False,'error':'closed must be a boolean ','status':400}),400
+    # if delivered is not None and type(delivered)!=bool:
+      # return jsonify({'ok':False,'error':'delivered must be a boolean ','status':400}),400        
     if initial_note is not None and type(initial_note)!=str:
       return jsonify({'ok':False,'error':'initial_note must be a string ','status':400}),400        
     if description is not None and type(description)!=str:
@@ -231,54 +230,54 @@ def edit_case(id):
       return jsonify({'ok':False,'error':'close_description must be a string ','status':400}),400            
     if delivered_description is not None and type(delivered_description)!=str:
       return jsonify({'ok':False,'error':'delivered_description must be a string ','status':400}),400            
-    texto=""
-    if date_init is not None:
-      try: 
-          date_init=datetime.strptime(date_init,'%Y-%m-%d %H:%M:%S')
-      except Exception as error:
-          texto+="date_init - "+str(error)+chr(10)
-    if close_date is not None:
-      try:
-          close_date=datetime.strptime(close_date,'%Y-%m-%d %H:%M:%S')
-      except Exception as error:
-          texto+="close_date - "+str(error)+chr(10)
-    if delivered_date is not None:
-      try:
-          delivered_date=datetime.strptime(delivered_date,'%Y-%m-%d %H:%M:%S')
-      except Exception as error:
-          texto+="delivered_date - "+str(error)+chr(10)
-    if len(texto)>0:
-        return jsonify({'ok':False,'error':texto,'status':400}),400
+    # texto=""
+    # if date_init is not None:
+    #   try: 
+    #       date_init=datetime.strptime(date_init,'%Y-%m-%d %H:%M:%S')
+    #   except Exception as error:
+    #       texto+="date_init - "+str(error)+chr(10)
+    # if close_date is not None:
+    #   try:
+    #       close_date=datetime.strptime(close_date,'%Y-%m-%d %H:%M:%S')
+    #   except Exception as error:
+    #       texto+="close_date - "+str(error)+chr(10)
+    # if delivered_date is not None:
+    #   try:
+    #       delivered_date=datetime.strptime(delivered_date,'%Y-%m-%d %H:%M:%S')
+    #   except Exception as error:
+    #       texto+="delivered_date - "+str(error)+chr(10)
+    # if len(texto)>0:
+    #     return jsonify({'ok':False,'error':texto,'status':400}),400
     
     filter.category_id=category_id if category_id is not None else filter.category_id
     filter.typeservice_id=typeservice_id if typeservice_id is not None else filter.typeservice_id
     filter.status_id=status_id if status_id is not None else filter.status_id
     filter.is_active=is_active if is_active is not None else filter.is_active
-    filter.started=started if started is not None else filter.started
-    filter.date_init=date_init if date_init is not None else filter.date_init
+    # filter.started=started if started is not None else filter.started
+    # filter.date_init=date_init if date_init is not None else filter.date_init
     filter.professional_id=professional_id if professional_id is not None else filter.professional_id
     filter.initial_note=initial_note if initial_note is not None else filter.initial_note
     filter.description=description if description is not None else filter.description
-    filter.closed=closed if closed is not None else filter.closed
-    filter.close_date=close_date if close_date is not None else filter.close_date
+    # filter.closed=closed if closed is not None else filter.closed
+    # filter.close_date=close_date if close_date is not None else filter.close_date
     filter.close_description=close_description if close_description is not None else filter.close_description
-    filter.delivered=delivered if delivered is not None else filter.delivered
-    filter.delivered_date=delivered_date if delivered_date is not None else filter.delivered_date
+    # filter.delivered=delivered if delivered is not None else filter.delivered
+    # filter.delivered_date=delivered_date if delivered_date is not None else filter.delivered_date
     filter.delivered_description=delivered_description if delivered_description is not None else filter.delivered_description
     texto='category_id:'+str(category_id)+', ' if category_id !=None else ''
     texto+='typeservice_id:'+str(typeservice_id)+', ' if typeservice_id != None else ''
     texto+='status_id:'+str(status_id)+', ' if status_id != None else ''
     texto+='is_active:'+str(is_active)+', ' if is_active != None else ''
-    texto+='started:'+str(started)+', ' if started != None else ''
-    texto+='date_init:'+str(date_init)+', ' if date_init != None else ''
+    # texto+='started:'+str(started)+', ' if started != None else ''
+    # texto+='date_init:'+str(date_init)+', ' if date_init != None else ''
     texto+='professional_id:'+str(professional_id)+', ' if professional_id != None else ''
     texto+='initial_note:'+initial_note+', ' if initial_note != None else ''
     texto+='description:'+description+', ' if description != None else ''
-    texto+='closed:'+str(closed)+', ' if closed != None else ''
-    texto+='close_date:'+str(close_date)+', ' if close_date != None else ''
+    # texto+='closed:'+str(closed)+', ' if closed != None else ''
+    # texto+='close_date:'+str(close_date)+', ' if close_date != None else ''
     texto+='close_description:'+close_description+', ' if close_description != None else ''
-    texto+='delivered:'+str(delivered)+', ' if delivered != None else ''
-    texto+='delivered_date:'+str(delivered_date)+', ' if delivered_date != None else ''
+    # texto+='delivered:'+str(delivered)+', ' if delivered != None else ''
+    # texto+='delivered_date:'+str(delivered_date)+', ' if delivered_date != None else ''
     texto+='delivered_description:'+delivered_description+', ' if delivered_description != None else ''
     try:
        db.session.commit()
@@ -287,6 +286,42 @@ def edit_case(id):
        print('-*-*-*-*-*-*-*-*-Update Error: ', error+chr(10)+texto)
        db.session.rollback()
        return jsonify({'ok':False,'error': 'internal server error '+chr(10)+texto,'status':500}),500
+
+
+@routes.route('/setstate/<int:id>', endpoint='set_state', methods=['PUT'])
+@jwt_required
+def set_state(id):
+  filter=Case.query.filter_by(id=id).one_or_none()
+  if filter is None:
+      return jsonify({'ok':False,'error':'case id not found ','status':404}),404
+  body=request.json
+  if body=={}:
+    return jsonify({'ok':False,'error':'body is empty ','status':400}),400
+  started=body.get('started', None)
+  closed=body.get('closed', None)
+  delivered=body.get('delivered', None)
+  if started is not None and type(started)!=bool:
+    return jsonify({'ok':False,'error':'started must be a boolean ','status':400}),400
+  if closed is not None and type(closed)!=bool:
+    return jsonify({'ok':False,'error':'closed must be a boolean ','status':400}),400
+  if delivered is not None and type(delivered)!=bool:
+    return jsonify({'ok':False,'error':'delivered must be a boolean ','status':400}),400        
+  filter.started=started if started is not None else filter.started
+  filter.date_init=datetime.now().strftime('%Y-%m-%d %H:%M:%S') if started is True else filter.date_init
+
+  filter.closed=closed if closed is not None else filter.closed
+  filter.close_date=datetime.now().strftime('%Y-%m-%d %H:%M:%S') if closed is True else filter.close_date
+
+  filter.delivered=delivered if delivered is not None else filter.delivered
+  filter.delivered_date=datetime.now().strftime('%Y-%m-%d %H:%M:%S') if delivered is True else filter.delivered_date
+  try:
+      db.session.commit()
+      return jsonify({'ok':True,'data': 'case id updated','status':200}),200
+  except Exception as error:
+      print('-*-*-*-*-*-*-*-*-Update Error: ', error)
+      db.session.rollback()
+      return jsonify({'ok':False,'error': 'internal server error','status':500}),500
+
     
 @routes.route('/filter', endpoint='filter_cases', methods=['GET'])
 @jwt_required()
@@ -459,3 +494,4 @@ def del_case(id):
        print('-*-*-*-*-*-*-*-*---DELETE Error: ', error)
        db.session.rollback()
        return jsonify({'ok':False,'error': 'internal server error','status':500}),500
+
