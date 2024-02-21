@@ -1,6 +1,6 @@
 import datetime
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, Case, Customer, Professional, Category, Typeservice, Status
+from api.models import db, Case, Customer, Professional, Category, Typeservice
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -19,7 +19,7 @@ def add_case():
     category_id=body.get('category_id', None) #requerido
     typeservice_id=body.get('typeservice_id', None) #requerido
     # These fields will get these default values --------------
-    # status_id = 1, is_active = True, created = datetime.now()
+    # is_active = True, created = datetime.now()
     started=body.get('started', None) if body.get('started', None) is not None else False
     date_init=body.get('date_init', None) if body.get('date_init', None) is not None else datetime.now().strftime('%Y-%m-%d %H:%M:%S') # default value
     professional_id=body.get('professional_id', None) if body.get('professional_id', None) is not None else None
@@ -95,7 +95,6 @@ def get_case(id):
     professional_id=filter.professional_id
     category_id=filter.category_id
     typeservice_id=filter.typeservice_id
-    status_id=filter.status_id
     filter=Customer.query.filter_by(id=customer_id).one_or_none()
     if filter is None:
         dic['data']['customer']={'ok':False,'error':'customer id not found ','status':404}
@@ -116,11 +115,6 @@ def get_case(id):
         dic['data']['typeservice']={'ok':False,'error':'typeservice id not found ','status':404}
     else:
         dic['data']['typeservice']=filter.serialize()
-    filter=Status.query.filter_by(id=status_id).one_or_none()
-    if filter is None:
-        dic['data']['status']={'ok':False,'error':'status id not found ','status':404}
-    else:
-        dic['data']['status']=filter.serialize()
     return jsonify(dic),200
 
 @routes.route('/all', endpoint='get_cases', methods=['GET'])
@@ -140,7 +134,6 @@ def get_cases():
       professional_id=eachcase.professional_id
       category_id=eachcase.category_id
       typeservice_id=eachcase.typeservice_id
-      status_id=eachcase.status_id
       filter_table=Customer.query.filter_by(id=customer_id).one_or_none()
       if filter_table is None:
         customer_json={'ok':False, 'status':404, 'data':'customer id not found'}
@@ -161,17 +154,11 @@ def get_cases():
         typeservice_json={'ok':False, 'status':404, 'data':'typeservice id not found'}
       else:
         typeservice_json=filter_table.serialize()
-      filter_table=Status.query.filter_by(id=status_id).one_or_none()
-      if filter_table is None:
-        status_json={'ok':False, 'status':404, 'data':'status id not found'}
-      else:
-        status_json=filter_table.serialize()
       dic['data'].append({'case':eachcase.serialize(),
                           'customer':customer_json,
                           'professional':professional_json,
                           'category':category_json,
                           'typeservice':typeservice_json,
-                          'status':status_json
                           })
     return jsonify(dic),200
 
@@ -187,7 +174,6 @@ def edit_case(id):
     customer_id=body.get('customer_id', None) 
     category_id=body.get('category_id', None) 
     typeservice_id=body.get('typeservice_id', None) 
-    status_id=body.get('status_id', None) 
     is_active=body.get('is_active', None) 
     # started=body.get('started', None) 
     # date_init=body.get('date_init', None) 
@@ -200,7 +186,7 @@ def edit_case(id):
     # delivered=body.get('delivered', None) 
     # delivered_date=body.get('delivered_date', None) 
     delivered_description=body.get('delivered_description', None) 
-    if customer_id is None and category_id is None and typeservice_id is None and status_id is None:
+    if customer_id is None and category_id is None and typeservice_id is None:
        if is_active is None and professional_id is None and initial_note is None and description is None:
              if close_description is None and delivered_description is None:
                 return jsonify({'ok':False,'error':"no fields-name valid in body, you must send any field: example: {'is_active':False}",'status':400}),400
@@ -210,8 +196,6 @@ def edit_case(id):
        return jsonify({'ok':False,'error':'category_id must be a integer ','status':400}),400
     if typeservice_id is not None and type(typeservice_id)!=int:
        return jsonify({'ok':False,'error':'typeservice_id must be a integer ','status':400}),400
-    if status_id is not None and type(status_id)!=int:
-       return jsonify({'ok':False,'error':'status_id must be a integer ','status':400}),400
     if is_active is not None and type(is_active)!=bool:
        return jsonify({'ok':False,'error':'is_active must be a boolean ','status':400}),400
     if professional_id is not None and type(professional_id)!=int:
@@ -251,7 +235,6 @@ def edit_case(id):
     
     filter.category_id=category_id if category_id is not None else filter.category_id
     filter.typeservice_id=typeservice_id if typeservice_id is not None else filter.typeservice_id
-    filter.status_id=status_id if status_id is not None else filter.status_id
     filter.is_active=is_active if is_active is not None else filter.is_active
     # filter.started=started if started is not None else filter.started
     # filter.date_init=date_init if date_init is not None else filter.date_init
@@ -266,7 +249,6 @@ def edit_case(id):
     filter.delivered_description=delivered_description if delivered_description is not None else filter.delivered_description
     texto='category_id:'+str(category_id)+', ' if category_id !=None else ''
     texto+='typeservice_id:'+str(typeservice_id)+', ' if typeservice_id != None else ''
-    texto+='status_id:'+str(status_id)+', ' if status_id != None else ''
     texto+='is_active:'+str(is_active)+', ' if is_active != None else ''
     # texto+='started:'+str(started)+', ' if started != None else ''
     # texto+='date_init:'+str(date_init)+', ' if date_init != None else ''
@@ -308,10 +290,8 @@ def set_state(id):
     return jsonify({'ok':False,'error':'delivered must be a boolean ','status':400}),400        
   filter.started=started if started is not None else filter.started
   filter.date_init=datetime.now().strftime('%Y-%m-%d %H:%M:%S') if started is True else filter.date_init
-
   filter.closed=closed if closed is not None else filter.closed
   filter.close_date=datetime.now().strftime('%Y-%m-%d %H:%M:%S') if closed is True else filter.close_date
-
   filter.delivered=delivered if delivered is not None else filter.delivered
   filter.delivered_date=datetime.now().strftime('%Y-%m-%d %H:%M:%S') if delivered is True else filter.delivered_date
   try:
@@ -334,7 +314,6 @@ def filter_cases():
     customer_id=body.get('customer_id', None)
     category_id=body.get('category_id', None)
     typeservice_id=body.get('typeservice_id', None)
-    status_id=body.get('status_id', None)
     is_active=body.get('is_active', None)
     started=body.get('started', None)
     date_init_start=body.get('date_init_start', None)
@@ -350,7 +329,7 @@ def filter_cases():
     delivered_date_start=body.get('delivered_date_start', None)
     delivered_date_end=body.get('delivered_date_end', None)
     delivered_description=body.get('delivered_description', None)
-    if customer_id is None and category_id is None and typeservice_id is None and status_id is None:
+    if customer_id is None and category_id is None and typeservice_id is None:
        if is_active is None and started is None and date_init_start is None and date_init_end in None and professional_id is None:
           if initial_note is None and description is None and closed is None and close_date_start is None and close_date_end is None:
              if close_description is None and delivered is None and delivered_date_start is None and delivered_date_end is None and delivered_description is None:
@@ -361,8 +340,6 @@ def filter_cases():
        return jsonify({'ok':False,'error':'category_id must be a integer ','status':400}),400
     if typeservice_id is not None and type(typeservice_id)!=int:
        return jsonify({'ok':False,'error':'typeservice_id must be a integer ','status':400}),400
-    if status_id is not None and type(status_id)!=int:
-       return jsonify({'ok':False,'error':'status_id must be a integer ','status':400}),400
     if is_active is not None and type(is_active)!=bool:
        return jsonify({'ok':False,'error':'is_active must be a boolean ','status':400}),400
     if started is not None and type(started)!=bool:
@@ -418,7 +395,6 @@ def filter_cases():
       Case.customer_id==customer_id if customer_id is not None else (Case.id > 0),
       Case.category_id==category_id if category_id is not None else (Case.id > 0),
       Case.typeservice_id==typeservice_id if typeservice_id is not None else (Case.id > 0),
-      Case.status_id==status_id if status_id is not None else (Case.id > 0),
       Case.professional_id==professional_id if professional_id is not None else (Case.id > 0),
       Case.is_active==is_active if is_active is not None else (Case.id > 0),
       Case.started==started if started is not None else (Case.id > 0),
@@ -443,7 +419,6 @@ def filter_cases():
       professional_id=eachcase.professional_id
       category_id=eachcase.category_id
       typeservice_id=eachcase.typeservice_id
-      status_id=eachcase.status_id
       filter_table=Customer.query.filter_by(id=customer_id).one_or_none()
       if filter_table is None:
         customer_json={'ok':False, 'status':404, 'data':'customer id not found'}
@@ -464,17 +439,11 @@ def filter_cases():
         typeservice_json={'ok':False, 'status':404, 'data':'typeservice id not found'}
       else:
         typeservice_json=filter_table.serialize()
-      filter_table=Status.query.filter_by(id=status_id).one_or_none()
-      if filter_table is None:
-        status_json={'ok':False, 'status':404, 'data':'status id not found'}
-      else:
-        status_json=filter_table.serialize()
       dic['data'].append({'case':eachcase.serialize(),
                           'customer':customer_json,
                           'professional':professional_json,
                           'category':category_json,
                           'typeservice':typeservice_json,
-                          'status':status_json
                           })
     return jsonify(dic),200
 
