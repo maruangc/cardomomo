@@ -66,12 +66,13 @@ const getState = ({ getStore, getActions, setStore }) => {
             body: JSON.stringify(e),
           });
           const data = await resp.json();
-          if (data.error) {
+          if (!data.ok) {
             toast(data.error);
-            return;
+            return false;
           }
           localStorage.setItem("token", data.token);
           toast("granted access, token generated");
+          return true;
         } catch (error) {
           console.log(`Error en funcion login(${e}):`, error);
         }

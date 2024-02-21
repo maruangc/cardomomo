@@ -20,6 +20,7 @@ import CustomerDetails from "./pages/customerView/CustomerDetails.jsx";
 import ProfessionalDetail from "./pages/professionalView/ProfessionalDetail.jsx";
 import CustomerList from "./pages/customerView/CustomerList.jsx";
 import CaseEdit from "./pages/caseViews/CaseEdit.jsx";
+import LandingNavbar from "./pages/landingPage/LandingNavbar.jsx";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -33,10 +34,13 @@ const Layout = () => {
         <PrimeReactProvider>
           <ToastContainer />
           <Routes>
-            {/* Landing page / login */}
-            <Route element={<LandingPage />} path="/" />
+            {/* Login and Register routes */}
             <Route element={<Login />} path="/login" />
             <Route element={<Register />} path="/register" />
+            {/* Landing page */}
+            <Route element={<LandingNavbar />} path="/">
+              <Route element={<LandingPage />} path="/" />
+            </Route>
 
             {/* CASES ROUTES */}
             <Route element={<Navbar />} path="/">
@@ -62,7 +66,6 @@ const Layout = () => {
               <Route path="detail" element={<ProfessionalDetail />} />
               <Route element={<h1>Not found Professional!</h1>} path="*" />
             </Route>
-
             <Route element={<h1>Not found General!</h1>} path="*" />
           </Routes>
         </PrimeReactProvider>

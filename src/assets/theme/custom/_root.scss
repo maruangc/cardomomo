@@ -23,6 +23,16 @@ p {
   max-width: 100%;
 }
 
+.landingpage-divider {
+  border-color: white;
+}
+
+.banner-container {
+  background-image: url("https://www.adobe.com/es/express/create/background/media_17128efc2f7fcf14a52e2a1c9712dfc2c4f834597.jpeg?width=750&format=jpeg&optimize=medium");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 .login-container {
   margin: 0;
   padding: 0;
