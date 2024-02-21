@@ -54,10 +54,10 @@ const getState = ({ getStore, getActions, setStore }) => {
             localStorage.setItem("token", data.token);
             toast("granted access, token generated");
           }
+          return data;
         } catch (error) {
           console.log(`Error en funcion login(${e}):`, error);
         }
-        return data;
       },
       insertInTable: async (table, fields) => {
         try {
