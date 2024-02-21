@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, Typeservice, Status,Category,Customer,Professional,Case
+from api.models import db, Typeservice,Category,Customer,Professional,Case
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -16,10 +16,6 @@ def init_tables():
     db.session.add(Typeservice(type_service="Facturable"))
     db.session.add(Typeservice(type_service="Garantia"))
     db.session.add(Typeservice(type_service="Reclamo"))
-    db.session.add(Status(status="Recibido"))
-    db.session.add(Status(status="Iniciado"))
-    db.session.add(Status(status="Terminado"))
-    db.session.add(Status(status="Entregado"))
     db.session.add(Category(category='Mantenimiento (añadido por metodo init)',description='Descripcion (añadido por metodo init)'))
     db.session.add(Professional(name='Juan Perez',identification='14201785',profession='Tecnico',phone='04142545574',email='alguien@gmail.com',address='Calle 1, nro 2 (añadido por metodo init)',comment='Comentario añadido por metodo init'))
     db.session.add(Customer(name='Pedro Perez',identification='18225478',phone='0212545778',email='alguien@hotmail.com',address='Calle 3, edif 4, piso 1 apto 2',comment='Comentario (añadido por metodo init)'))
@@ -65,21 +61,3 @@ def get_typeservices():
     dic['data']=[typeservice.serialize() for typeservice in filter]
     return jsonify(dic)
 
-#---------------------------------------------status
-@routes.route('/status/<int:id>',endpoint='get_status', methods=['GET'])
-@jwt_required()
-def get_status(id):
-    filter=Status.query.filter_by(id=id).one_or_none()
-    if filter is None:
-        return jsonify({'ok':False,'error':'status id not found ','status':404}),404
-    dic={'ok':True,'status':200}
-    dic['data']=filter.serialize()
-    return jsonify(dic)
-
-@routes.route('/status/all',endpoint='get_all_status', methods=['GET'])
-@jwt_required()
-def get_all_status():
-    filter=Status.query.all()
-    dic={'ok':True,'status':200}
-    dic['data']=[status.serialize() for status in filter]
-    return jsonify(dic)
