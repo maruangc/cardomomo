@@ -10,7 +10,7 @@ CORS(routes)
 
 #---------------------------------------------Inicializacion de Tablas
 @routes.route('/init',endpoint='init_tables', methods=['POST'])
-@jwt_required()
+#@jwt_required()
 def init_tables():
     db.session.add(Typeservice(type_service="Facturable"))
     db.session.add(Typeservice(type_service="Garantia"))
