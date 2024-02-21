@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { store, actions } = useContext(Context);
+  const { actions } = useContext(Context);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
