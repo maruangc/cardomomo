@@ -10,9 +10,9 @@ import DeliverDetail from "./ui/DeliverDetail.jsx";
 import dataJson from "./caseData.json";
 
 const CaseDetail = () => {
-  //const [data, setData] = useState({});
-  const [customer, setCustomer] = useState({});
-  const [professional, setProfessional] = useState({});
+  const [data, setData] = useState({});
+  const [customer, setCustomer] = useState(false);
+  const [professional, setProfessional] = useState(false);
   const [caseClosed, setCaseClosed] = useState(false);
   const [caseDelivered, setCaseDelivered] = useState(false);
   const [caseStarted, setCaseStarted] = useState(false);
@@ -49,7 +49,7 @@ const CaseDetail = () => {
 
   const dataQuery = async () => {
     const response = await actions.getById("case", 1);
-    //setData(response.data);
+    setData(response.data);
     setCustomer(response.data.customer);
     setProfessional(response.data.professional);
     setCaseClosed(response.data.case.closed);
@@ -74,7 +74,7 @@ const CaseDetail = () => {
           />
           <CostumerData customer={customer} />
           <ProfessionalData professional={professional} />
-          <StateDetail dataCase={dataJson.data} />
+          <StateDetail dataCase={dataJson.data} data={data} />
           {isClose && (
             <div className="grid gap-5 justify-content-between">
               <CloseDetail

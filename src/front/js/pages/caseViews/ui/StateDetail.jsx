@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Context } from "../../../store/appContext";
 
-const StateDetail = ({ dataCase }) => {
+const StateDetail = ({ dataCase, data }) => {
   const { actions } = useContext(Context);
   const { typeservice, status, category } = dataCase;
   const { description, initial_note, date_init } = dataCase.case;

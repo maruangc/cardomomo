@@ -11,7 +11,7 @@ const ProfessionalData = ({ professional }) => {
           id="professionalData"
           className="grid justify-content-between surface-300 py-5 px-4  border-round-md 	"
         >
-          {!professional.ok ? (
+          {!professional ? (
             <p className="mx-auto m-0">Sin datos de profesional</p>
           ) : (
             <>

@@ -151,13 +151,14 @@ const getState = ({ getStore, getActions, setStore }) => {
             }
           );
           const data = await resp.json();
+
+          return data;
         } catch (error) {
           console.log(`Error en funcion getById(${table}, ${id}):`, error);
         }
         if (!data.ok) {
           toast(data.error);
         }
-        return data;
       },
       getFilter: async (table, fields, limit, offset) => {
         // http://127.0.0.1:3001/customer/all/?limit=1&offset=1
