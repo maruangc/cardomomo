@@ -11,26 +11,32 @@ const ProfessionalData = ({ professional }) => {
           id="professionalData"
           className="grid justify-content-between surface-300 py-5 px-4  border-round-md 	"
         >
-          <div className="col flex flex-column">
-            <span className="text-sm">Nombre del profesional :</span>
-            <p className="text-lg	font-bold">{name}</p>
-          </div>
-          <div className="col flex flex-column">
-            <span className="text-sm">Numero de contacto :</span>
-            <p className="text-lg font-bold">{phone}</p>
-          </div>
-          <div className="col flex flex-column">
-            <span className="text-sm">Correo electronico :</span>
-            <p className="text-lg	font-bold">{email}</p>
-          </div>
-          <div className="col flex flex-column">
-            <span className="text-sm">Profesion :</span>
-            <p className="text-lg	font-bold">{carrier}</p>
-          </div>
-          <div className="col flex flex-column">
-            <span className="text-sm">Rif :</span>
-            <p className="text-lg	font-bold">{identification}</p>
-          </div>
+          {!professional.ok ? (
+            <p className="mx-auto m-0">Sin datos de profesional</p>
+          ) : (
+            <>
+              <div className="col flex flex-column">
+                <span className="text-sm">Nombre del profesional :</span>
+                <p className="text-lg	font-bold">{name}</p>
+              </div>
+              <div className="col flex flex-column">
+                <span className="text-sm">Numero de contacto :</span>
+                <p className="text-lg font-bold">{phone}</p>
+              </div>
+              <div className="col flex flex-column">
+                <span className="text-sm">Correo electronico :</span>
+                <p className="text-lg	font-bold">{email}</p>
+              </div>
+              <div className="col flex flex-column">
+                <span className="text-sm">Profesion :</span>
+                <p className="text-lg	font-bold">{carrier}</p>
+              </div>
+              <div className="col flex flex-column">
+                <span className="text-sm">Rif :</span>
+                <p className="text-lg	font-bold">{identification}</p>
+              </div>
+            </>
+          )}
         </div>
       </section>
     </>

@@ -75,3 +75,12 @@ p {
 .p-menubar .p-submenu-list {
   z-index: 2;
 }
+
+.p-card .p-card-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.p-card {
+  max-height: 150px;
+}

@@ -20,6 +20,7 @@ import CustomerDetails from "./pages/customerView/CustomerDetails.jsx";
 import ProfessionalDetail from "./pages/professionalView/ProfessionalDetail.jsx";
 import CustomerList from "./pages/customerView/CustomerList.jsx";
 import CaseEdit from "./pages/caseViews/CaseEdit.jsx";
+import CaseList from "./pages/caseViews/CaseList.jsx";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -39,11 +40,8 @@ const Layout = () => {
             <Route element={<Register />} path="/register" />
 
             {/* CASES ROUTES */}
-            <Route element={<Navbar />} path="/">
-              <Route
-                path=""
-                element={<h1 className="text-center">Lista de casos</h1>}
-              />
+            <Route element={<Navbar />} path="/case">
+              <Route path="" element={<CaseList />} />
               <Route path="detail" element={<CaseDetail />} />
               <Route path="edit/:id" element={<CaseEdit />} />
               <Route element={<h1>Not found Casos!</h1>} path="*" />

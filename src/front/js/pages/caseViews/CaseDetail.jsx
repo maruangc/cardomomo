@@ -9,16 +9,22 @@ import DeliverDetail from "./ui/DeliverDetail.jsx";
 /* Data */
 import dataJson from "./caseData.json";
 
-const { customer, professional } = dataJson.data;
-const caseClosed = dataJson.data.case.closed;
-const caseDelivered = dataJson.data.case.delivered;
-
 const CaseDetail = () => {
+  //const [data, setData] = useState({});
+  const [customer, setCustomer] = useState({});
+  const [professional, setProfessional] = useState({});
+  const [caseClosed, setCaseClosed] = useState(false);
+  const [caseDelivered, setCaseDelivered] = useState(false);
+  const [caseStarted, setCaseStarted] = useState(false);
+
   const [isClose, setIsClose] = useState(caseClosed);
   const [isDelivered, setIsDelivered] = useState(caseDelivered);
+  const [isStarted, setIsStarted] = useState(caseStarted);
   const [closeModalvalue, setCloseModalValue] = useState("");
   const [deliverModalvalue, setDeliverModalValue] = useState("");
-  const { actions, store } = useContext(Context);
+  const [status, setStatus] = useState("CREADO");
+
+  const { actions } = useContext(Context);
 
   const handleClose = () => {
     if (!isClose) {
@@ -26,8 +32,35 @@ const CaseDetail = () => {
     }
   };
 
+  const handleStatus = () => {
+    if (caseDelivered) {
+      setStatus("ENTREGADO");
+      return;
+    }
+    if (caseClosed) {
+      setStatus("CERRADO");
+      return;
+    }
+    if (caseStarted) {
+      setStatus("INICIADO");
+      return;
+    }
+  };
+
+  const dataQuery = async () => {
+    const response = await actions.getById("case", 1);
+    //setData(response.data);
+    setCustomer(response.data.customer);
+    setProfessional(response.data.professional);
+    setCaseClosed(response.data.case.closed);
+    setCaseDelivered(response.data.case.delivered);
+    setCaseStarted(response.data.case.started);
+
+    handleStatus();
+  };
+
   useEffect(() => {
-    actions.getById("case", 1);
+    dataQuery();
   }, []);
 
   return (

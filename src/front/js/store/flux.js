@@ -3,15 +3,7 @@ import { toast } from "react-toastify";
 const getState = ({ getStore, getActions, setStore }) => {
   return {
     store: {
-      dataById: {
-        case: {},
-        typeservice: {},
-        status: {},
-        customer: {},
-        professional: {},
-        category: {},
-        user: {},
-      },
+      dataById: {},
       dataList: {
         case: [],
         typeservice: [],
@@ -69,6 +61,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           if (data.error) {
             toast(data.error);
             return;
+            console.log(store.dataById);
           }
           localStorage.setItem("token", data.token);
           toast("granted access, token generated");
@@ -175,19 +168,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             toast(data.error);
           }
 
-          setStore({
-            ...store,
-            dataById: { ...store.dataById, [table]: data },
-          });
-
-          /*
-          console.log(
-            store.dataById.customer.data.name,
-            store.dataById.customer.data.identification
-          ); 
-          console.log(store.dataById[table].data.name);
-          table = "customer";
-          */
+          return data;
         } catch (error) {
           console.log(`Error en funcion getById(${table}, ${id}):`, error);
         }

@@ -9,8 +9,12 @@ export default function Navbar() {
       label: "Rutas",
       items: [
         {
+          label: "lista de casos",
+          url: "/case",
+        },
+        {
           label: "detalles casos",
-          url: "/detail",
+          url: "/case/detail",
         },
         {
           label: "lista clientes",
