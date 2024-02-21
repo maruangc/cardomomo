@@ -33,7 +33,6 @@ class Case(db.Model):
     started=db.Column(db.Boolean(), unique=False, default=False, nullable=False)
     date_init = db.Column(db.DateTime, default=datetime.datetime.now(), unique=False, nullable=True)
     typeservice_id = db.Column(db.Integer, db.ForeignKey("typeservice.id"), default=1, nullable=False)
-    status_id = db.Column(db.Integer, db.ForeignKey("status.id"), default=1, nullable=False) #se asigna en el route
     initial_note = db.Column(db.String(400), nullable=True)
     description = db.Column(db.String(400), nullable=True)
     closed=db.Column(db.Boolean(), unique=False, default=False, nullable=False)
@@ -65,16 +64,16 @@ class Case(db.Model):
             "delivered_description": self.delivered_description,
         }
     
-class Status(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    status = db.Column(db.String(100), unique=True, nullable=False)
-    case = db.relationship("Case", backref="status_case") # backref es el nombre de la relacion
+# class Status(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     status = db.Column(db.String(100), unique=True, nullable=False)
+#     case = db.relationship("Case", backref="status_case") # backref es el nombre de la relacion
 
-    def serialize(self):
-        return {
-            "id": self.id,
-            "status": self.status,
-        }
+#     def serialize(self):
+#         return {
+#             "id": self.id,
+#             "status": self.status,
+#         }
 
 class Typeservice(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -14,10 +14,10 @@ const Grid = () => {
   });
   return (
     <>
-      <div className=" pb-2 pt-8 mx-2">
+      <div className=" pb-2 py-8 mx-2">
         <div className="grid gap-8 justify-content-center items-center py-4 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 ">
           <Card className="w-20rem h-18rem bg-white col-4 text-center shadow-2">
-            <i class="fa-solid text-5xl text-primary-900 fa-globe"></i>
+            <i className="fa-solid text-5xl text-primary-900 fa-globe"></i>
             <h3 className="text-black-alpha-90">Worldwide</h3>
             <p className="m-0 text-black-alpha-90">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
@@ -26,7 +26,7 @@ const Grid = () => {
             </p>
           </Card>
           <Card className="w-20rem h-18rem  bg-white col-4 text-center shadow-2">
-            <i class="fa-solid text-5xl text-primary-900 fa-location-dot"></i>
+            <i className="fa-solid text-5xl text-primary-900 fa-location-dot"></i>
             <h3 className="text-black-alpha-90">Worldwide</h3>
             <p className="m-0 text-black-alpha-90">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
@@ -35,7 +35,7 @@ const Grid = () => {
             </p>
           </Card>
           <Card className="w-20rem h-18rem  bg-white col-4 text-center shadow-2">
-            <i class="fa-solid text-5xl text-primary-900 fa-arrow-trend-up"></i>
+            <i className="fa-solid text-5xl text-primary-900 fa-arrow-trend-up"></i>
             <h3 className="text-black-alpha-90">Worldwide</h3>
             <p className="m-0 text-black-alpha-90">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
