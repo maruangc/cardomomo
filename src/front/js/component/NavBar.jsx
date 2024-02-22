@@ -1,16 +1,22 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
 import { Sidebar } from "primereact/sidebar";
 import { Button } from "primereact/button";
 import { Menu } from "primereact/menu";
 import { Toast } from "primereact/toast";
-import { Avatar } from "primereact/avatar";
+import GeneralFooter from "./GeneralFooter.jsx";
 export default function Navbar() {
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
   const menuLeft = useRef(null);
   const menuRight = useRef(null);
   const toast = useRef(null);
+
+  const borrarToken = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   const items = [
     {
       label: "Documents",
@@ -39,14 +45,23 @@ export default function Navbar() {
           ),
         },
         {
-          label: "Logout",
+          label: (
+            <p className=" p-0 m-0" onClick={borrarToken}>
+              Logout
+            </p>
+          ),
           icon: (
-            <i className="text-black-alpha-90 mr-2 font-bold fa-solid fa-power-off"></i>
+            <i className="text-black-alpha-90 mr-2 font-bold fa-solid fa-power-off  "></i>
           ),
         },
       ],
     },
   ];
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) navigate("/login");
+  }, []);
 
   return (
     <>
@@ -124,6 +139,7 @@ export default function Navbar() {
         </div>
       </div>
       <Outlet />
+      <GeneralFooter />
     </>
   );
 }

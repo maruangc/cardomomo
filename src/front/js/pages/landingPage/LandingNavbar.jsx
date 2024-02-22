@@ -3,13 +3,14 @@ import React from "react";
 import { Button } from "primereact/button";
 import { Image } from "primereact/image";
 import { useNavigate, Outlet } from "react-router-dom";
+import Footergeneral from "../../component/LandingFooter.jsx";
 
 const LandingNavbar = () => {
   const navigate = useNavigate();
 
   return (
     <>
-      <div className="card flex justify-content-between text-white-alpha-90 bg-primary-900 border-bottom-1 border-primary-500  p-2">
+      <div className="card flex justify-content-between text-white-alpha-90 bg-primary-900   p-2">
         <div className="pl-5">
           <Image
             alt="logo"
@@ -40,6 +41,7 @@ const LandingNavbar = () => {
         </div>
       </div>
       <Outlet />
+      <Footergeneral />
     </>
   );
 };
