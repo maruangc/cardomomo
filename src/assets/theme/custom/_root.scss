@@ -28,16 +28,45 @@ p {
 }
 
 .banner-container {
-  background-image: url("https://www.adobe.com/es/express/create/background/media_17128efc2f7fcf14a52e2a1c9712dfc2c4f834597.jpeg?width=750&format=jpeg&optimize=medium");
+  background-image: url("https://img.freepik.com/vector-gratis/fondo-azul-degradado_23-2149347096.jpg?t=st=1708556031~exp=1708559631~hmac=6cf15c4a8cdc832832db80528742389d722b9ebfe2c60e30c1328d503bd6be3f&w=740");
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center;
+  margin: 0;
+  padding: 0;
 }
+
+.carousel-card {
+  margin-top: 318px;
+  padding: 30px;
+}
+
+.login-gradient {
+  background: rgb(2, 0, 36);
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(9, 9, 121, 1) 35%,
+    rgba(0, 212, 255, 1) 100%
+  );
+}
+.carousel-text {
+  display: flex;
+  justify-content: space-between;
+}
+
 .login-container {
   margin: 0;
   padding: 0;
   height: 100vh;
   width: 100vw;
+}
+
+.footer-container {
+  background-image: url("https://img.freepik.com/foto-gratis/fondo-azul-degradado-lujo-abstracto-azul-oscuro-liso-banner-estudio-vineta-negra_1258-52379.jpg?w=826&t=st=1708558855~exp=1708559455~hmac=a08068b5ccf359338b51c90870984fa8cce9d9e91028c8ad9f25bfa4926cfc53");
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.9;
+  color: white;
 }
 
 @font-face {
@@ -89,8 +118,4 @@ p {
 .p-card .p-card-title {
   font-size: 1.2rem;
   font-weight: 500;
-}
-
-.p-card {
-  max-height: 150px;
 }

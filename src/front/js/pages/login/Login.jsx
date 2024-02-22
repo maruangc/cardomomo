@@ -47,21 +47,28 @@ const Login = () => {
                   className="w-full"
                 />
               </div>
+              <Button
+                type="submit"
+                label="Start"
+                icon=""
+                severity="success"
+                className="w-10rem mt-6 "
+              >
+                <i className="fa-solid fa-user pr-3"></i>
+              </Button>
               <div className="flex justify-content-between items-center mt-5">
                 <p className="text-white">No tienes cuenta?</p>
                 <Link to="/register" className=" mt-3 font-bold">
                   Registrate
                 </Link>
               </div>
-              <Button
-                type="submit"
-                label="Start"
-                icon=""
-                severity="success"
-                className="w-10rem mt-5 "
+              <Link
+                to={"/"}
+                className="w-10rem mt-6 text-white flex justify-content-start align-items-center"
               >
-                <i className="fa-solid fa-user pr-3"></i>
-              </Button>
+                <p className="text-white text-xs m-0 mt-1 mr-2">Go home</p>
+                <i className="fa-solid fa-house pr-3 text-white"></i>
+              </Link>
             </div>
           </div>
         </form>

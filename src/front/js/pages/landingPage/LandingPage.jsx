@@ -11,7 +11,7 @@ import "primeicons/primeicons.css";
 
 import Aos from "aos";
 import "aos/dist/aos.css";
-import Footergeneral from "../../component/Footergeneral.jsx";
+import Footergeneral from "../../component/LandingFooter.jsx";
 
 const LandingPage = () => {
   useEffect(() => {
@@ -26,7 +26,6 @@ const LandingPage = () => {
         <Midle />
         <Grid />
         {/* <Cards /> */}
-        <Footergeneral />
       </div>
     </div>
   );
