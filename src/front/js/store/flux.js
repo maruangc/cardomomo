@@ -31,14 +31,15 @@ const getState = ({ getStore, getActions, setStore }) => {
             body: JSON.stringify(e),
           });
           const data = await resp.json();
+          if (!data.ok) {
+            toast(data.error);
+          } else {
+            toast(data.data);
+          }
+          return data;
         } catch (error) {
           console.log(`Error en funcion register(${e}):`, error);
         }
-        if (!data.ok) {
-          toast(data.error);
-        }
-        toast(data.data);
-        return data;
       },
       login: async (e) => {
         try {

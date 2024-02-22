@@ -30,6 +30,7 @@ const CustomerList = () => {
   ) => {
     const response = await fetch(endpoint);
     const data = await response.json();
+
     setCharacterList(data.results);
     setMetaData(data.info);
     setRows(10);
@@ -49,16 +50,9 @@ const CustomerList = () => {
     <div className=" max-container-width mx-auto">
       <DataTable
         value={characterList}
-        tableStyle={{ minWidth: "70rem" }}
-        size="normal"
-        stripedRows
-        className="py-5 text-center"
-        selectionMode="single"
-        onSelectionChange={(e) => console.log(e.value)}
-        scrollable
-        scrollHeight="70vh"
+        // scrollable scrollHeight="70vh"
       >
-        {rickMortyColumns.map((col) => {
+        {columns.map((col) => {
           return (
             <Column
               key={col.field}
@@ -69,7 +63,7 @@ const CustomerList = () => {
           );
         })}
       </DataTable>
-      <Paginator
+      {/* <Paginator
         first={first}
         rows={rows}
         totalRecords={metaData?.count}
@@ -81,7 +75,7 @@ const CustomerList = () => {
           );
           console.log("pagina :", page);
         }}
-      />
+      /> */}
     </div>
   );
 };
