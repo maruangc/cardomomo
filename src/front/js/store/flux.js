@@ -30,16 +30,18 @@ const getState = ({ getStore, getActions, setStore }) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(e),
           });
-          console.log(resp);
+
           const data = await resp.json();
+
+          if (!data.ok) {
+            toast(data.error);
+          } else {
+            toast(data.data);
+          }
+          return data;
         } catch (error) {
           console.log(`Error en funcion register(${e}):`, error);
         }
-        if (!data.ok) {
-          toast(data.error);
-        }
-        toast(data.data);
-        return data;
       },
       login: async (e) => {
         try {

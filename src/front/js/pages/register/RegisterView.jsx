@@ -12,18 +12,24 @@ export const Register = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [registered, setRegistered] = useState(false);
 
-  const handleRegister = async () => {
-    let person = { name: name, email: email, password: password };
+  const handleRegister = async (event) => {
+    event.preventDefault();
+    let person = {
+      name: event.target.name.value,
+      email: event.target.email.value,
+      password: event.target.password.value,
+    };
     console.log(person);
     const response = await actions.register(person);
     setRegistered(response.ok);
-    console.log(registered);
+    console.log("handleregister: ", response);
   };
 
   // Si el registro fue exitoso, redirigir al usuario a la página de inicio de sesión
-  //if (registered) {
-  //return <Navigate to="/login" />;
-  //}
+  if (registered) {
+    return <Navigate to="/login" />;
+  }
+  console.log(registered);
 
   return (
     <>
@@ -33,44 +39,39 @@ export const Register = () => {
             <h1>Formulario de Registro</h1>
             <p>Completa la información y regístrate ahora!</p>
           </div>
-          <div className="container w-8 ml-2 ">
-            <div className="flex flex-column pt-4 gap-1 font-light">
-              <label htmlFor="name">Nombre Completo</label>
-              <InputText
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                aria-describedby="name-help"
-              />
-            </div>
+          <form onSubmit={handleRegister}>
+            <div className="container w-8 ml-2 ">
+              <div className="flex flex-column pt-4 gap-1 font-light">
+                <label htmlFor="name">Nombre Completo</label>
+                <InputText id="name" name="name" aria-describedby="name-help" />
+              </div>
 
-            <div className="flex flex-column pt-4 gap-1 font-light">
-              <label htmlFor="email">Correo electrónico</label>
-              <InputText
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                aria-describedby="email-help"
-              />
-            </div>
-            <div className="flex flex-column pt-4 gap-1 font-light">
-              <label htmlFor="password">Contraseña</label>
-              <InputText
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                aria-describedby="password-help"
-              />
-            </div>
+              <div className="flex flex-column pt-4 gap-1 font-light">
+                <label htmlFor="email">Correo electrónico</label>
+                <InputText
+                  id="email"
+                  name="email"
+                  aria-describedby="email-help"
+                />
+              </div>
+              <div className="flex flex-column pt-4 gap-1 font-light">
+                <label htmlFor="password">Contraseña</label>
+                <InputText
+                  type="password"
+                  id="password"
+                  name="password"
+                  aria-describedby="password-help"
+                />
+              </div>
 
-            <div className="button w-4 pt-4 mt-5">
-              <Button label="Submit" onClick={handleRegister} />
+              <div className="button w-4 pt-4 mt-5">
+                <Button label="Submit" />
+              </div>
+              {errorMessage && (
+                <div className="error-message">{errorMessage}</div>
+              )}
             </div>
-            {errorMessage && (
-              <div className="error-message">{errorMessage}</div>
-            )}
-          </div>
+          </form>
         </div>
 
         <div className="flex flex-row col-5 bg-white mt-4">
