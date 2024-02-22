@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { Context } from "../../store/appContext";
 import { Navigate } from "react-router-dom";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 
 export const Register = () => {
+  const { actions, store } = useContext(Context);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -11,31 +13,17 @@ export const Register = () => {
   const [registered, setRegistered] = useState(false);
 
   const handleRegister = async () => {
-    try {
-      const response = await fetch(process.env.BACKEND_URL + "/user/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
-      });
-      const data = await response.json();
-      if (data.error) {
-        setErrorMessage(data.error);
-      } else {
-        console.log("Registro exitoso:", data.data);
-        setRegistered(true);
-      }
-    } catch (error) {
-      console.log("Error en función de registro:", error);
-      setErrorMessage(
-        "Error al procesar el registro. Por favor, inténtalo de nuevo."
-      );
-    }
+    let person = { name: name, email: email, password: password };
+    console.log(person);
+    const response = await actions.register(person);
+    setRegistered(response.ok);
+    console.log(registered);
   };
 
   // Si el registro fue exitoso, redirigir al usuario a la página de inicio de sesión
-  if (registered) {
-    return <Navigate to="/login" />;
-  }
+  //if (registered) {
+  //return <Navigate to="/login" />;
+  //}
 
   return (
     <>
