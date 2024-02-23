@@ -1,15 +1,14 @@
 import React, { useState, useContext } from "react";
 import { Context } from "../../store/appContext";
 import { InputText } from "primereact/inputtext";
-import { Password } from "primereact/password";
-import { Card } from "primereact/card";
+
 import { Button } from "primereact/button";
 import "primeicons/primeicons.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { store, actions } = useContext(Context);
+  const { actions } = useContext(Context);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,41 +20,60 @@ const Login = () => {
     if (response.ok) {
       navigate("/case");
     } else {
-      navigate("/login");
+      return;
     }
   };
 
   return (
     <div className="login-container grid">
-      <div className="col-12 sm:col-12 md:col-6 flex pt-7 bg-blue-100 justify-content-center">
-        <form onSubmit={handleSubmit}>
-          <Card className=" shadow-8 w-25rem h-27rem mt-4">
-            <div className="flex flex-column ml-7 text-left">
-              <h1 className="text-4xl font-bold text-teal-900 pb-3">Login</h1>
+      <div className="col-12 sm:col-12 md:col-4 flex bg-black-alpha-90">
+        <form
+          onSubmit={handleSubmit}
+          className="flex justify-content-center flex-column w-10 h-full p-3 ml-2"
+        >
+          <div className="text-left">
+            <div className="flex justify-content-center flex-column">
+              <h1 className="text-4xl font-bold text-white pb-3">Login</h1>
               <div className="">
-                <h5 className="m-0 p-0">Username</h5>
-                <InputText id="email" name="email" />
+                <h5 className="m-0 p-0 pb-4 text-white">Username</h5>
+                <InputText id="email" name="email" className="w-full" />
               </div>
               <div className="mt-5">
-                <h5 className="m-0 p-0">Password</h5>
-                <InputText id="password" name="password" tabIndex={1} />
+                <h5 className="m-0 p-0 pb-2 text-white">Password</h5>
+                <InputText
+                  id="password"
+                  name="password"
+                  tabIndex={1}
+                  className="w-full"
+                />
               </div>
-            </div>
-            <div className="flex justify-content-center pt-2 ">
               <Button
                 type="submit"
                 label="Start"
                 icon=""
                 severity="success"
-                className="w-10rem mt-5 bg-teal-900"
+                className="w-10rem mt-6 "
               >
                 <i className="fa-solid fa-user pr-3"></i>
               </Button>
+              <div className="flex justify-content-between items-center mt-5">
+                <p className="text-white">No tienes cuenta?</p>
+                <Link to="/register" className=" mt-3 font-bold">
+                  Registrate
+                </Link>
+              </div>
+              <Link
+                to={"/"}
+                className="w-10rem mt-6 text-white flex justify-content-start align-items-center"
+              >
+                <p className="text-white text-xs m-0 mt-1 mr-2">Go home</p>
+                <i className="fa-solid fa-house pr-3 text-white"></i>
+              </Link>
             </div>
-          </Card>
+          </div>
         </form>
       </div>
-      <div className="login-right col-12 sm:col-12 md:col-6 text-blue-100 bg-teal-700"></div>
+      <div className="login-right md:col-8 bg-white"></div>
     </div>
   );
 };

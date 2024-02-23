@@ -1,9 +1,10 @@
 import React from "react";
-import { Card } from "primereact/card";
+
 import { Image } from "primereact/image";
 import { Button } from "primereact/button";
-
+import { useNavigate } from "react-router-dom";
 const Midle = () => {
+  const navigate = useNavigate();
   return (
     <>
       <div className=" pb-2 pt-8">
@@ -24,6 +25,7 @@ const Midle = () => {
               quisquam repellat libero asperiores earum nam nobis.
             </p>
             <Button
+              onClick={() => navigate("/register")}
               className="bg-white border-2 border-blue-500 text-blue-500"
               label="Join Now"
               rounded
@@ -45,6 +47,7 @@ const Midle = () => {
               quisquam repellat libero asperiores earum nam nobis.
             </p>
             <Button
+              onClick={() => navigate("/register")}
               className="bg-white border-2 border-blue-500 text-blue-500"
               label="Join Now"
               rounded
