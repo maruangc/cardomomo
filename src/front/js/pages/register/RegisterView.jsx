@@ -6,10 +6,6 @@ import { Button } from "primereact/button";
 
 export const Register = () => {
   const { actions, store } = useContext(Context);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const [registered, setRegistered] = useState(false);
 
   const handleRegister = async (event) => {
