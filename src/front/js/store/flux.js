@@ -16,7 +16,10 @@ const getState = ({ getStore, getActions, setStore }) => {
         const mes = fecha.getMonth() + 1;
         const dia = fecha.getDate();
 
-        const fechaFormateada = `${dia}/${mes}/${año}`;
+        const hora = fecha.getHours();
+        const minutos = fecha.getMinutes();
+
+        const fechaFormateada = `${dia}/${mes}/${año} ${hora}:${minutos}`;
 
         return fechaFormateada;
       },
@@ -86,7 +89,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       updateById: async (table, id, fields) => {
         try {
-          const store = getStore();
           const resp = await fetch(
             process.env.BACKEND_URL + "/" + table + "/edit/" + id,
             {
@@ -99,16 +101,17 @@ const getState = ({ getStore, getActions, setStore }) => {
             }
           );
           const data = await resp.json();
+
+          if (!data.ok) {
+            toast(data.error);
+          }
+          return data;
         } catch (error) {
           console.log(
             `Error en funcion updateTable(${table}, ${id}, ${fields})`,
             error
           );
         }
-        if (!data.ok) {
-          toast(data.error);
-        }
-        return data;
       },
       deleteById: async (table, id) => {
         try {
@@ -192,12 +195,11 @@ const getState = ({ getStore, getActions, setStore }) => {
         return data;
       },
       getAll: async (table, limit, offset) => {
-        let urlextend = "0";
+        let urlextend = `?limit=0&offset=0`;
         if (limit > 0) {
           urlextend = `?limit=${limit}&offset=${offset}`;
         }
         try {
-          const store = getStore();
           const resp = await fetch(
             process.env.BACKEND_URL + "/" + table + "/all/" + urlextend,
             {
@@ -209,16 +211,16 @@ const getState = ({ getStore, getActions, setStore }) => {
             }
           );
           const data = await resp.json();
+          if (!data.ok) {
+            toast(data.error);
+          }
+          return data;
         } catch (error) {
           console.log(
             `Error en funcion getAll(${table}, ${limit}, ${offset})`,
             error
           );
         }
-        if (!data.ok) {
-          toast(data.error);
-        }
-        return data;
       },
     },
   };

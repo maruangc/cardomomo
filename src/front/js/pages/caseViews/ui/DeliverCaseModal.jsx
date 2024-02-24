@@ -1,11 +1,32 @@
 import React, { useState } from "react";
+import { useContext } from "react";
+import { Context } from "../../../store/appContext";
+import { useParams } from "react-router-dom";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import { InputTextarea } from "primereact/inputtextarea";
 
-const DeliverCaseModal = ({ props }) => {
-  const [setIsDelivered, deliverModalvalue, setDeliverModalValue] = props;
+const DeliverCaseModal = ({
+  deliverModalValue,
+  setDeliverModalValue,
+  setState,
+  caseData,
+}) => {
+  const { id } = useParams();
   const [visible, setVisible] = useState(false);
+  const { actions } = useContext(Context);
+
+  const handelDeliveredCase = async (value, id) => {
+    const response = await actions.updateById("case", id, {
+      delivered_description: value,
+    });
+    console.log(response);
+    if (response.ok) {
+      setVisible(false);
+      setState("delivered", id);
+    }
+  };
+
   return (
     <>
       <Button
@@ -14,6 +35,7 @@ const DeliverCaseModal = ({ props }) => {
         onClick={() => {
           setVisible(true);
         }}
+        disabled={caseData.delivered}
       />
       <Dialog
         visible={visible}
@@ -29,13 +51,15 @@ const DeliverCaseModal = ({ props }) => {
             Para poder entregar el caso, es obligatorio generar un resumen del
             trabajo entregado.
           </p>
+
           <InputTextarea
-            value={deliverModalvalue}
+            value={deliverModalValue}
             onChange={(e) => setDeliverModalValue(e.target.value)}
             rows={5}
             cols={30}
             className="w-full"
           />
+
           <div className="flex gap-3">
             <Button
               label="Cancelar"
@@ -50,8 +74,7 @@ const DeliverCaseModal = ({ props }) => {
               label="Entregar Caso"
               rounded
               onClick={() => {
-                setIsDelivered(true);
-                setVisible(false);
+                handelDeliveredCase(deliverModalValue, id);
               }}
               severity="success"
             />

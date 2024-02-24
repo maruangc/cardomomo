@@ -1,15 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { Context } from "../../../store/appContext";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
+import { useParams } from "react-router-dom";
 import { InputTextarea } from "primereact/inputtextarea";
 
 const CloseCaseModal = ({
-  handleClose,
-  closeModalValue,
+  closeModalvalue,
   setCloseModalValue,
+  setState,
+  statusCase,
 }) => {
   const [visible, setVisible] = useState(false);
+  const { id } = useParams();
+  const { actions } = useContext(Context);
 
+  const handelCloseCase = async (value, id) => {
+    console.log(value);
+    const response = await actions.updateById("case", id, {
+      close_description: value,
+    });
+
+    console.log(response);
+    if (response.ok) {
+      setState("closed", id);
+      setVisible(false);
+    }
+  };
   return (
     <>
       <Button
@@ -18,6 +35,7 @@ const CloseCaseModal = ({
         onClick={() => {
           setVisible(true);
         }}
+        disabled={statusCase != "started"}
       />
       <Dialog
         visible={visible}
@@ -34,7 +52,7 @@ const CloseCaseModal = ({
             resumen del trabajo culminado.
           </p>
           <InputTextarea
-            value={closeModalValue}
+            value={closeModalvalue}
             onChange={(e) => setCloseModalValue(e.target.value)}
             rows={5}
             cols={30}
@@ -54,8 +72,7 @@ const CloseCaseModal = ({
               label="Cerrar caso"
               rounded
               onClick={() => {
-                handleClose();
-                setVisible(false);
+                handelCloseCase(closeModalvalue, id);
               }}
               severity="success"
             />
