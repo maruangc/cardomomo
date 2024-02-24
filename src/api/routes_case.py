@@ -273,7 +273,9 @@ def edit_case(id):
 @routes.route('/setstate/<int:id>', endpoint='set_state', methods=['PUT'])
 @jwt_required()
 def set_state(id):
+  
   filter=Case.query.filter_by(id=id).one_or_none()
+  
   if filter is None:
       return jsonify({'ok':False,'error':'case id not found ','status':404}),404
   body=request.json
@@ -282,18 +284,21 @@ def set_state(id):
   started=body.get('started', None)
   closed=body.get('closed', None)
   delivered=body.get('delivered', None)
+  
   if started is not None and type(started)!=bool:
     return jsonify({'ok':False,'error':'started must be a boolean ','status':400}),400
   if closed is not None and type(closed)!=bool:
     return jsonify({'ok':False,'error':'closed must be a boolean ','status':400}),400
   if delivered is not None and type(delivered)!=bool:
-    return jsonify({'ok':False,'error':'delivered must be a boolean ','status':400}),400        
+    return jsonify({'ok':False,'error':'delivered must be a boolean ','status':400}),400    
+      
   filter.started=started if started is not None else filter.started
   filter.date_init=datetime.now().strftime('%Y-%m-%d %H:%M:%S') if started is True else filter.date_init
   filter.closed=closed if closed is not None else filter.closed
   filter.close_date=datetime.now().strftime('%Y-%m-%d %H:%M:%S') if closed is True else filter.close_date
   filter.delivered=delivered if delivered is not None else filter.delivered
   filter.delivered_date=datetime.now().strftime('%Y-%m-%d %H:%M:%S') if delivered is True else filter.delivered_date
+  
   try:
       db.session.commit()
       return jsonify({'ok':True,'data': 'case id updated','status':200}),200

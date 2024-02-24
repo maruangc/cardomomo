@@ -1,8 +1,20 @@
 """empty message
 
-Revision ID: 93c665760ef7
+<<<<<<<< HEAD:migrations/versions/96c3f95f0db2_.py
+Revision ID: 96c3f95f0db2
 Revises: 
-Create Date: 2024-02-21 13:54:49.625395
+Create Date: 2024-02-14 18:55:18.939271
+========
+<<<<<<<< HEAD:migrations/versions/96da0e81fa4c_.py
+Revision ID: 96da0e81fa4c
+Revises: 
+Create Date: 2024-02-19 17:51:56.679389
+========
+Revision ID: 2c2bcade1fa4
+Revises: 
+Create Date: 2024-02-19 13:08:11.383882
+>>>>>>>> 99976d755278bb1a677857516aa449ee8219b150:migrations/versions/2c2bcade1fa4_.py
+>>>>>>>> 38be8ceb1bc8fb5d1eea880d273d70f1169908ac:migrations/versions/2c2bcade1fa4_.py
 
 """
 from alembic import op
@@ -10,7 +22,15 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '93c665760ef7'
+<<<<<<<< HEAD:migrations/versions/96c3f95f0db2_.py
+revision = '96c3f95f0db2'
+========
+<<<<<<<< HEAD:migrations/versions/96da0e81fa4c_.py
+revision = '96da0e81fa4c'
+========
+revision = '2c2bcade1fa4'
+>>>>>>>> 99976d755278bb1a677857516aa449ee8219b150:migrations/versions/2c2bcade1fa4_.py
+>>>>>>>> 38be8ceb1bc8fb5d1eea880d273d70f1169908ac:migrations/versions/2c2bcade1fa4_.py
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -50,6 +70,12 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('identification')
     )
+    op.create_table('status',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('status', sa.String(length=100), nullable=False),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('status')
+    )
     op.create_table('typeservice',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('type_service', sa.String(length=100), nullable=False),
@@ -76,6 +102,7 @@ def upgrade():
     sa.Column('started', sa.Boolean(), nullable=False),
     sa.Column('date_init', sa.DateTime(), nullable=True),
     sa.Column('typeservice_id', sa.Integer(), nullable=False),
+    sa.Column('status_id', sa.Integer(), nullable=False),
     sa.Column('initial_note', sa.String(length=400), nullable=True),
     sa.Column('description', sa.String(length=400), nullable=True),
     sa.Column('closed', sa.Boolean(), nullable=False),
@@ -87,6 +114,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['category_id'], ['category.id'], ),
     sa.ForeignKeyConstraint(['customer_id'], ['customer.id'], ),
     sa.ForeignKeyConstraint(['professional_id'], ['professional.id'], ),
+    sa.ForeignKeyConstraint(['status_id'], ['status.id'], ),
     sa.ForeignKeyConstraint(['typeservice_id'], ['typeservice.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -98,6 +126,7 @@ def downgrade():
     op.drop_table('case')
     op.drop_table('user')
     op.drop_table('typeservice')
+    op.drop_table('status')
     op.drop_table('professional')
     op.drop_table('customer')
     op.drop_table('category')

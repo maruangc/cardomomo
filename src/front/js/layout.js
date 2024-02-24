@@ -46,7 +46,7 @@ const Layout = () => {
             {/* CASES ROUTES */}
             <Route element={<Navbar />} path="/case">
               <Route path="" element={<CaseList />} />
-              <Route path="detail" element={<CaseDetail />} />
+              <Route path="detail/:id" element={<CaseDetail />} />
               <Route path="edit/:id" element={<CaseEdit />} />
               <Route element={<h1>Not found Casos!</h1>} path="*" />
             </Route>

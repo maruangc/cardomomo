@@ -16,7 +16,10 @@ const getState = ({ getStore, getActions, setStore }) => {
         const mes = fecha.getMonth() + 1;
         const dia = fecha.getDate();
 
-        const fechaFormateada = `${dia}/${mes}/${año}`;
+        const hora = fecha.getHours();
+        const minutos = fecha.getMinutes();
+
+        const fechaFormateada = `${dia}/${mes}/${año} ${hora}:${minutos}`;
 
         return fechaFormateada;
       },
@@ -87,7 +90,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       updateById: async (table, id, fields) => {
         try {
-          const store = getStore();
           const resp = await fetch(
             process.env.BACKEND_URL + "/" + table + "/edit/" + id,
             {

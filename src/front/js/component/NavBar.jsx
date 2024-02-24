@@ -82,19 +82,20 @@ export default function Navbar() {
             <div className="w-full">
               <Button
                 className="w-full bg-primary-900 border-none border-primary-500 border-bottom-1 border-top-1 mb-4 mt-2 text-white font-bold"
+                onClick={() => navigate("/case/detail/1")}
+              >
+                Detalle de casos
+              </Button>
+            </div>
+            <div className="w-full">
+              <Button
+                className="w-full bg-primary-900 border-none border-primary-500 border-bottom-1 border-top-1 mb-4 mt-2 text-white font-bold"
                 onClick={() => navigate("/customer")}
               >
                 Lista clientes
               </Button>
             </div>
-            <div className="w-full">
-              <Button
-                className="w-full bg-primary-900 border-none border-primary-500 border-bottom-1 border-top-1  mb-4 text-white font-bold"
-                onClick={() => navigate("/customer/detail")}
-              >
-                Detalles casos
-              </Button>
-            </div>
+
             <div className="w-full">
               <Button
                 className="w-full bg-primary-900 border-none border-primary-500 border-bottom-1 border-top-1 mb-4 text-white font-bold"
@@ -125,7 +126,7 @@ export default function Navbar() {
               aria-controls="popup_menu_right"
               aria-haspopup
             >
-              <i class="fa-solid fa-user mr-2 text-xl"></i> User
+              <i className="fa-solid fa-user mr-2 text-xl"></i> User
             </Button>
           </div>
         </div>
