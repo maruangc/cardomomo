@@ -271,7 +271,7 @@ def edit_case(id):
 
 
 @routes.route('/setstate/<int:id>', endpoint='set_state', methods=['PUT'])
-@jwt_required
+@jwt_required()
 def set_state(id):
   filter=Case.query.filter_by(id=id).one_or_none()
   if filter is None:

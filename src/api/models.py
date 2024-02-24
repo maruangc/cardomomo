@@ -53,7 +53,6 @@ class Case(db.Model):
             "started": self.started,
             "date_init": self.date_init,
             "typeservice_id": self.typeservice_id,
-            "status_id": self.status_id,
             "initial_note": self.initial_note,
             "description": self.description,
             "closed": self.closed,

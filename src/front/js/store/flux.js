@@ -30,9 +30,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(e),
           });
-
           const data = await resp.json();
-
           if (!data.ok) {
             toast(data.error);
           } else {
@@ -76,16 +74,16 @@ const getState = ({ getStore, getActions, setStore }) => {
             }
           );
           const data = await resp.json();
+          if (!data.ok) {
+            toast(data.error);
+          }
+          return data;
         } catch (error) {
           console.log(
             `Error en funcion insertTable(${table}, ${fields})`,
             error
           );
         }
-        if (!data.ok) {
-          toast(data.error);
-        }
-        return data;
       },
       updateById: async (table, id, fields) => {
         try {
@@ -102,16 +100,16 @@ const getState = ({ getStore, getActions, setStore }) => {
             }
           );
           const data = await resp.json();
+          if (!data.ok) {
+            toast(data.error);
+          }
+          return data;
         } catch (error) {
           console.log(
             `Error en funcion updateTable(${table}, ${id}, ${fields})`,
             error
           );
         }
-        if (!data.ok) {
-          toast(data.error);
-        }
-        return data;
       },
       deleteById: async (table, id) => {
         try {
@@ -126,13 +124,13 @@ const getState = ({ getStore, getActions, setStore }) => {
             }
           );
           const data = await resp.json();
+          if (!data.ok) {
+            toast(data.error);
+          }
+          return data;
         } catch (error) {
           console.log(`Error en funcion deleteById(${table}, ${id}):`, error);
         }
-        if (!data.ok) {
-          toast(data.error);
-        }
-        return data;
       },
       getById: async (table, id) => {
         try {
@@ -154,13 +152,13 @@ const getState = ({ getStore, getActions, setStore }) => {
             }
           );
           const data = await resp.json();
+          if (!data.ok) {
+            toast(data.error);
+          }
+          return data;
         } catch (error) {
           console.log(`Error en funcion getById(${table}, ${id}):`, error);
         }
-        if (!data.ok) {
-          toast(data.error);
-        }
-        return data;
       },
       getFilter: async (table, fields, limit, offset) => {
         // http://127.0.0.1:3001/customer/all/?limit=1&offset=1
@@ -182,24 +180,23 @@ const getState = ({ getStore, getActions, setStore }) => {
             }
           );
           const data = await resp.json();
+          if (!data.ok) {
+            toast(data.error);
+          }
+          return data;
         } catch (error) {
           console.log(
             `Error en funcion getFilter(${table}, ${fields}, ${limit}, ${offset})`,
             error
           );
         }
-        if (!data.ok) {
-          toast(data.error);
-        }
-        return data;
       },
       getAll: async (table, limit, offset) => {
-        let urlextend = "0";
+        let urlextend = "?limit=0&offset=0";
         if (limit > 0) {
           urlextend = `?limit=${limit}&offset=${offset}`;
         }
         try {
-          const store = getStore();
           const resp = await fetch(
             process.env.BACKEND_URL + "/" + table + "/all/" + urlextend,
             {
@@ -211,16 +208,26 @@ const getState = ({ getStore, getActions, setStore }) => {
             }
           );
           const data = await resp.json();
+          if (!data.ok) {
+            toast(data.error);
+          }
+          return data;
         } catch (error) {
           console.log(
             `Error en funcion getAll(${table}, ${limit}, ${offset})`,
             error
           );
         }
-        if (!data.ok) {
-          toast(data.error);
-        }
-        return data;
+      },
+      getalldata: async () => {
+        const a = await getActions().login({
+          email: "maruands@hotmail.com",
+          password: "12345",
+        });
+        const s = await getActions().updateById("case", 1, {
+          close_description: "Hi this is a Hola dhjhds",
+        });
+        console.log("s: ", s);
       },
     },
   };
