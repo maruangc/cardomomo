@@ -192,12 +192,11 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
       getAll: async (table, limit, offset) => {
-        let urlextend = "0";
+        let urlextend = "?limit=0&offset=0";
         if (limit > 0) {
           urlextend = `?limit=${limit}&offset=${offset}`;
         }
         try {
-          const store = getStore();
           const resp = await fetch(
             process.env.BACKEND_URL + "/" + table + "/all/" + urlextend,
             {
@@ -219,6 +218,16 @@ const getState = ({ getStore, getActions, setStore }) => {
             error
           );
         }
+      },
+      getalldata: async () => {
+        const a = await getActions().login({
+          email: "maruands@hotmail.com",
+          password: "12345",
+        });
+        const s = await getActions().updateById("case", 1, {
+          close_description: "Hi this is a Hola dhjhds",
+        });
+        console.log("s: ", s);
       },
     },
   };
