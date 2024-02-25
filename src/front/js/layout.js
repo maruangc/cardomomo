@@ -65,6 +65,9 @@ const Layout = () => {
               <Route element={<h1>Not found Professional!</h1>} path="*" />
             </Route>
             <Route element={<h1>Not found General!</h1>} path="*" />
+
+            {/* CATEGORY ROUTES */}
+            <Route element={<Navbar />} path="/category"></Route>
           </Routes>
         </PrimeReactProvider>
       </BrowserRouter>
