@@ -59,6 +59,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             toast("granted access, token generated");
             return data;
           }
+          return data;
         } catch (error) {
           console.log(`Error en funcion login(${e}):`, error);
         }
