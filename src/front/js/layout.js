@@ -22,6 +22,7 @@ import CustomerList from "./pages/customerView/CustomerList.jsx";
 import CaseEdit from "./pages/caseViews/CaseEdit.jsx";
 import CaseList from "./pages/caseViews/CaseList.jsx";
 import LandingNavbar from "./pages/landingPage/LandingNavbar.jsx";
+import CategoryDetails from "./pages/categoryDetail/CategoryDetail.jsx";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -67,7 +68,10 @@ const Layout = () => {
             <Route element={<h1>Not found General!</h1>} path="*" />
 
             {/* CATEGORY ROUTES */}
-            <Route element={<Navbar />} path="/category"></Route>
+            <Route element={<Navbar />} path="/category">
+              <Route path="/category" element={<CategoryDetails />} />
+              <Route element={<h1>Not found Professional!</h1>} path="*" />
+            </Route>
           </Routes>
         </PrimeReactProvider>
       </BrowserRouter>
