@@ -1,14 +1,16 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Context } from "../../store/appContext";
-import { useNavigate } from "react-router-dom";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
-import { Button } from "primereact/button";
-import { Paginator } from "primereact/paginator";
-import CustomeFilter from "./CustomerFilter.jsx";
+import React from "react";
+import ListComponent from "../common/ListComponent.jsx";
 
 const columns = [
   { field: "id", header: "id" },
+  { field: "identification", header: "Identificacion" },
+  { field: "name", header: "Nombre" },
+  { field: "phone", header: "Telefono" },
+  { field: "email", header: "Email" },
+  { field: "address", header: "Direccion" },
+];
+
+const columnFilter = [
   { field: "identification", header: "Identificacion" },
   { field: "name", header: "Nombre" },
   { field: "phone", header: "Telefono" },
@@ -25,6 +27,18 @@ const initialFieldsValues = {
 };
 
 const CustomerList = () => {
+  return (
+    <ListComponent
+      initialFieldsValues={initialFieldsValues}
+      table="customer"
+      columns={columns}
+      columnFilter={columnFilter}
+    />
+  );
+};
+export default CustomerList;
+
+/*
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
   const [customers, setCustomers] = useState();
@@ -53,11 +67,11 @@ const CustomerList = () => {
 
   const header = (
     <div className="flex flex-row justify-content-between">
-      <CustomeFilter
+      <CustomerFilter
         setFiltered={setFiltered}
+        filtered={filtered}
         setFilterFields={setFilterFields}
         filterFields={filterFields}
-        filtered={filtered}
         initialFieldsValues={initialFieldsValues}
       />
     </div>
@@ -106,4 +120,4 @@ const CustomerList = () => {
     </div>
   );
 };
-export default CustomerList;
+*/

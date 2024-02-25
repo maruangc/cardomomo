@@ -1,17 +1,16 @@
-import React, { useState, useContext } from "react";
-import { Context } from "../../store/appContext";
+import React, { useState } from "react";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 
-const CustomeFilter = ({
+const DataFilter = ({
   setFiltered,
   setFilterFields,
   filterFields,
   filtered,
   initialFieldsValues,
+  columnFilter,
 }) => {
-  const { store } = useContext(Context);
   const [visible, setVisible] = useState(false);
 
   const handleSubmit = () => {
@@ -51,18 +50,42 @@ const CustomeFilter = ({
       >
         <div className="flex flex-column gap-3 justify-content-between">
           <div className="flex flex-column gap-3">
-            <label htmlFor="identification">identification</label>
-            <InputText
-              name="identification"
-              value={filterFields.identification}
-              onChange={(e) =>
-                setFilterFields({
-                  ...filterFields,
-                  identification: e.target.value,
-                })
-              }
-            />
+            {!columnFilter ? (
+              <h2>Sin columnas a filtrar</h2>
+            ) : (
+              <>
+                {columnFilter.map((item, index) => {
+                  return (
+                    <div
+                      className="flex flex-column gap-3"
+                      key={index + item.field}
+                    >
+                      <label htmlFor={item.field}>{item.header}</label>
+                      <InputText
+                        name={item.field}
+                        value={filterFields[item.field]}
+                        onChange={(e) =>
+                          setFilterFields({
+                            ...filterFields,
+                            [item.field]: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                  );
+                })}
+              </>
+            )}
           </div>
+        </div>
+      </Dialog>
+    </div>
+  );
+};
+
+export default DataFilter;
+
+/*
           <div className="flex flex-column gap-3">
             <label htmlFor="id">Name</label>
             <InputText
@@ -103,10 +126,4 @@ const CustomeFilter = ({
               }
             />
           </div>
-        </div>
-      </Dialog>
-    </div>
-  );
-};
-
-export default CustomeFilter;
+          */
