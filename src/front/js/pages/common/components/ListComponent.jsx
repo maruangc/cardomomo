@@ -1,10 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Context } from "../../store/appContext";
+import { Context } from "../../../store/appContext.js";
 import { useNavigate } from "react-router-dom";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Paginator } from "primereact/paginator";
-import DataFilter from "../customerView/DataFilter.jsx";
+import DataFilter from "./DataFilter.jsx";
 
 const ListComponent = ({
   initialFieldsValues, //({}) se define en el view de la lista

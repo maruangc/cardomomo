@@ -1,5 +1,5 @@
 import React from "react";
-import ListComponent from "../common/ListComponent.jsx";
+import ListComponent from "../common/components/ListComponent.jsx";
 
 const columns = [
   { field: "id", header: "id" },
