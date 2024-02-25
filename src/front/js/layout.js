@@ -54,7 +54,7 @@ const Layout = () => {
             {/* CUSTOMER ROUTES  */}
             <Route element={<Navbar />} path="/customer">
               <Route path="" element={<CustomerList />} />
-              <Route path="detail" element={<CustomerDetails />} />
+              <Route path="detail/:id" element={<CustomerDetails />} />
               <Route element={<h1>Not found Clientes!</h1>} path="*" />
             </Route>
 

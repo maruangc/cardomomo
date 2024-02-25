@@ -125,7 +125,7 @@ export default function Navbar() {
               aria-controls="popup_menu_right"
               aria-haspopup
             >
-              <i class="fa-solid fa-user mr-2 text-xl"></i> User
+              <i className="fa-solid fa-user mr-2 text-xl"></i> User
             </Button>
           </div>
         </div>

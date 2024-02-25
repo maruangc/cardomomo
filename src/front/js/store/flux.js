@@ -162,16 +162,15 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       getFilter: async (table, fields, limit, offset) => {
         // http://127.0.0.1:3001/customer/all/?limit=1&offset=1
-        let urlextend = "0";
+        let urlextend = "?limit=0&offset=0";
         if (limit > 0) {
           urlextend = `?limit=${limit}&offset=${offset}`;
         }
         try {
-          const store = getStore();
           const resp = await fetch(
             process.env.BACKEND_URL + "/" + table + "/filter/" + urlextend,
             {
-              method: "GET",
+              method: "POST",
               headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -180,6 +179,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             }
           );
           const data = await resp.json();
+          console.log(data);
           if (!data.ok) {
             toast(data.error);
           }

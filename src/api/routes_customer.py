@@ -99,16 +99,17 @@ def get_customers():
 # http://127.0.0.1:3001/customer/all/?limit=1&offset=1
     limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
     offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
+    count=Customer.query.all()
     if limit=='0':
         filter=Customer.query.all()
     else:
         filter=Customer.query.offset(offset).limit(limit).all()
-    dic={'ok':True,'status':200,'count':len(filter)}
+    dic={'ok':True,'status':200,'count':len(count)}
     dic['data']=[customer.serialize() for customer in filter]
     dic['offset']=int(offset)+int(limit)
     return jsonify(dic)
 
-@routes.route('/filter',endpoint='filter_customer', methods=['GET'])
+@routes.route('/filter',endpoint='filter_customer', methods=['POST'])
 @jwt_required()
 def filter_customer():
     limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
@@ -122,6 +123,7 @@ def filter_customer():
     comment=body.get('comment', None) if body.get('comment', None) is not None else ''
     created_from=body.get('created_from', None) if body.get('created_from', None) is not None else ''
     created_until=body.get('created_until', None) if body.get('created_until', None) is not None else ''
+    print('------Body: ', body)
     if (name+identification+phone+email+address+comment).strip()=="":
         return jsonify({'ok':False,'error':'all fields are missing ','status':400}),400
     
