@@ -8,86 +8,95 @@ import HeaderButtons from "./ui/HeaderButtons.jsx";
 import DeliverDetail from "./ui/DeliverDetail.jsx";
 /* Data */
 import dataJson from "./caseData.json";
-
+import SkeletonCase from "./ui/SkeletonCase.jsx";
+import { toast } from "react-toastify";
 const CaseDetail = () => {
-  //const [data, setData] = useState({});
-  const [customer, setCustomer] = useState({});
-  const [professional, setProfessional] = useState({});
-  const [caseClosed, setCaseClosed] = useState(false);
-  const [caseDelivered, setCaseDelivered] = useState(false);
-  const [caseStarted, setCaseStarted] = useState(false);
-
-  const [isClose, setIsClose] = useState(caseClosed);
-  const [isDelivered, setIsDelivered] = useState(caseDelivered);
-  const [isStarted, setIsStarted] = useState(caseStarted);
-  const [closeModalvalue, setCloseModalValue] = useState("");
-  const [deliverModalvalue, setDeliverModalValue] = useState("");
-  const [status, setStatus] = useState("CREADO");
-
   const { actions } = useContext(Context);
 
-  const handleClose = () => {
-    if (!isClose) {
-      setIsClose(true);
-    }
-  };
-
-  const handleStatus = () => {
-    if (caseDelivered) {
-      setStatus("ENTREGADO");
-      return;
-    }
-    if (caseClosed) {
-      setStatus("CERRADO");
-      return;
-    }
-    if (caseStarted) {
-      setStatus("INICIADO");
-      return;
-    }
-  };
+  const [data, setData] = useState();
+  const [closeModalvalue, setCloseModalValue] = useState("");
+  const [deliverModalvalue, setDeliverModalValue] = useState("");
+  const [statusCase, setStatusCase] = useState("created");
 
   const dataQuery = async () => {
     const response = await actions.getById("case", 1);
-    //setData(response.data);
-    setCustomer(response.data.customer);
-    setProfessional(response.data.professional);
-    setCaseClosed(response.data.case.closed);
-    setCaseDelivered(response.data.case.delivered);
-    setCaseStarted(response.data.case.started);
+    if (response.ok) {
+      const handleStatus = response.data.case.delivered
+        ? "delivered"
+        : response.data.case.closed
+        ? "closed"
+        : response.data.case.started
+        ? "started"
+        : "created";
+      setData(response.data);
+      setStatusCase(handleStatus);
+    }
+  };
 
-    handleStatus();
+  const setState = async (status, id) => {
+    const bodyQuery = {};
+    bodyQuery[status] = true;
+
+    const response = await fetch(
+      process.env.BACKEND_URL + `/case/setstate/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(bodyQuery),
+      }
+    );
+
+    const stateStatus = await response.json();
+    if (stateStatus.ok) {
+      toast(stateStatus.data);
+      setStatusCase(status);
+    }
   };
 
   useEffect(() => {
     dataQuery();
-  }, []);
+  }, [statusCase]);
 
+  if (!data) {
+    return <SkeletonCase />;
+  }
+
+  console.log(data);
   return (
     <>
       <div className="w-full flex justify-content-center">
         <div className="flex flex-column gap-5 px-5 py-5 w-full max-container-width">
           <HeaderButtons
-            handleClose={handleClose}
             closeModalvalue={closeModalvalue}
             setCloseModalValue={setCloseModalValue}
+            isStarted={data.case.started}
+            isClosed={data.case.closed}
+            isDelivered={data.case.delivered}
+            dataQuery={dataQuery}
+            setStatusCase={setStatusCase}
+            statusCase={statusCase}
+            setState={setState}
           />
-          <CostumerData customer={customer} />
-          <ProfessionalData professional={professional} />
-          <StateDetail dataCase={dataJson.data} />
-          {isClose && (
+          <CostumerData customer={data.customer} />
+          <ProfessionalData professional={data.professional} />
+          <StateDetail data={data} />
+          {data.case.closed && (
             <div className="grid gap-5 justify-content-between">
               <CloseDetail
-                props={[
-                  setIsDelivered,
-                  isDelivered,
-                  closeModalvalue,
-                  deliverModalvalue,
-                  setDeliverModalValue,
-                ]}
+                closeModalValue={closeModalvalue}
+                deliverModalValue={deliverModalvalue}
+                setDeliverModalValue={setDeliverModalValue}
+                caseData={data.case}
+                setState={setState}
               />
-              {isDelivered && (
-                <DeliverDetail deliverModalvalue={deliverModalvalue} />
+              {data.case.delivered && (
+                <DeliverDetail
+                  deliverModalvalue={deliverModalvalue}
+                  caseData={data.case}
+                />
               )}
             </div>
           )}

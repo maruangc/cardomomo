@@ -1,14 +1,8 @@
 """empty message
 
-<<<<<<<< HEAD:migrations/versions/e4f2b8349f90_.py
-Revision ID: e4f2b8349f90
+Revision ID: 87e2534a5ca7
 Revises: 
-Create Date: 2024-02-21 14:01:43.065695
-========
-Revision ID: e5e69bd377bc
-Revises: 
-Create Date: 2024-02-21 19:59:33.119946
->>>>>>>> register:migrations/versions/e5e69bd377bc_.py
+Create Date: 2024-02-23 21:30:40.400148
 
 """
 from alembic import op
@@ -16,11 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-<<<<<<<< HEAD:migrations/versions/e4f2b8349f90_.py
-revision = 'e4f2b8349f90'
-========
-revision = 'e5e69bd377bc'
->>>>>>>> register:migrations/versions/e5e69bd377bc_.py
+revision = '87e2534a5ca7'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -60,12 +50,6 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('identification')
     )
-    op.create_table('status',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('status', sa.String(length=100), nullable=False),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('status')
-    )
     op.create_table('typeservice',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('type_service', sa.String(length=100), nullable=False),
@@ -92,7 +76,6 @@ def upgrade():
     sa.Column('started', sa.Boolean(), nullable=False),
     sa.Column('date_init', sa.DateTime(), nullable=True),
     sa.Column('typeservice_id', sa.Integer(), nullable=False),
-    sa.Column('status_id', sa.Integer(), nullable=False),
     sa.Column('initial_note', sa.String(length=400), nullable=True),
     sa.Column('description', sa.String(length=400), nullable=True),
     sa.Column('closed', sa.Boolean(), nullable=False),
@@ -104,7 +87,6 @@ def upgrade():
     sa.ForeignKeyConstraint(['category_id'], ['category.id'], ),
     sa.ForeignKeyConstraint(['customer_id'], ['customer.id'], ),
     sa.ForeignKeyConstraint(['professional_id'], ['professional.id'], ),
-    sa.ForeignKeyConstraint(['status_id'], ['status.id'], ),
     sa.ForeignKeyConstraint(['typeservice_id'], ['typeservice.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -116,7 +98,6 @@ def downgrade():
     op.drop_table('case')
     op.drop_table('user')
     op.drop_table('typeservice')
-    op.drop_table('status')
     op.drop_table('professional')
     op.drop_table('customer')
     op.drop_table('category')

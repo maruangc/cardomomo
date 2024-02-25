@@ -16,7 +16,10 @@ const getState = ({ getStore, getActions, setStore }) => {
         const mes = fecha.getMonth() + 1;
         const dia = fecha.getDate();
 
-        const fechaFormateada = `${dia}/${mes}/${año}`;
+        const hora = fecha.getHours();
+        const minutos = fecha.getMinutes();
+
+        const fechaFormateada = `${dia}/${mes}/${año} ${hora}:${minutos}`;
 
         return fechaFormateada;
       },
@@ -51,14 +54,14 @@ const getState = ({ getStore, getActions, setStore }) => {
           const data = await resp.json();
           if (!data.ok) {
             toast(data.error);
-            return false;
+          } else {
+            localStorage.setItem("token", data.token);
+            toast("granted access, token generated");
           }
-          localStorage.setItem("token", data.token);
-          toast("granted access, token generated");
-          return data;
         } catch (error) {
           console.log(`Error en funcion login(${e}):`, error);
         }
+        return data;
       },
       insertInTable: async (table, fields) => {
         try {
@@ -87,7 +90,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       updateById: async (table, id, fields) => {
         try {
-          const store = getStore();
           const resp = await fetch(
             process.env.BACKEND_URL + "/" + table + "/edit/" + id,
             {
