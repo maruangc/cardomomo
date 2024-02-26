@@ -31,7 +31,7 @@ const personData = {
 
 const ProfessionalDetail = () => {
   return (
-    <div className="w-full flex justify-content-center">
+    <div className="w-full flex justify-content-center h-full">
       <div className="flex flex-column gap-5 px-5 py-5 w-full max-container-width">
         <ButtonSection data={data} btnList={listButtons} />
         <PersonDetails data={personData} />

@@ -65,46 +65,47 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="card flex justify-content-between align-items-center text-white-alpha-90 bg-primary-900 border-bottom-1 border-primary-500 px-4">
+      <div className="card flex justify-content-between align-items-center text-white-alpha-90 bg-primary-black px-4">
         <div>
           <Button
-            className="bg-primary-900 flex justify-content-center align-items-center border-primary-900 font-bol"
+            className="flex justify-content-center align-items-center bg-primary-black border-border-primary	"
             onClick={() => setVisible(true)}
           >
             <i className="fa-solid fa-bars text-xl"></i>
           </Button>
           <Sidebar
             header="Menu"
-            className="p-0 m-0 text-white-alpha-90 bg-primary-900"
+            className="p-0 m-0 text-white-alpha-90 bg-primary-black"
             visible={visible}
             onHide={() => setVisible(false)}
           >
-            <div className="w-full">
-              <Button
-                className="w-full bg-primary-900 border-none border-primary-500 border-bottom-1 border-top-1 mb-4 mt-2 text-white font-bold"
-                onClick={() => navigate("/case/detail/1")}
-              >
-                Detalle de casos
-              </Button>
-            </div>
-            <div className="w-full">
-              <Button
-                className="w-full bg-primary-900 border-none border-primary-500 border-bottom-1 border-top-1 mb-4 mt-2 text-white font-bold"
-                onClick={() => navigate("/customer")}
-              >
-                Lista clientes
-              </Button>
-            </div>
+            <div className="flex flex-column gap-3 mt-3">
+              <div className="w-full">
+                <Button
+                  className="w-full bg-primary-900  text-white "
+                  onClick={() => navigate("/case/detail/1")}
+                >
+                  Detalle de casos
+                </Button>
+              </div>
+              <div className="w-full">
+                <Button
+                  className="w-full bg-primary-black text-white border-transparent	"
+                  onClick={() => navigate("/customer")}
+                >
+                  Lista clientes
+                </Button>
+              </div>
 
-            <div className="w-full">
-              <Button
-                className="w-full bg-primary-900 border-none border-primary-500 border-bottom-1 border-top-1 mb-4 text-white font-bold"
-                onClick={() => navigate("/professional/detail")}
-              >
-                Detalles profesionales
-              </Button>
+              <div className="w-full">
+                <Button
+                  className="w-full bg-primary-900  text-white "
+                  onClick={() => navigate("/professional/detail")}
+                >
+                  Detalles profesionales
+                </Button>
+              </div>
             </div>
-            <hr className="my-4" />
           </Sidebar>
         </div>
 
