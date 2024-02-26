@@ -52,15 +52,17 @@ def get_category(id):
 def get_categories():
     limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
     offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
+    count=Category.query.all()
     if limit=='0':
         filter=Category.query.all()
     else:
         filter=Category.query.offset(offset).limit(limit).all()
-    dic={'ok':True,'status':200,'count':len(filter)}
-    dic['data']=[category.serialize() for category in category_filter]
+    dic={'ok':True,'status':200,'count':len(count)}
+    dic['data']=[category.serialize() for category in filter]
+    dic['offset']=int(offset)+int(limit)
     return jsonify(dic)
 
-@routes_category.route('/filter',endpoint='filter_category', methods=['GET'])
+@routes_category.route('/filter',endpoint='filter_category', methods=['POST'])
 @jwt_required()
 def filter_category():
     limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
@@ -71,9 +73,12 @@ def filter_category():
     if category is None and description is None:
         return jsonify({'ok':False,'error':'at least one field is required ','status':400}),400
     filter=Category.query.filter(
-        Category.category.ilike('%'+category+'%') if category is not None else (Category.id>0),
-        Category.description.ilike('%'+description+'%') if description is not None else (Category.id>0)
+        Category.category.ilike('%'+category+'%') if category is not None else (Category.id>0)
     )
+    if description is not None and description != '':
+        filter=filter.filter(
+            Category.description.ilike('%'+description+'%'))
+    print(str(filter))
     if limit=='0':
         filter=filter.all()
     else:
