@@ -122,12 +122,12 @@ def get_case(id):
 def get_cases():
     limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
     offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
-
+    count=Case.query.all()
     if limit=='0':
         filter=Case.query.all()
     else:
         filter=Case.query.offset(offset).limit(limit).all()
-    dic={'ok':True,'status':200,'data':[],'count':len(filter)}
+    dic={'ok':True,'status':200,'data':[],'count':len(count)}
 
     for eachcase in filter:
       customer_id=eachcase.customer_id
@@ -175,16 +175,10 @@ def edit_case(id):
     category_id=body.get('category_id', None) 
     typeservice_id=body.get('typeservice_id', None) 
     is_active=body.get('is_active', None) 
-    # started=body.get('started', None) 
-    # date_init=body.get('date_init', None) 
     professional_id=body.get('professional_id', None) 
     initial_note=body.get('initial_note', None) 
     description=body.get('description', None) 
-    # closed=body.get('closed', None) 
-    # close_date=body.get('close_date', None) 
     close_description=body.get('close_description', None) 
-    # delivered=body.get('delivered', None) 
-    # delivered_date=body.get('delivered_date', None) 
     delivered_description=body.get('delivered_description', None) 
     if customer_id is None and category_id is None and typeservice_id is None:
        if is_active is None and professional_id is None and initial_note is None and description is None:
@@ -200,12 +194,6 @@ def edit_case(id):
        return jsonify({'ok':False,'error':'is_active must be a boolean ','status':400}),400
     if professional_id is not None and type(professional_id)!=int:
       return jsonify({'ok':False,'error':'professional_id must be a integer ','status':400}),400
-    # if started is not None and type(started)!=bool:
-      #  return jsonify({'ok':False,'error':'started must be a boolean ','status':400}),400
-    # if closed is not None and type(closed)!=bool:
-      # return jsonify({'ok':False,'error':'closed must be a boolean ','status':400}),400
-    # if delivered is not None and type(delivered)!=bool:
-      # return jsonify({'ok':False,'error':'delivered must be a boolean ','status':400}),400        
     if initial_note is not None and type(initial_note)!=str:
       return jsonify({'ok':False,'error':'initial_note must be a string ','status':400}),400        
     if description is not None and type(description)!=str:
@@ -214,52 +202,22 @@ def edit_case(id):
       return jsonify({'ok':False,'error':'close_description must be a string ','status':400}),400            
     if delivered_description is not None and type(delivered_description)!=str:
       return jsonify({'ok':False,'error':'delivered_description must be a string ','status':400}),400            
-    # texto=""
-    # if date_init is not None:
-    #   try: 
-    #       date_init=datetime.strptime(date_init,'%Y-%m-%d %H:%M:%S')
-    #   except Exception as error:
-    #       texto+="date_init - "+str(error)+chr(10)
-    # if close_date is not None:
-    #   try:
-    #       close_date=datetime.strptime(close_date,'%Y-%m-%d %H:%M:%S')
-    #   except Exception as error:
-    #       texto+="close_date - "+str(error)+chr(10)
-    # if delivered_date is not None:
-    #   try:
-    #       delivered_date=datetime.strptime(delivered_date,'%Y-%m-%d %H:%M:%S')
-    #   except Exception as error:
-    #       texto+="delivered_date - "+str(error)+chr(10)
-    # if len(texto)>0:
-    #     return jsonify({'ok':False,'error':texto,'status':400}),400
-    
+   
     filter.category_id=category_id if category_id is not None else filter.category_id
     filter.typeservice_id=typeservice_id if typeservice_id is not None else filter.typeservice_id
     filter.is_active=is_active if is_active is not None else filter.is_active
-    # filter.started=started if started is not None else filter.started
-    # filter.date_init=date_init if date_init is not None else filter.date_init
     filter.professional_id=professional_id if professional_id is not None else filter.professional_id
     filter.initial_note=initial_note if initial_note is not None else filter.initial_note
     filter.description=description if description is not None else filter.description
-    # filter.closed=closed if closed is not None else filter.closed
-    # filter.close_date=close_date if close_date is not None else filter.close_date
     filter.close_description=close_description if close_description is not None else filter.close_description
-    # filter.delivered=delivered if delivered is not None else filter.delivered
-    # filter.delivered_date=delivered_date if delivered_date is not None else filter.delivered_date
     filter.delivered_description=delivered_description if delivered_description is not None else filter.delivered_description
     texto='category_id:'+str(category_id)+', ' if category_id !=None else ''
     texto+='typeservice_id:'+str(typeservice_id)+', ' if typeservice_id != None else ''
     texto+='is_active:'+str(is_active)+', ' if is_active != None else ''
-    # texto+='started:'+str(started)+', ' if started != None else ''
-    # texto+='date_init:'+str(date_init)+', ' if date_init != None else ''
     texto+='professional_id:'+str(professional_id)+', ' if professional_id != None else ''
     texto+='initial_note:'+initial_note+', ' if initial_note != None else ''
     texto+='description:'+description+', ' if description != None else ''
-    # texto+='closed:'+str(closed)+', ' if closed != None else ''
-    # texto+='close_date:'+str(close_date)+', ' if close_date != None else ''
     texto+='close_description:'+close_description+', ' if close_description != None else ''
-    # texto+='delivered:'+str(delivered)+', ' if delivered != None else ''
-    # texto+='delivered_date:'+str(delivered_date)+', ' if delivered_date != None else ''
     texto+='delivered_description:'+delivered_description+', ' if delivered_description != None else ''
     try:
        db.session.commit()
@@ -308,7 +266,7 @@ def set_state(id):
       return jsonify({'ok':False,'error': 'internal server error','status':500}),500
 
     
-@routes.route('/filter', endpoint='filter_cases', methods=['GET'])
+@routes.route('/filter', endpoint='filter_cases', methods=['POST'])
 @jwt_required()
 def filter_cases():
     limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
@@ -397,22 +355,50 @@ def filter_cases():
     if len(texto)>0:
         return jsonify({'ok':False,'error':texto,'status':400}),400
     filter=Case.query.filter(
-      Case.customer_id==customer_id if customer_id is not None else (Case.id > 0),
-      Case.category_id==category_id if category_id is not None else (Case.id > 0),
-      Case.typeservice_id==typeservice_id if typeservice_id is not None else (Case.id > 0),
-      Case.professional_id==professional_id if professional_id is not None else (Case.id > 0),
-      Case.is_active==is_active if is_active is not None else (Case.id > 0),
-      Case.started==started if started is not None else (Case.id > 0),
-      Case.date_init.between(date_init_start,date_init_end) if date_init_start is not None else (Case.id > 0),
-      Case.close_date.between(close_date_start,date_init_end) if close_date_start is not None else (Case.id > 0),
-      Case.delivered_date.between(delivered_date_start,delivered_date_end) if delivered_date_start is not None else (Case.id > 0),
-      Case.initial_note.ilike('%'+initial_note+'%') if initial_note is not None else (Case.id > 0),
-      Case.description.ilike('%'+description+'%') if description is not None else (Case.id > 0),
-      Case.closed==closed if closed is not None else (Case.id > 0),
-      Case.close_description.ilike('%'+close_description+'%') if close_description is not None else (Case.id > 0),
-      Case.delivered==delivered if delivered is not None else (Case.id > 0),
-      Case.delivered_description.ilike('%'+delivered_description+'%') if delivered_description is not None else (Case.id > 0)
-      )
+      Case.customer_id==customer_id if customer_id is not None else (Case.id > 0))
+    if category_id is not None:
+       filter=filter.filter(Case.category_id==category_id)
+      # Case.category_id==category_id if category_id is not None else (Case.id > 0),
+    if typeservice_id is not None:
+       filter=filter.filter(Case.typeservice_id==typeservice_id)
+      # Case.typeservice_id==typeservice_id if typeservice_id is not None else (Case.id > 0),
+    if professional_id is not None:
+       filter=filter.filter(Case.professional_id==professional_id)
+      # Case.professional_id==professional_id if professional_id is not None else (Case.id > 0),
+    if is_active is not None:
+       filter=filter.filter(Case.is_active==is_active)
+      # Case.is_active==is_active if is_active is not None else (Case.id > 0),
+    if started is not None:
+       filter=filter.filter(Case.started==started)
+      # Case.started==started if started is not None else (Case.id > 0),
+    if date_init_start is not None:
+      filter=filter.filter(Case.date_init.between(date_init_start,date_init_end))
+      # Case.date_init.between(date_init_start,date_init_end) if date_init_start is not None else (Case.id > 0),
+    if close_date_start is not None:
+      filter=filter.filter(Case.close_date.between(close_date_start,date_init_end))
+      # Case.close_date.between(close_date_start,date_init_end) if close_date_start is not None else (Case.id > 0),
+    if delivered_date_start is not None:
+      filter=filter.filter(Case.delivered_date.between(delivered_date_start,delivered_date_end))
+      # Case.delivered_date.between(delivered_date_start,delivered_date_end) if delivered_date_start is not None else (Case.id > 0),
+    if initial_note is not None:
+      filter=filter.filter(Case.initial_note.ilike('%'+initial_note+'%'))
+      # Case.initial_note.ilike('%'+initial_note+'%') if initial_note is not None else (Case.id > 0),
+    if description is not None:
+      filter=filter.filter(Case.description.ilike('%'+description+'%'))
+      # Case.description.ilike('%'+description+'%') if description is not None else (Case.id > 0),
+    if closed is not None:
+      filter=filter.filter(Case.closed==closed)
+      # Case.closed==closed if closed is not None else (Case.id > 0),
+    if close_description is not None:
+      filter=filter.filter(Case.close_description.ilike('%'+close_description+'%'))
+      # Case.close_description.ilike('%'+close_description+'%') if close_description is not None else (Case.id > 0),
+    if delivered is not None:
+      filter=filter.filter(Case.delivered==delivered)
+      # Case.delivered==delivered if delivered is not None else (Case.id > 0),
+    if delivered_description is not None:
+      filter=filter.filter(Case.delivered_description.ilike('%'+delivered_description+'%'))
+      # Case.delivered_description.ilike('%'+delivered_description+'%') if delivered_description is not None else (Case.id > 0)
+      # )
     if limit=='0':
         filter=filter.all()
     else:

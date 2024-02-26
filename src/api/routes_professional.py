@@ -62,15 +62,16 @@ def get_professional(id):
 def get_professionals():
     limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
     offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
+    count=Professional.query.all()
     if limit=='0':
         filter=Professional.query.all()
     else:
         filter=Professional.query.offset(offset).limit(limit).all()
-    dic={'ok':True,'status':200,'count':len(filter)}
+    dic={'ok':True,'status':200,'count':len(count)}
     dic['data']=[professional.serialize() for professional in filter]
     return jsonify(dic)
 
-@routes.route('/filter',endpoint='filter_professional', methods=['GET'])
+@routes.route('/filter',endpoint='filter_professional', methods=['POST'])
 @jwt_required()
 def filter_professional():
     limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
@@ -97,15 +98,30 @@ def filter_professional():
         created_from=''
 
     filter=Professional.query.filter(
-        Professional.name.ilike('%'+name+'%') if name != '' else Professional.name.ilike('%'+name+'%') | (Professional.name==None),
-        Professional.phone.ilike('%'+phone+'%') if phone != '' else Professional.phone.ilike('%'+phone+'%') | (Professional.phone==None),
-        Professional.identification.ilike('%'+identification+'%') if identification != '' else Professional.identification.ilike('%'+identification+'%') | (Professional.identification == None),
-        Professional.profession.ilike('%'+profession+'%') if profession != '' else Professional.profession.ilike('%'+profession+'%') | (Professional.profession == None),
-        Professional.email.ilike('%'+email+'%') if email != '' else Professional.email.ilike('%'+email+'%') | (Professional.email==None),
-        Professional.address.ilike('%'+address+'%') if address != '' else Professional.address.ilike('%'+address+'%') | (Professional.address==None),
-        Professional.comment.ilike('%'+comment+'%') if comment != '' else Professional.comment.ilike('%'+comment+'%') | (Professional.comment==None),
-        Professional.created.between(fd,fh) if created_from != '' else Professional.created.between('1901-01-01','3100-12-31')
-        )
+        Professional.name.ilike('%'+name+'%') if name != '' else Professional.name.ilike('%'+name+'%') | (Professional.name==None))
+    if phone != '':
+        filter=filter.filter(Professional.phone.ilike('%'+phone+'%'))
+    if identification != '':
+        filter=filter.filter(Professional.identification.ilike('%'+identification+'%'))
+    if profession != '':
+        filter=filter.filter(Professional.profession.ilike('%'+profession+'%'))
+    if email != '':
+        filter=filter.filter(Professional.email.ilike('%'+email+'%'))
+    if address != '':
+        filter=filter.filter(Professional.address.ilike('%'+address+'%'))
+    if comment != '':
+        filter=filter.filter(Professional.comment.ilike('%'+comment+'%'))
+    if created_from !='':
+        filter=filter.filter(Professional.created.between(fd,fh))
+
+        # Professional.phone.ilike('%'+phone+'%') if phone != '' else Professional.phone.ilike('%'+phone+'%') | (Professional.phone==None),
+        # Professional.identification.ilike('%'+identification+'%') if identification != '' else Professional.identification.ilike('%'+identification+'%') | (Professional.identification == None),
+        # Professional.profession.ilike('%'+profession+'%') if profession != '' else Professional.profession.ilike('%'+profession+'%') | (Professional.profession == None),
+        # Professional.email.ilike('%'+email+'%') if email != '' else Professional.email.ilike('%'+email+'%') | (Professional.email==None),
+        # Professional.address.ilike('%'+address+'%') if address != '' else Professional.address.ilike('%'+address+'%') | (Professional.address==None),
+        # Professional.comment.ilike('%'+comment+'%') if comment != '' else Professional.comment.ilike('%'+comment+'%') | (Professional.comment==None),
+        # Professional.created.between(fd,fh) if created_from != '' else Professional.created.between('1901-01-01','3100-12-31')
+        
     if limit=='0':
         filter=filter.all()
     else:
