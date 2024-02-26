@@ -136,14 +136,22 @@ def filter_customer():
         created_from=''
 
     filter=Customer.query.filter(
-        Customer.name.ilike('%'+name+'%') if name != '' else Customer.name.ilike('%'+name+'%') | (Customer.name==None),
-        Customer.phone.ilike('%'+phone+'%') if phone != '' else Customer.phone.ilike('%'+phone+'%') | (Customer.phone==None),
-        Customer.identification.ilike('%'+identification+'%') if identification != '' else Customer.identification.ilike('%'+identification+'%') | (Customer.identification == None),
-        Customer.email.ilike('%'+email+'%') if email != '' else Customer.email.ilike('%'+email+'%') | (Customer.email==None),
-        Customer.address.ilike('%'+address+'%') if address != '' else Customer.address.ilike('%'+address+'%') | (Customer.address==None),
-        Customer.comment.ilike('%'+comment+'%') if comment != '' else Customer.comment.ilike('%'+comment+'%') | (Customer.comment==None),
-        Customer.created.between(fd,fh) if created_from != '' else Customer.created.between('1901-01-01','3100-12-31')
-        )
+        Customer.name.ilike('%'+name+'%') if name != '' else Customer.name.ilike('%'+name+'%') | (Customer.name==None))
+    if phone != '':
+        filter=filter.filter(Customer.phone.ilike('%'+phone+'%'))
+    if identification != '':
+        filter=filter.filter(Customer.identification.ilike('%'+identification+'%'))
+    if email != '':
+        filter=filter.filter(Customer.email.ilike('%'+email+'%'))
+    if address != '':
+        filter=filter.filter(Customer.address.ilike('%'+address+'%'))
+    if comment != '':
+        filter=filter.filter(Customer.comment.ilike('%'+comment+'%'))
+    if created_from !='':
+        filter=filter.filter(Customer.created.between(fd,fh))
+
+        
+
     if limit=='0':
         filter=filter.all()
     else:

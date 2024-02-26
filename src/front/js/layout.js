@@ -23,6 +23,8 @@ import CaseEdit from "./pages/caseViews/CaseEdit.jsx";
 import CaseList from "./pages/caseViews/CaseList.jsx";
 import LandingNavbar from "./pages/landingPage/LandingNavbar.jsx";
 import CategoryDetails from "./pages/categoryDetail/CategoryDetail.jsx";
+import ProfessionalList from "./pages/professionalView/ProfessionalList.jsx";
+import CategoryList from "./pages/categoryView/CategoryList.jsx";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -61,10 +63,18 @@ const Layout = () => {
 
             {/* PROFESSIONAL ROUTES */}
             <Route element={<Navbar />} path="/professional">
-              <Route path="" element={<CustomerList />} />
+              <Route path="" element={<ProfessionalList />} />
               <Route path="detail" element={<ProfessionalDetail />} />
               <Route element={<h1>Not found Professional!</h1>} path="*" />
             </Route>
+
+            {/* CUSTOMER ROUTES  */}
+            <Route element={<Navbar />} path="/category">
+              <Route path="" element={<CategoryList />} />
+              {/* <Route path="detail/:id" element={<CategoryDetails />} /> */}
+              <Route element={<h1>Not found Clientes!</h1>} path="*" />
+            </Route>
+
             <Route element={<h1>Not found General!</h1>} path="*" />
 
             {/* CATEGORY ROUTES */}

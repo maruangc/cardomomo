@@ -7,7 +7,8 @@ const DataFilter = ({
   setFiltered,
   setFilterFields,
   filterFields,
-  filtered,
+  setReload,
+  reload,
   initialFieldsValues,
   columnFilter,
 }) => {
@@ -15,7 +16,8 @@ const DataFilter = ({
 
   const handleSubmit = () => {
     setVisible(false);
-    setFiltered(filterFields === initialFieldsValues ? 0 : filtered + 1);
+    setFiltered(filterFields === initialFieldsValues ? false : true);
+    setReload(reload + 1);
   };
 
   const footerModal = (
@@ -33,13 +35,19 @@ const DataFilter = ({
           label="Filtrar"
           size="small"
           icon="fa-solid fa-filter"
-          onClick={() => setVisible(true)}
+          onClick={() => {
+            setFilterFields(initialFieldsValues);
+            setVisible(true);
+          }}
         />
         <Button
           size="small"
           rounded
-          label="Limpiar filtro"
-          onClick={() => setFiltered(0)}
+          label="Quitar filtro"
+          onClick={() => {
+            setFiltered(false);
+            setReload(reload + 1);
+          }}
         />
       </div>
       <Dialog
