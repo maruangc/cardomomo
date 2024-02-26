@@ -8,7 +8,6 @@ const columns = [
   { field: "profession", header: "Profesion" },
   { field: "phone", header: "Telefono" },
   { field: "email", header: "Email" },
-  // { field: "address", header: "Direccion" },
 ];
 
 const columnFilter = [
@@ -36,6 +35,8 @@ const ProfessionalList = () => {
       table="professional"
       columns={columns}
       columnFilter={columnFilter}
+      createColumn={columnFilter}
+      initialValue={initialFieldsValues}
     />
   );
 };

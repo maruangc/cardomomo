@@ -7,12 +7,17 @@ import { Paginator } from "primereact/paginator";
 import DataFilter from "./DataFilter.jsx";
 import { Button } from "primereact/button";
 import { toast } from "react-toastify";
+import CreateModal from "./CreateModal.jsx";
 
 const ListComponent = ({
   initialFieldsValues, //({}) se define en el view de la lista
   table, //(string) para referirse a la ruta para ir al detalle
   columns, //({}) se crea nuevo en el view de la lista
   columnFilter,
+  createColumn,
+  initialValue,
+  checkValues,
+  setCheckValues,
 }) => {
   const { actions } = useContext(Context);
   const navigate = useNavigate();
@@ -26,6 +31,11 @@ const ListComponent = ({
   const [rows, setRows] = useState(10);
   const [count, setCount] = useState(0);
 
+  if (!checkValues) {
+    checkValues = {};
+    setCheckValues = {};
+  }
+
   const handleReload = () => {
     if (filterFields === initialFieldsValues) {
       setReload(reload + 1);
@@ -35,21 +45,33 @@ const ListComponent = ({
   };
 
   const header = (
-    <div className="flex flex-row justify-content-between">
-      <DataFilter
-        setFiltered={setFiltered}
-        setReload={setReload}
-        reload={reload}
-        setFilterFields={setFilterFields}
-        filterFields={filterFields}
-        initialFieldsValues={initialFieldsValues}
-        columnFilter={columnFilter}
-      />
-      <Button
-        icon="fa-solid fa-rotate-right"
-        rounded
-        size="small"
-        onClick={() => handleReload()}
+    <div className="flex flex-row justify-content-between ">
+      <div className="flex gap-3">
+        <DataFilter
+          setFiltered={setFiltered}
+          setReload={setReload}
+          reload={reload}
+          setFilterFields={setFilterFields}
+          filterFields={filterFields}
+          initialFieldsValues={initialFieldsValues}
+          columnFilter={columnFilter}
+          checkValues={checkValues}
+          setCheckValues={setCheckValues}
+        />
+        <Button
+          icon="fa-solid fa-rotate-right"
+          label="Actualizar"
+          rounded
+          size="small"
+          onClick={() => handleReload()}
+        />
+      </div>
+
+      <CreateModal
+        handleReload={handleReload}
+        table={table}
+        createColumn={createColumn}
+        initialValue={initialValue}
       />
     </div>
   );
@@ -77,7 +99,7 @@ const ListComponent = ({
   }, [reload]);
 
   return (
-    <div className=" max-container-width mx-auto">
+    <div className="w-full mx-auto">
       <DataTable
         value={dataQuery}
         header={header}

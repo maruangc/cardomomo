@@ -3,6 +3,7 @@ import { Context } from "../../store/appContext";
 import { Navigate, useParams } from "react-router-dom";
 import CostumerData from "./ui/CostumerData.jsx";
 import { Dropdown } from "primereact/dropdown";
+import { Checkbox } from "primereact/checkbox";
 
 const originalState = {
   id: "",
@@ -17,6 +18,7 @@ const CaseEdit = () => {
   const [professionalList, setProfessionalList] = useState([]);
   const [customer, setCustomer] = useState(null);
   const [object, setObject] = useState(originalState);
+  const [checked, setChecked] = useState(false);
 
   const getData = async () => {
     const response = await actions.getById("case", `${id}`);

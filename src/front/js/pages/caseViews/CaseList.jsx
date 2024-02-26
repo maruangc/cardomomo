@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import KpiListItems from "./ui/KpiListItems.jsx";
 // import CaseListComponent from "./ui/CaseListComponent.jsx";
 import ListComponent from "../common/components/ListComponent.jsx";
@@ -22,7 +22,7 @@ const columnFilter = [
   { field: "professional_id", header: "id Profesional", type: "text" },
   { field: "category_id", header: "Categoria", type: "text" },
   { field: "started", header: "Iniciado", type: "check" },
-  { field: "typeservice_id", header: "Tipo", type: "check" },
+  { field: "typeservice_id", header: "Tipo", type: "drop" },
   { field: "closed", header: "Cerrado", type: "check" },
   { field: "delivered", header: "Entregado", type: "check" },
 ];
@@ -40,23 +40,30 @@ const initialFieldsValues = {
 };
 
 const CaseList = () => {
-  return (
-    <ListComponent
-      initialFieldsValues={initialFieldsValues}
-      table="case"
-      columns={columns}
-      columnFilter={columnFilter}
-    />
-  );
+  const [checkValues, setCheckValues] = useState({
+    is_active: false,
+    started: false,
+    closed: false,
+    delivered: false,
+  });
 
-  // return (
-  //   <div className="w-full flex justify-content-center h-full">
-  //     <div className="flex flex-column gap-5 p-5 w-full max-container-width">
-  //       <KpiListItems />
-  //       {/* <CaseListComponent /> */}
-  //     </div>
-  //   </div>
-  // );
+  return (
+    <div className="w-full flex justify-content-center h-full">
+      <div className="flex flex-column gap-5 p-5 w-full max-container-width">
+        <KpiListItems />
+        <ListComponent
+          initialFieldsValues={initialFieldsValues}
+          table="case"
+          columns={columns}
+          columnFilter={columnFilter}
+          initialValue={initialFieldsValues}
+          createColumn={columnFilter}
+          setCheckValues={setCheckValues}
+          checkValues={checkValues}
+        />
+      </div>
+    </div>
+  );
 };
 
 export default CaseList;
