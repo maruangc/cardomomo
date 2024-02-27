@@ -4,6 +4,7 @@ import { Navigate, useParams } from "react-router-dom";
 import CostumerData from "./ui/CostumerData.jsx";
 import { Dropdown } from "primereact/dropdown";
 import { Checkbox } from "primereact/checkbox";
+import ChekboxComponent from "./ui/CheckBoxComponent.jsx";
 
 const originalState = {
   id: "",
@@ -62,6 +63,7 @@ const CaseEdit = () => {
           className="w-full md:w-14rem"
         />
         <CostumerData customer={customer} />
+        <ChekboxComponent />
       </div>
     </div>
   );

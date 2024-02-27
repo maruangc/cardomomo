@@ -64,7 +64,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <>
+    <div className="flex flex-column min-h-screen">
       <div className="card flex justify-content-between align-items-center text-white-alpha-90 bg-primary-black px-4">
         <div>
           <Button
@@ -132,8 +132,10 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-      <Outlet />
+      <div className="flex-grow-1">
+        <Outlet />
+      </div>
       <GeneralFooter />
-    </>
+    </div>
   );
 }

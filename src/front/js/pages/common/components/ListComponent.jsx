@@ -76,6 +76,31 @@ const ListComponent = ({
     </div>
   );
 
+  const editFieldQuery = (response) => {
+    console.log("response: ", response);
+    if (response.ok) {
+      const newDataQuery = response.data.map((dataList) => {
+        // if (dataList.case && typeof dataList.case.created !== "undefined") {
+        if (dataList.case && dataList.case.created) {
+          return {
+            ...dataList,
+            case: {
+              ...dataList.case,
+              created: actions.getDate(dataList.case.created),
+              date_init: actions.getDate(dataList.case.date_init),
+              close_date: actions.getDate(dataList.case.close_date),
+              delivered_date: actions.getDate(dataList.case.delivered_date),
+            },
+          };
+        } else {
+          return dataList;
+        }
+      });
+      console.log("newDataQuery: ", newDataQuery);
+      setDataQuery(newDataQuery);
+    }
+  };
+
   const getDataQuery = async (offset = 0) => {
     let response;
     if (filtered === false) {
@@ -91,6 +116,7 @@ const ListComponent = ({
       setDataQuery(response.data);
       setCount(response.count);
       setRows(10);
+      editFieldQuery(response);
     }
   };
 
@@ -105,7 +131,11 @@ const ListComponent = ({
         header={header}
         stripedRows
         selectionMode="single"
-        onSelectionChange={(e) => navigate(`/${table}/detail/${e.value.id}`)}
+        onSelectionChange={(e) => {
+          navigate(
+            `/${table}/detail/${!e.value.id ? e.value.case.id : e.value.id}`
+          );
+        }}
       >
         {columns.map((col) => {
           return (

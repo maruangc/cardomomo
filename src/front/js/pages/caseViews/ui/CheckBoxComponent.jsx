@@ -25,7 +25,7 @@ export default function ChekboxComponent() {
     <div className="card flex flex-wrap justify-content-center gap-3">
       <div className="flex align-items-center">
         <Checkbox
-          inputId="ingredient1"
+          // inputId="ingredient1"
           name="pizza"
           value="Cheese"
           onChange={onCheck}
@@ -37,7 +37,7 @@ export default function ChekboxComponent() {
       </div>
       <div className="flex align-items-center">
         <Checkbox
-          inputId="ingredient2"
+          // inputId="ingredient2"
           name="pizza"
           value="Mushroom"
           onChange={onCheck}
@@ -49,7 +49,7 @@ export default function ChekboxComponent() {
       </div>
       <div className="flex align-items-center">
         <Checkbox
-          inputId="ingredient3"
+          // inputId="ingredient3"
           name="pizza"
           value="Pepper"
           onChange={onCheck}
@@ -61,10 +61,10 @@ export default function ChekboxComponent() {
       </div>
       <div className="flex align-items-center">
         <Checkbox
-          inputId="ingredient4"
+          // inputId="ingredient4"
           name="pizza"
           value="Onion"
-          onChange={onIngredientsChange}
+          onChange={onCheck}
           checked={ingredients.includes("Onion")}
         />
         <label htmlFor="ingredient4" className="ml-2">

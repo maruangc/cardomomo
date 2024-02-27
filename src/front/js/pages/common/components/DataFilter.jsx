@@ -31,6 +31,9 @@ const DataFilter = ({
     </div>
   );
 
+  const inputs = columnFilter.filter((item) => item.type != "check");
+  const checks = columnFilter.filter((item) => item.type == "check");
+
   return (
     <div className="card flex justify-content-center">
       <div className="flex gap-3">
@@ -63,51 +66,60 @@ const DataFilter = ({
         header="Opciones de filtrado"
       >
         <div className="flex flex-column gap-3 justify-content-between">
-          <div className="flex flex-column gap-3">
-            {!columnFilter ? (
-              <h2>Sin columnas a filtrar</h2>
-            ) : (
-              <>
-                {columnFilter.map((item, index) => {
+          {/* <div className="flex flex-column gap-3"> */}
+          {!columnFilter ? (
+            <h2>Sin columnas a filtrar</h2>
+          ) : (
+            <>
+              {inputs.map((item, index) => {
+                return (
+                  <div
+                    className="flex flex-column gap-3"
+                    key={index + item.field}
+                  >
+                    <>
+                      <label htmlFor={item.field}>{item.header}</label>
+                      <InputText
+                        name={item.field}
+                        value={filterFields[item.field]}
+                        onChange={(e) =>
+                          setFilterFields({
+                            ...filterFields,
+                            [item.field]: e.target.value,
+                          })
+                        }
+                      />
+                    </>
+                  </div>
+                );
+              })}
+              <div className="flex flex-wrap">
+                {checks.map((item, index) => {
                   return (
                     <div
-                      className="flex flex-column gap-3"
                       key={index + item.field}
+                      className="flex align-items-center"
                     >
-                      <label htmlFor={item.field}>{item.header}</label>
-                      {item.type == "check" ? (
-                        <div className="flex align-items-center">
-                          <Checkbox
-                            name={item.field}
-                            value={filterFields[item.field]}
-                            onChange={setCheckValues({
-                              ...checkValues,
-                              [item.field]: e.target.value,
-                            })}
-                            //checked={checkValues[item.field]:}
-                          />
-                          <label htmlFor="ingredient1" className="ml-2">
-                            Cheese
-                          </label>
-                        </div>
-                      ) : (
-                        <InputText
-                          name={item.field}
-                          value={filterFields[item.field]}
-                          onChange={(e) =>
-                            setFilterFields({
-                              ...filterFields,
-                              [item.field]: e.target.value,
-                            })
-                          }
-                        />
-                      )}
+                      <Checkbox
+                        name={item.field}
+                        checked={checkValues[item.field]}
+                        onChange={(e) => {
+                          setCheckValues({
+                            ...checkValues,
+                            [item.field]: e.checked,
+                          });
+                        }}
+                      />
+                      <label htmlFor={item.field} className="ml-2">
+                        {item.header}
+                      </label>
                     </div>
                   );
                 })}
-              </>
-            )}
-          </div>
+              </div>
+            </>
+          )}
+          {/* </div> */}
         </div>
       </Dialog>
     </div>
