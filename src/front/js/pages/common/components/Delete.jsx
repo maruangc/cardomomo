@@ -19,7 +19,7 @@ export default function Delete({ table, id }) {
     }
     if (response.ok) {
       toast(response.data);
-      navigate("/category");
+      navigate("/" + table);
     }
   };
 
