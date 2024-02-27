@@ -33,7 +33,7 @@ const Login = () => {
         >
           <div className="text-left">
             <div className="flex justify-content-center flex-column">
-              <h1 className="text-4xl font-bold text-white pb-3">Login</h1>
+              <h1 className="text-5xl font-bold text-white pb-3">Login</h1>
               <div className="">
                 <h5 className="m-0 p-0 pb-4 text-white">Username</h5>
                 <InputText id="email" name="email" className="w-full" />
@@ -49,7 +49,7 @@ const Login = () => {
               </div>
               <Button
                 type="submit"
-                label="Start"
+                label="Login"
                 icon=""
                 severity="success"
                 className="w-10rem mt-6 "

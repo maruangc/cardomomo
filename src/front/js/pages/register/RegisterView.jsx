@@ -30,50 +30,55 @@ export const Register = () => {
 
   return (
     <>
-      <div className="grid h-screen bg-black-alpha-90">
-        <div className="flex flex-column col-7 gap-6 w-6 w-full h-full text-white ml-6 mt-4">
-          <div className="header">
-            <h1>Formulario de Registro</h1>
-            <p>Completa la información y regístrate ahora!</p>
-          </div>
-          <form onSubmit={handleRegister}>
-            <div className="container w-8 ml-2 ">
-              <div className="flex flex-column pt-4 gap-1 font-light">
-                <label htmlFor="name">Nombre Completo</label>
-                <InputText id="name" name="name" aria-describedby="name-help" />
+      <div className="login-container grid">
+      <div className="col-12 sm:col-12 md:col-4 flex bg-black-alpha-90">
+          <form
+          onSubmit={handleRegister}
+          className="flex justify-content-center flex-column w-10 h-full p-3 ml-2"
+        >
+          <div className="text-left">
+            <div className="flex justify-content-center flex-column">
+              <h1 className="text-4xl font-bold text-white pb-3">Register</h1>
+              <div className="mt-5">
+                <h5 className="m-0 p-0 pb-2 text-white">Nombre Completo</h5>
+                <InputText
+                  id="name"
+                  name="name"
+                  className="w-full"
+                />
               </div>
-
-              <div className="flex flex-column pt-4 gap-1 font-light">
-                <label htmlFor="email">Correo electrónico</label>
+              <div className="mt-5">
+                <h5 className="m-0 p-0 pb-2 text-white">Email</h5>
                 <InputText
                   id="email"
                   name="email"
-                  aria-describedby="email-help"
+                  className="w-full"
                 />
               </div>
-              <div className="flex flex-column pt-4 gap-1 font-light">
-                <label htmlFor="password">Contraseña</label>
+              <div className="mt-5">
+                <h5 className="m-0 p-0 pb-2 text-white">Password</h5>
                 <InputText
-                  type="password"
                   id="password"
                   name="password"
-                  aria-describedby="password-help"
+                  className="w-full"
                 />
               </div>
-
-              <div className="button w-4 pt-4 mt-5">
-                <Button label="Submit" />
-              </div>
-              {errorMessage && (
-                <div className="error-message">{errorMessage}</div>
-              )}
+              <Button
+                type="submit"
+                label="Registrar"
+                icon=""
+                severity="success"
+                className="w-10rem mt-6 "
+              >
+                <i className="fa-solid fa-user pr-3"></i>
+              </Button>
+             
             </div>
-          </form>
+          </div>
+        </form>
         </div>
 
-        <div className="flex flex-row col-5 bg-white mt-4">
-          <h1>Imagen o logo</h1>
-        </div>
+        <div className="login-right md:col-8 bg-white"></div>
       </div>
     </>
   );
