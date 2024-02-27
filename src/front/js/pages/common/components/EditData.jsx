@@ -11,6 +11,24 @@ const EditData = ({ fields, setFields, reload, setReload, table, id }) => {
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
 
+  const handleSubmit = async () => {
+    let objetoAEnviar = {};
+    const a = fields.map((item) => {
+      objetoAEnviar = { ...objetoAEnviar, [item.field]: item.value };
+    });
+    console.log(objetoAEnviar);
+    const response = await actions.updateById(table, id, objetoAEnviar);
+    if (response.msg) {
+      toast("token expired");
+      navigate("/login");
+    }
+    if (response.ok) {
+      toast(response.data);
+      setReload(reload + 1);
+      setVisible(false);
+    }
+  };
+
   const footerModal = (
     <div className="flex justify-content-end gap-3">
       <Button
