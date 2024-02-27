@@ -4,18 +4,16 @@ import { useParams } from "react-router-dom";
 import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Delete from "../common/Delete.jsx";
+import Delete from "../common/components/Delete.jsx";
+import EditData from "../common/components/EditData.jsx";
 
 const CategoryDetails = () => {
   const { actions } = useContext(Context);
   const navigate = useNavigate();
   const params = useParams();
-
+  const [reload, setReload] = useState(0);
   const [dataQuery, setDataQuery] = useState();
-  const [fields, setFields] = useState({
-    category: "",
-    description: "",
-  });
+  const [fields, setFields] = useState([]);
 
   const getDataQuery = async () => {
     const response = await actions.getById("category", params.id);
@@ -25,26 +23,52 @@ const CategoryDetails = () => {
     }
     if (response.ok) {
       setDataQuery(response.data);
+      const responseArray = [
+        {
+          field: "category",
+          header: "Categoria",
+          value: response.data.category,
+        },
+        {
+          field: "description",
+          header: "Descripción",
+          value: response.data.description,
+        },
+      ];
+      setFields(responseArray);
     }
-  };
-
-  const editData = async () => {
-    getDataQuery();
   };
 
   useEffect(() => {
     getDataQuery();
-  }, []);
+  }, [reload]);
 
   return (
     <div className="w-full flex justify-content-center">
       <div className="flex flex-column gap-5 px-5 py-5 w-full max-container-width">
-        <div className="flex gap-5 justify-content-end">
-          <Button label="Editar" onClick={() => editData()} rounded />
-          <Delete table={"category"} id={params.id} />
+        <div className="flex gap-5 justify-content-between">
+          <div>
+            <Button
+              label="Actuallizar"
+              icon="fa-solid fa-rotate-right"
+              onClick={() => setReload(reload + 1)}
+              rounded
+            />
+          </div>
+          <div className="flex gap-5 justify-content-end">
+            <EditData
+              fields={fields}
+              setFields={setFields}
+              reload={reload}
+              setReload={setReload}
+              table="category"
+              id={params.id}
+            />
+            <Delete table={"category"} id={params.id} />
+          </div>
         </div>
         {dataQuery ? (
-          <div className="surface-300 py-5 px-4 mt-5 border-round-md">
+          <div className="surface-300 p-7 mt-5 border-round-md text-xl">
             <div className="flex gap-3">
               <label className="w-2">Category Id:</label>
               <label className="w-max">{params.id}</label>
@@ -63,7 +87,7 @@ const CategoryDetails = () => {
             </div>
           </div>
         ) : (
-          <p>Obteniendo Datos</p>
+          <p>Obteniendo Datos...</p>
         )}
       </div>
     </div>

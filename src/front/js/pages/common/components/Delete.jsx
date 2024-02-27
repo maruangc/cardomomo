@@ -1,5 +1,5 @@
 import React, { useRef, useState, useContext } from "react";
-import { Context } from "../../store/appContext.js";
+import { Context } from "../../../store/appContext.js";
 import { useNavigate } from "react-router-dom";
 import { ConfirmPopup, confirmPopup } from "primereact/confirmpopup";
 import { Button } from "primereact/button";
@@ -34,7 +34,7 @@ export default function Delete({ table, id }) {
         visible={visible}
         onHide={() => setVisible(false)}
         message="¿esta seguro de eliminar este elemento?"
-        icon="pi pi-exclamation-triangle"
+        icon="fa-solid fa-triangle-exclamation"
         accept={accept}
         reject={reject}
       />
@@ -42,6 +42,7 @@ export default function Delete({ table, id }) {
         <Button
           ref={buttonEl}
           rounded
+          icon="fa-solid fa-trash"
           onClick={() => setVisible(true)}
           label="Eliminar"
         />
