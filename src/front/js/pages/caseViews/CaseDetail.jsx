@@ -64,7 +64,6 @@ const CaseDetail = () => {
     return <SkeletonCase />;
   }
 
-  console.log(data);
   return (
     <>
       <div className="w-full flex justify-content-center">

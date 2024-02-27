@@ -2,6 +2,7 @@ body,
 html {
   margin: 0;
   padding: 0;
+  min-height: 100vh;
 }
 
 p {
@@ -19,8 +20,8 @@ p {
   --succsess-primary: white;
 }
 
-.max-container-width {
-  max-width: 100%;
+.bg-primary-black {
+  background-color: var(--black-primary) !important;
 }
 
 .landingpage-divider {
@@ -62,11 +63,8 @@ p {
 }
 
 .footer-container {
-  background-image: url("https://img.freepik.com/foto-gratis/fondo-azul-degradado-lujo-abstracto-azul-oscuro-liso-banner-estudio-vineta-negra_1258-52379.jpg?w=826&t=st=1708558855~exp=1708559455~hmac=a08068b5ccf359338b51c90870984fa8cce9d9e91028c8ad9f25bfa4926cfc53");
-  background-size: cover;
-  background-repeat: no-repeat;
-  opacity: 0.9;
-  color: white;
+  background-color: #231f20;
+  color: #ffffff;
 }
 
 @font-face {
@@ -109,6 +107,7 @@ p {
 /* Sizes */
 .max-container-width {
   max-width: 90vw;
+  min-height: 83vh;
 }
 
 .p-menubar .p-submenu-list {

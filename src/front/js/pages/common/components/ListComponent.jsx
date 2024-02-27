@@ -7,12 +7,17 @@ import { Paginator } from "primereact/paginator";
 import DataFilter from "./DataFilter.jsx";
 import { Button } from "primereact/button";
 import { toast } from "react-toastify";
+import CreateModal from "./CreateModal.jsx";
 
 const ListComponent = ({
   initialFieldsValues, //({}) se define en el view de la lista
   table, //(string) para referirse a la ruta para ir al detalle
   columns, //({}) se crea nuevo en el view de la lista
   columnFilter,
+  createColumn,
+  initialValue,
+  checkValues,
+  setCheckValues,
 }) => {
   const { actions } = useContext(Context);
   const navigate = useNavigate();
@@ -26,6 +31,11 @@ const ListComponent = ({
   const [rows, setRows] = useState(10);
   const [count, setCount] = useState(0);
 
+  if (!checkValues) {
+    checkValues = {};
+    setCheckValues = {};
+  }
+
   const handleReload = () => {
     if (filterFields === initialFieldsValues) {
       setReload(reload + 1);
@@ -35,24 +45,61 @@ const ListComponent = ({
   };
 
   const header = (
-    <div className="flex flex-row justify-content-between">
-      <DataFilter
-        setFiltered={setFiltered}
-        setReload={setReload}
-        reload={reload}
-        setFilterFields={setFilterFields}
-        filterFields={filterFields}
-        initialFieldsValues={initialFieldsValues}
-        columnFilter={columnFilter}
-      />
-      <Button
-        icon="fa-solid fa-rotate-right"
-        rounded
-        size="small"
-        onClick={() => handleReload()}
+    <div className="flex flex-row justify-content-between ">
+      <div className="flex gap-3">
+        <DataFilter
+          setFiltered={setFiltered}
+          setReload={setReload}
+          reload={reload}
+          setFilterFields={setFilterFields}
+          filterFields={filterFields}
+          initialFieldsValues={initialFieldsValues}
+          columnFilter={columnFilter}
+          checkValues={checkValues}
+          setCheckValues={setCheckValues}
+        />
+        <Button
+          icon="fa-solid fa-rotate-right"
+          label="Actualizar"
+          rounded
+          size="small"
+          onClick={() => handleReload()}
+        />
+      </div>
+
+      <CreateModal
+        handleReload={handleReload}
+        table={table}
+        createColumn={createColumn}
+        initialValue={initialValue}
       />
     </div>
   );
+
+  const editFieldQuery = (response) => {
+    console.log("response: ", response);
+    if (response.ok) {
+      const newDataQuery = response.data.map((dataList) => {
+        // if (dataList.case && typeof dataList.case.created !== "undefined") {
+        if (dataList.case && dataList.case.created) {
+          return {
+            ...dataList,
+            case: {
+              ...dataList.case,
+              created: actions.getDate(dataList.case.created),
+              date_init: actions.getDate(dataList.case.date_init),
+              close_date: actions.getDate(dataList.case.close_date),
+              delivered_date: actions.getDate(dataList.case.delivered_date),
+            },
+          };
+        } else {
+          return dataList;
+        }
+      });
+      console.log("newDataQuery: ", newDataQuery);
+      setDataQuery(newDataQuery);
+    }
+  };
 
   const getDataQuery = async (offset = 0) => {
     let response;
@@ -69,6 +116,7 @@ const ListComponent = ({
       setDataQuery(response.data);
       setCount(response.count);
       setRows(10);
+      editFieldQuery(response);
     }
   };
 
@@ -77,13 +125,17 @@ const ListComponent = ({
   }, [reload]);
 
   return (
-    <div className=" max-container-width mx-auto">
+    <div className="w-full mx-auto">
       <DataTable
         value={dataQuery}
         header={header}
         stripedRows
         selectionMode="single"
-        onSelectionChange={(e) => navigate(`/${table}/detail/${e.value.id}`)}
+        onSelectionChange={(e) => {
+          navigate(
+            `/${table}/detail/${!e.value.id ? e.value.case.id : e.value.id}`
+          );
+        }}
       >
         {columns.map((col) => {
           return (

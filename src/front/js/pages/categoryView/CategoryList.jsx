@@ -19,12 +19,16 @@ const initialFieldsValues = {
 
 const CategoryList = () => {
   return (
-    <ListComponent
-      initialFieldsValues={initialFieldsValues}
-      table="category"
-      columns={columns}
-      columnFilter={columnFilter}
-    />
+    <div className="my-8">
+      <ListComponent
+        initialFieldsValues={initialFieldsValues}
+        table="category"
+        columns={columns}
+        columnFilter={columnFilter}
+        createColumn={columnFilter}
+        initialValue={initialFieldsValues}
+      />
+    </div>
   );
 };
 export default CategoryList;
