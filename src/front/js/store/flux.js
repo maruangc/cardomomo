@@ -24,6 +24,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         return fechaFormateada;
       },
 
+  
       /* Peticiones  */
 
       register: async (e) => {
