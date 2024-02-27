@@ -1,40 +1,153 @@
-import React from "react";
-import ButtonSection from "../common/components/ButtonSection.jsx";
-import PersonDetails from "../common/components/PersonDetails.jsx";
+import React, { useState, useContext, useEffect } from "react";
+import { Context } from "../../store/appContext.js";
+import { useParams } from "react-router-dom";
+import { Button } from "primereact/button";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import Delete from "../common/components/Delete.jsx";
+import EditData from "../common/components/EditData.jsx";
+import { Card } from "primereact/card";
 
-const data = {
-  name: "Kevin Pacheco",
-  create_date: "00/00/0000",
-};
-
-const listButtons = [
-  {
-    label: "Editar",
-    click: () => {
-      console.log("editar cliente");
-    },
-    icon: "fa-solid fa-user",
-  },
-  {
-    label: "Borrar",
-    click: () => {
-      console.log("borrar cliente");
-    },
-    icon: "",
-  },
-];
-
-const personData = {
-  label: "Detalle de Profesional",
-  prefix: "profesional",
-};
 
 const ProfessionalDetail = () => {
+  const { actions } = useContext(Context);
+  const navigate = useNavigate();
+  const params = useParams();
+  const [reload, setReload] = useState(0);
+  const [dataQuery, setDataQuery] = useState();
+  const [fields, setFields] = useState([]);
+
+  const getDataQuery = async () => {
+    const response = await actions.getById("professional", params.id);
+    console.log(response);
+    if (response.msg) {
+      toast("token expired");
+      navigate("/login");
+    }
+    if (response.ok) {
+      setDataQuery(response.data);
+      const responseArray = [
+        {
+          field: "name",
+          header: "Nombre",
+          value: response.data.name,
+        },
+        {
+          field: "identification",
+          header: "Identificación",
+          value: response.data.identification,
+        },
+        {
+          field: "profession",
+          header: "Profesion",
+          value: response.data.profession,
+        },
+        {
+          field: "phone",
+          header: "Telefono",
+          value: response.data.phone,
+        },
+        {
+          field: "email",
+          header: "Correo",
+          value: response.data.email,
+        },
+        {
+          field: "address",
+          header: "Dirección",
+          value: response.data.address,
+        },
+        {
+          field: "comment",
+          header: "Comentario",
+          value: response.data.comment,
+        },
+      ];
+      setFields(responseArray);
+    }
+  };
+
+  useEffect(() => {
+    getDataQuery();
+  }, [reload]);
+
+
   return (
-    <div className="w-full flex justify-content-center h-full">
-      <div className="flex flex-column gap-5 px-5 py-5 w-full max-container-width">
-        <ButtonSection data={data} btnList={listButtons} />
-        <PersonDetails data={personData} />
+    <div className="w-full flex justify-content-center">
+      <div className="flex flex-column gap-5 px-5 pt-4 w-full max-container-width">
+        <div className="flex gap-5 justify-content-between">
+          <div>
+            <Button
+              label="Actuallizar"
+              icon="fa-solid fa-rotate-right"
+              onClick={() => setReload(reload + 1)}
+              rounded
+            />
+          </div>
+          <div className="flex gap-5 justify-content-end">
+            <EditData
+              fields={fields}
+              setFields={setFields}
+              reload={reload}
+              setReload={setReload}
+              table="professional"
+              id={params.id}
+            />
+            <Delete table={"professional"} id={params.id} />
+          </div>
+        </div>
+        {dataQuery ? (
+          <Card className="surface-300 text-black-alpha-90  border-round-md">
+            <div className="flex gap-3">
+              <label className="w-2">Id del profesional:</label>
+              <label className="w-max">{params.id}</label>
+            </div>
+            <div className="flex gap-3 mt-5">
+              <label className="w-2" htmlFor="name">
+                Nombre
+              </label>
+              <label className="w-max">{dataQuery.name}</label>
+            </div>
+            <div className="flex gap-3 mt-5">
+              <label className="w-2" htmlFor="identification">
+                Identificación
+              </label>
+              <label className="w-max">{dataQuery.identification}</label>
+            </div>
+            <div className="flex gap-3 mt-5">
+              <label className="w-2" htmlFor="profession">
+                Profesion
+              </label>
+              <label className="w-max">{dataQuery.profession}</label>
+            </div>
+            <div className="flex gap-3 mt-5">
+              <label className="w-2" htmlFor="phone">
+                Telefono
+              </label>
+              <label className="w-max">{dataQuery.phone}</label>
+            </div>
+            <div className="flex gap-3 mt-5">
+              <label className="w-2" htmlFor="email">
+                Correo
+              </label>
+              <label className="w-max">{dataQuery.email}</label>
+            </div>
+            <div className="flex gap-3 mt-5">
+              <label className="w-2" htmlFor="address">
+                Dirección
+              </label>
+              <label className="w-max">{dataQuery.address}</label>
+            </div>
+            <div className="flex gap-3 mt-5">
+              <label className="w-2" htmlFor="comment">
+                Comentario
+              </label>
+              <label className="w-10">{dataQuery.comment}</label>
+            </div>
+          </Card>
+        ) : (
+          <p>Obteniendo Datos...</p>
+        )}
       </div>
     </div>
   );

@@ -5,7 +5,10 @@ import { Button } from "primereact/button";
 import { Menu } from "primereact/menu";
 import { Toast } from "primereact/toast";
 import GeneralFooter from "./GeneralFooter.jsx";
-export default function Navbar() {
+
+
+
+export default function Navbar({ vista }) {
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
   const menuLeft = useRef(null);
@@ -68,7 +71,7 @@ export default function Navbar() {
       <div className="card flex justify-content-between align-items-center text-white-alpha-90 bg-primary-black px-4">
         <div>
           <Button
-            className="flex justify-content-center align-items-center bg-primary-black border-border-primary	"
+            className="flex justify-content-center align-items-center bg-primary-black border-border-primary border-transparent	"
             onClick={() => setVisible(true)}
           >
             <i className="fa-solid fa-bars text-xl"></i>
@@ -82,10 +85,10 @@ export default function Navbar() {
             <div className="flex flex-column gap-3 mt-3">
               <div className="w-full">
                 <Button
-                  className="w-full bg-primary-900  text-white "
-                  onClick={() => navigate("/case/detail/1")}
+                  className="w-full bg-primary-black text-white border-transparent "
+                  onClick={() => navigate("/case")}
                 >
-                  Detalle de casos
+                  Casos
                 </Button>
               </div>
               <div className="w-full">
@@ -93,23 +96,31 @@ export default function Navbar() {
                   className="w-full bg-primary-black text-white border-transparent	"
                   onClick={() => navigate("/customer")}
                 >
-                  Lista clientes
+                  Clientes
                 </Button>
               </div>
 
               <div className="w-full">
                 <Button
-                  className="w-full bg-primary-900  text-white "
-                  onClick={() => navigate("/professional/detail")}
+                  className="w-full bg-primary-black text-white border-transparent"
+                  onClick={() => navigate("/professional")}
                 >
-                  Detalles profesionales
+                Profesionales
+                </Button>
+              </div>
+              <div className="w-full">
+                <Button
+                  className="w-full bg-primary-black text-white border-transparent"
+                  onClick={() => navigate("/category")}
+                >
+                  Categorias
                 </Button>
               </div>
             </div>
           </Sidebar>
         </div>
 
-        <h2 className="text-center text-2xl text-white">Vista de casos</h2>
+        <h2 className="text-center text-2xl text-white">{vista}</h2>
 
         <div className="flex">
           <div className="card">
@@ -122,7 +133,7 @@ export default function Navbar() {
               popupAlignment="right"
             />
             <Button
-              className="bg-primary-900  border-primary-900 text-white font-bold"
+              className="bg-primary-black  border-primary-black text-white font-bold border-transparent	"
               onClick={(event) => menuRight.current.toggle(event)}
               aria-controls="popup_menu_right"
               aria-haspopup
