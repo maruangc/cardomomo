@@ -25,7 +25,7 @@ import LandingNavbar from "./pages/landingPage/LandingNavbar.jsx";
 import ProfessionalList from "./pages/professionalView/ProfessionalList.jsx";
 import CategoryList from "./pages/categoryView/CategoryList.jsx";
 import CategoryDetails from "./pages/categoryView/CategoryDetails.jsx";
-
+import UserList from "./pages/userViews/UserList.jsx";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -56,24 +56,34 @@ const Layout = () => {
             </Route>
 
             {/* CUSTOMER ROUTES  */}
-            <Route element={<Navbar vista={"Clientes"}/>} path="/customer">
+            <Route element={<Navbar vista={"Clientes"} />} path="/customer">
               <Route path="" element={<CustomerList />} />
               <Route path="detail/:id" element={<CustomerDetails />} />
               <Route element={<h1>Not found Clientes!</h1>} path="*" />
             </Route>
 
             {/* PROFESSIONAL ROUTES */}
-            <Route element={<Navbar vista={"Profesionales"}/>} path="/professional">
+            <Route
+              element={<Navbar vista={"Profesionales"} />}
+              path="/professional"
+            >
               <Route path="" element={<ProfessionalList />} />
               <Route path="detail/:id" element={<ProfessionalDetail />} />
               <Route element={<h1>Not found Professional!</h1>} path="*" />
             </Route>
 
             {/* CATEGORY ROUTES  */}
-            <Route element={<Navbar vista={"Categorias"}/>} path="/category">
+            <Route element={<Navbar vista={"Categorias"} />} path="/category">
               <Route path="" element={<CategoryList />} />
               <Route path="detail/:id" element={<CategoryDetails />} />
               <Route element={<h1>Not found Clientes!</h1>} path="*" />
+            </Route>
+
+            {/* USER ROUTES  */}
+            <Route element={<Navbar vista={"Usuarios"} />} path="/user">
+              <Route path="" element={<UserList />} />
+              <Route path="detail/:id" element={<UserList />} />
+              <Route element={<h1>Not found Usuarios!</h1>} path="*" />
             </Route>
 
             <Route element={<h1>Not found General!</h1>} path="*" />

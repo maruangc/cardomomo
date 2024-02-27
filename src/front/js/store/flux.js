@@ -24,12 +24,11 @@ const getState = ({ getStore, getActions, setStore }) => {
         return fechaFormateada;
       },
 
-  
       /* Peticiones  */
 
       register: async (e) => {
         try {
-          const resp = await fetch(process.env.BACKEND_URL + "/user/register", {
+          const resp = await fetch(process.env.BACKEND_URL + "/user/new", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(e),

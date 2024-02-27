@@ -11,7 +11,7 @@ routes = Blueprint('routes_user', __name__)
 CORS(routes)
 
 #----------------------------------------------- /user
-@routes.route('/register',endpoint='user_register', methods=['POST'])
+@routes.route('/new',endpoint='user_register', methods=['POST'])
 def user_register():
     body=request.json
     email=body.get('email', None)
@@ -90,11 +90,19 @@ def get_user(id):
 @routes.route('/all',endpoint='get_users', methods=['GET'])
 @jwt_required()
 def get_users():
-    users=User.query.all()
+    limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
+    offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
+    count=User.query.all()
+    if limit=='0':
+        users=User.query.all()
+    else:
+        users=User.query.offset(offset).limit(limit).all()
     if users is None:
         return jsonify({'ok':False,'error':'No data','status':404})
-    user_list=[user.serialize() for user in users]
-    return jsonify({'data':user_list,'ok':True,'status':200}),200
+    dic={'ok':True,'status':200,'count':len(count)}
+    dic['data']=[user.serialize() for user in users]
+    dic['offset']=int(offset)+int(limit)
+    return jsonify(dic)
 
 @routes.route('/login',endpoint='login', methods=['POST'])
 def login():
@@ -124,3 +132,28 @@ def login():
     expires = timedelta(minutes=60)
     token = create_access_token(identity={'email': user.email, 'id': user.id}, expires_delta=expires)
     return jsonify({'ok':True,'token': token, 'status':200}),200
+
+@routes.route('/filter',endpoint='filter_user', methods=['POST'])
+@jwt_required()
+def filter_user():
+    limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
+    offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
+    body=request.json
+    name=body.get('name', None)
+    email=body.get('email', None)
+    if name is None and email is None:
+        return jsonify({'ok':False,'error':'at least one field is required ','status':400}),400
+    filter=User.query.filter(
+        User.name.ilike('%'+name+'%') if name is not None else (User.id>0)
+    )
+    if email is not None and email != '':
+        filter=filter.filter(
+            User.email.ilike('%'+email+'%'))
+    print(str(filter))
+    if limit=='0':
+        filter=filter.all()
+    else:
+        filter=filter.offset(offset).limit(limit).all()
+    dic={'ok':True,'status':200,'count':len(filter)}
+    dic['data']=[user.serialize() for user in filter]
+    return jsonify(dic)
