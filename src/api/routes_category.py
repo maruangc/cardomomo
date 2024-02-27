@@ -44,7 +44,7 @@ def get_category(id):
     if category_filter is None:
         return jsonify({'ok':False,'error':'category id not found ','status':404}),404
     dic={'ok':True,'status':200}
-    dic['data']=[category_filter.serialize()]
+    dic['data']=category_filter.serialize()
     return jsonify(dic)
 
 @routes_category.route('/all', endpoint='get_categories', methods=['GET'])

@@ -77,7 +77,6 @@ const ListComponent = ({
   );
 
   const editFieldQuery = (response) => {
-    console.log("response: ", response);
     if (response.ok) {
       const newDataQuery = response.data.map((dataList) => {
         // if (dataList.case && typeof dataList.case.created !== "undefined") {
@@ -96,7 +95,6 @@ const ListComponent = ({
           return dataList;
         }
       });
-      console.log("newDataQuery: ", newDataQuery);
       setDataQuery(newDataQuery);
     }
   };

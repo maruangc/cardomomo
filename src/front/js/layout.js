@@ -24,6 +24,7 @@ import CaseList from "./pages/caseViews/CaseList.jsx";
 import LandingNavbar from "./pages/landingPage/LandingNavbar.jsx";
 import ProfessionalList from "./pages/professionalView/ProfessionalList.jsx";
 import CategoryList from "./pages/categoryView/CategoryList.jsx";
+import CategoryDetails from "./pages/categoryView/CategoryDetails.jsx";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -70,7 +71,7 @@ const Layout = () => {
             {/* CUSTOMER ROUTES  */}
             <Route element={<Navbar />} path="/category">
               <Route path="" element={<CategoryList />} />
-              {/* <Route path="detail/:id" element={<CategoryDetails />} /> */}
+              <Route path="detail/:id" element={<CategoryDetails />} />
               <Route element={<h1>Not found Clientes!</h1>} path="*" />
             </Route>
 

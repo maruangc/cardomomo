@@ -117,7 +117,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       deleteById: async (table, id) => {
         try {
           const resp = await fetch(
-            process.env.BACKEND_URL + "/" + table + "/" + id,
+            process.env.BACKEND_URL + "/" + table + "/DELETE/" + id,
             {
               method: "DELETE",
               headers: {
