@@ -19,15 +19,17 @@ const initialFieldsValues = {
 
 const CategoryList = () => {
   return (
-    <div className="my-8">
-      <ListComponent
-        initialFieldsValues={initialFieldsValues}
-        table="category"
-        columns={columns}
-        columnFilter={columnFilter}
-        createColumn={columnFilter}
-        initialValue={initialFieldsValues}
-      />
+    <div className="w-full flex justify-content-center h-full">
+      <div className="flex flex-column gap-5 p-5 w-full max-container-width">
+        <ListComponent
+          initialFieldsValues={initialFieldsValues}
+          table="category"
+          columns={columns}
+          columnFilter={columnFilter}
+          createColumn={columnFilter}
+          initialValue={initialFieldsValues}
+        />
+      </div>
     </div>
   );
 };

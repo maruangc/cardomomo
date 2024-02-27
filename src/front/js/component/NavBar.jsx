@@ -6,8 +6,6 @@ import { Menu } from "primereact/menu";
 import { Toast } from "primereact/toast";
 import GeneralFooter from "./GeneralFooter.jsx";
 
-
-
 export default function Navbar({ vista }) {
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
@@ -22,16 +20,25 @@ export default function Navbar({ vista }) {
 
   const items = [
     {
-      label: "Documents",
+      label: "Usuarios",
       items: [
         {
-          label: "New",
+          label: (
+            <p className=" p-0 m-0" onClick={() => navigate("/register")}>
+              Nuevo usuario
+            </p>
+          ),
           icon: (
-            <i className="text-black-alpha-90 mr-2 font-bold fa-solid fa-plus"></i>
+            <i className="text-black-alpha-90 mr-2 font-bold fa-solid fa-plus  "></i>
           ),
         },
+
         {
-          label: "Search",
+          label: (
+            <p className=" p-0 m-0" onClick={() => navigate("/user")}>
+              Lista Usuarios
+            </p>
+          ),
           icon: (
             <i className="text-black-alpha-90 mr-2 font-bold fa-solid fa-magnifying-glass"></i>
           ),
@@ -39,22 +46,15 @@ export default function Navbar({ vista }) {
       ],
     },
     {
-      label: "Profile",
       items: [
         {
-          label: "Settings",
-          icon: (
-            <i className="text-black-alpha-90 mr-2 font-bold fa-solid fa-gear"></i>
-          ),
-        },
-        {
           label: (
-            <p className=" p-0 m-0" onClick={borrarToken}>
-              Logout
+            <p className="text-red-700 p-0 m-0" onClick={borrarToken}>
+              Cerrar sesion
             </p>
           ),
           icon: (
-            <i className="text-black-alpha-90 mr-2 font-bold fa-solid fa-power-off  "></i>
+            <i className="text-red-700 mr-2 font-bold fa-solid fa-power-off  "></i>
           ),
         },
       ],
@@ -86,7 +86,10 @@ export default function Navbar({ vista }) {
               <div className="w-full">
                 <Button
                   className="w-full bg-primary-black text-white border-transparent "
-                  onClick={() => navigate("/case")}
+                  onClick={() => {
+                    navigate("/case");
+                    setVisible(false);
+                  }}
                 >
                   Casos
                 </Button>
@@ -94,7 +97,10 @@ export default function Navbar({ vista }) {
               <div className="w-full">
                 <Button
                   className="w-full bg-primary-black text-white border-transparent	"
-                  onClick={() => navigate("/customer")}
+                  onClick={() => {
+                    navigate("/customer");
+                    setVisible(false);
+                  }}
                 >
                   Clientes
                 </Button>
@@ -103,15 +109,21 @@ export default function Navbar({ vista }) {
               <div className="w-full">
                 <Button
                   className="w-full bg-primary-black text-white border-transparent"
-                  onClick={() => navigate("/professional")}
+                  onClick={() => {
+                    navigate("/professional");
+                    setVisible(false);
+                  }}
                 >
-                Profesionales
+                  Profesionales
                 </Button>
               </div>
               <div className="w-full">
                 <Button
                   className="w-full bg-primary-black text-white border-transparent"
-                  onClick={() => navigate("/category")}
+                  onClick={() => {
+                    navigate("/category");
+                    setVisible(false);
+                  }}
                 >
                   Categorias
                 </Button>
