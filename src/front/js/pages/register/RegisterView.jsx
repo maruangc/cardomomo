@@ -57,12 +57,12 @@ export const Register = () => {
                   inputStyle={{ width: "100%" }}
                   id="password"
                   name="password"
-                  tabIndex={1}
                   toggleMask
                   feedback={true}
                   className="w-full"
                 />
               </div>
+              <p className="text-red-500">{notice}</p>
               <Button
                 type="submit"
                 label="Registrar"
