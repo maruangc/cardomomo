@@ -78,7 +78,6 @@ export const Register = () => {
 
         <div className="login-right md:col-8 bg-white"></div>
       </div>
-      v
     </>
   );
 };
