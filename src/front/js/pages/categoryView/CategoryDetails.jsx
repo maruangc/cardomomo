@@ -47,11 +47,17 @@ const CategoryDetails = () => {
     <div className="w-full flex justify-content-center">
       <div className="flex flex-column gap-5 px-5 py-5 w-full max-container-width">
         <div className="flex gap-5 justify-content-between">
-          <div>
+          <div className="flex gap-5">
             <Button
               label="Actuallizar"
               icon="fa-solid fa-rotate-right"
               onClick={() => setReload(reload + 1)}
+              rounded
+            />
+            <Button
+              label="Volver"
+              icon="fa-solid fa-arrow-left"
+              onClick={() => navigate("/category")}
               rounded
             />
           </div>

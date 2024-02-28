@@ -8,7 +8,6 @@ import Delete from "../common/components/Delete.jsx";
 import EditData from "../common/components/EditData.jsx";
 import { Card } from "primereact/card";
 
-
 const ProfessionalDetail = () => {
   const { actions } = useContext(Context);
   const navigate = useNavigate();
@@ -71,16 +70,21 @@ const ProfessionalDetail = () => {
     getDataQuery();
   }, [reload]);
 
-
   return (
     <div className="w-full flex justify-content-center">
       <div className="flex flex-column gap-5 px-5 pt-4 w-full max-container-width">
         <div className="flex gap-5 justify-content-between">
-          <div>
+          <div className="flex gap-5">
             <Button
               label="Actuallizar"
               icon="fa-solid fa-rotate-right"
               onClick={() => setReload(reload + 1)}
+              rounded
+            />
+            <Button
+              label="Volver"
+              icon="fa-solid fa-arrow-left"
+              onClick={() => navigate("/professional")}
               rounded
             />
           </div>
