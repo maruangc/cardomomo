@@ -1,11 +1,13 @@
 import React, { useState, useContext } from "react";
 import { Context } from "../../store/appContext";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { Password } from "primereact/password";
 
+
 export const Register = () => {
+  const navigate = useNavigate();
   const { actions } = useContext(Context);
   const [registered, setRegistered] = useState(false);
   const [notice, setNotice] = useState("");
@@ -63,15 +65,21 @@ export const Register = () => {
                 />
               </div>
               <p className="text-red-500">{notice}</p>
+              <div className="flex justify-content-between items-center mt-8">
+                
               <Button
                 type="submit"
                 label="Registrar"
                 icon=""
                 severity="success"
-                className="w-10rem mt-6 "
+                className="w-10rem  "
               >
                 <i className="fa-solid fa-user pr-3"></i>
               </Button>
+                <Button onClick={() => navigate("/login")} className="text-white text-xl  bg-transparent ">
+                  Volver
+                </Button>
+              </div>
             </div>
           </form>
         </div>
