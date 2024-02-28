@@ -3,6 +3,7 @@ import { Context } from "../../store/appContext";
 import { Navigate } from "react-router-dom";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
+import { Password } from "primereact/password";
 
 export const Register = () => {
   const { actions, store } = useContext(Context);
@@ -57,11 +58,16 @@ export const Register = () => {
               </div>
               <div className="mt-5">
                 <h5 className="m-0 p-0 pb-2 text-white">Password</h5>
-                <InputText
+                <Password
+                inputStyle={{width: "100%"}}
                   id="password"
                   name="password"
+                  tabIndex={1}
+                  toggleMask
+                  feedback={true}
                   className="w-full"
                 />
+
               </div>
               <Button
                 type="submit"
@@ -79,7 +85,7 @@ export const Register = () => {
         </div>
 
         <div className="login-right md:col-8 bg-white"></div>
-      </div>
+      </div>v
     </>
   );
 };

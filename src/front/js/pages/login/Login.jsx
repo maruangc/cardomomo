@@ -36,7 +36,7 @@ const Login = () => {
               <h1 className="text-5xl font-bold text-white pb-3">Login</h1>
               <div className="">
                 <h5 className="m-0 p-0 pb-4 text-white">Username</h5>
-                <InputText id="email" name="email" className="w-full" />
+                <InputText id="login-email" name="email" className="w-full" />
               </div>
               <div className="mt-5">
                 <h5 className="m-0 p-0 pb-2 text-white">Password</h5>
