@@ -21,7 +21,7 @@ const CloseDetail = ({
   return (
     <div className="col flex flex-column gap-3 ">
       <p>Detalle de cierre</p>
-      <div className="flex flex-column surface-300 p-5 border-round-md  gap-5 h-full">
+      <div className="flex flex-column  p-5  gap-5 h-full surface-100 border-solid border-2	border-300	border-round-lg">
         <div className="flex flex-row justify-content-between">
           <div className="flex flex-column ">
             <p className="font-medium">Fecha de cierre</p>

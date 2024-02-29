@@ -203,6 +203,7 @@ def edit_case(id):
     if delivered_description is not None and type(delivered_description)!=str:
       return jsonify({'ok':False,'error':'delivered_description must be a string ','status':400}),400            
    
+    filter.customer_id=customer_id if customer_id is not None else filter.customer_id
     filter.category_id=category_id if category_id is not None else filter.category_id
     filter.typeservice_id=typeservice_id if typeservice_id is not None else filter.typeservice_id
     filter.is_active=is_active if is_active is not None else filter.is_active

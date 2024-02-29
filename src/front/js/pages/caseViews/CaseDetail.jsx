@@ -1,17 +1,20 @@
 import React, { useContext, useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+
 import { Context } from "../../store/appContext.js";
+import SkeletonCase from "./ui/SkeletonCase.jsx";
+import { toast } from "react-toastify";
+
 import CostumerData from "./ui/CostumerData.jsx";
 import ProfessionalData from "./ui/ProfessionalData.jsx";
 import StateDetail from "./ui/StateDetail.jsx";
 import CloseDetail from "./ui/CloseDetail.jsx";
 import HeaderButtons from "./ui/HeaderButtons.jsx";
 import DeliverDetail from "./ui/DeliverDetail.jsx";
-/* Data */
-import dataJson from "./caseData.json";
-import SkeletonCase from "./ui/SkeletonCase.jsx";
-import { toast } from "react-toastify";
+
 const CaseDetail = () => {
   const { actions } = useContext(Context);
+  const { id } = useParams();
 
   const [data, setData] = useState();
   const [closeModalvalue, setCloseModalValue] = useState("");
@@ -19,7 +22,7 @@ const CaseDetail = () => {
   const [statusCase, setStatusCase] = useState("created");
 
   const dataQuery = async () => {
-    const response = await actions.getById("case", 1);
+    const response = await actions.getById("case", id);
     if (response.ok) {
       const handleStatus = response.data.case.delivered
         ? "delivered"
@@ -78,10 +81,11 @@ const CaseDetail = () => {
             setStatusCase={setStatusCase}
             statusCase={statusCase}
             setState={setState}
+            data={data}
           />
           <CostumerData customer={data.customer} />
           <ProfessionalData professional={data.professional} />
-          <StateDetail data={data} />
+          <StateDetail data={data} statusCase={statusCase} />
           {data.case.closed && (
             <div className="grid gap-5 justify-content-between">
               <CloseDetail

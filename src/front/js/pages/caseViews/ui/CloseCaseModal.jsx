@@ -10,6 +10,7 @@ const CloseCaseModal = ({
   setCloseModalValue,
   setState,
   statusCase,
+  data,
 }) => {
   const [visible, setVisible] = useState(false);
   const { id } = useParams();
@@ -21,7 +22,6 @@ const CloseCaseModal = ({
       close_description: value,
     });
 
-    console.log(response);
     if (response.ok) {
       setState("closed", id);
       setVisible(false);
@@ -35,7 +35,7 @@ const CloseCaseModal = ({
         onClick={() => {
           setVisible(true);
         }}
-        disabled={statusCase != "started"}
+        disabled={statusCase != "started" || !data.case.is_active}
       />
       <Dialog
         visible={visible}
