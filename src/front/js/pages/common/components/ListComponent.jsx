@@ -79,7 +79,7 @@ const ListComponent = ({
         </>
       ) : (
         <>
-          <CreateCaseModal />
+          <CreateCaseModal handleReload={handleReload} />
         </>
       )}
     </div>
