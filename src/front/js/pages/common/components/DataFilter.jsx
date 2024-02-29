@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { Context } from "../../../store/appContext.js";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
+import { InputNumber } from "primereact/inputnumber";
 import { Checkbox } from "primereact/checkbox";
+import FilterDrop from "./FilterDrop.jsx";
 
 const DataFilter = ({
   setFiltered,
@@ -15,6 +18,7 @@ const DataFilter = ({
   setCheckValues,
   checkValues,
 }) => {
+  const { actions } = useContext(Context);
   const [visible, setVisible] = useState(false);
   const [checked, setChecked] = useState(false);
 
@@ -31,6 +35,22 @@ const DataFilter = ({
     </div>
   );
 
+  const onClickButtonFilter = async () => {
+    if (typeof setCheckValues === "function") {
+      setCheckValues({
+        is_active: false,
+        started: false,
+        closed: false,
+        delivered: false,
+      });
+      const response = await actions.getAll("type");
+      if (response.ok) {
+      }
+    }
+    setFilterFields(initialFieldsValues);
+    setVisible(true);
+  };
+
   const inputs = columnFilter.filter((item) => item.type != "check");
   const checks = columnFilter.filter((item) => item.type == "check");
 
@@ -43,8 +63,7 @@ const DataFilter = ({
           size="small"
           icon="fa-solid fa-filter"
           onClick={() => {
-            setFilterFields(initialFieldsValues);
-            setVisible(true);
+            onClickButtonFilter();
           }}
         />
         <Button
@@ -65,7 +84,7 @@ const DataFilter = ({
         footer={footerModal}
         header="Opciones de filtrado"
       >
-        <div className="flex flex-column gap-3 justify-content-between">
+        <div className="flex flex-column gap-1 justify-content-between">
           {/* <div className="flex flex-column gap-3"> */}
           {!columnFilter ? (
             <h2>Sin columnas a filtrar</h2>
@@ -74,26 +93,51 @@ const DataFilter = ({
               {inputs.map((item, index) => {
                 return (
                   <div
-                    className="flex flex-column gap-3"
+                    className="flex flex-column gap-1"
                     key={index + item.field}
                   >
                     <>
                       <label htmlFor={item.field}>{item.header}</label>
-                      <InputText
-                        name={item.field}
-                        value={filterFields[item.field]}
-                        onChange={(e) =>
-                          setFilterFields({
-                            ...filterFields,
-                            [item.field]: e.target.value,
-                          })
-                        }
-                      />
+                      {item.type == "text" ? (
+                        <>
+                          <InputText
+                            name={item.field}
+                            value={filterFields[item.field]}
+                            onChange={(e) =>
+                              setFilterFields({
+                                ...filterFields,
+                                [item.field]: e.target.value,
+                              })
+                            }
+                          />
+                        </>
+                      ) : (
+                        <>
+                          {item.type == "drop" ? (
+                            <>
+                              <FilterDrop header={item.header} />
+                            </>
+                          ) : (
+                            <>
+                              <InputNumber
+                                name={item.field}
+                                value={filterFields[item.field]}
+                                onValueChange={(e) =>
+                                  setFilterFields({
+                                    ...filterFields,
+                                    [item.field]: e.target.value,
+                                  })
+                                }
+                              />
+                            </>
+                          )}
+                        </>
+                      )}
                     </>
                   </div>
                 );
               })}
-              <div className="flex flex-wrap">
+              <div className="flex flex-wrap gap-4">
                 {checks.map((item, index) => {
                   return (
                     <div
@@ -104,13 +148,19 @@ const DataFilter = ({
                         name={item.field}
                         checked={checkValues[item.field]}
                         onChange={(e) => {
-                          setCheckValues({
-                            ...checkValues,
-                            [item.field]: e.checked,
-                          });
+                          {
+                            setFilterFields({
+                              ...filterFields,
+                              [item.field]: e.checked,
+                            });
+                            setCheckValues({
+                              ...checkValues,
+                              [item.field]: e.checked,
+                            });
+                          }
                         }}
                       />
-                      <label htmlFor={item.field} className="ml-2">
+                      <label htmlFor={item.field} className="ml-1">
                         {item.header}
                       </label>
                     </div>

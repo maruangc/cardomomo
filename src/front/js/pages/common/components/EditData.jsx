@@ -16,7 +16,7 @@ const EditData = ({ fields, setFields, reload, setReload, table, id }) => {
     const a = fields.map((item) => {
       objetoAEnviar = { ...objetoAEnviar, [item.field]: item.value };
     });
-    console.log(objetoAEnviar);
+    console.log("objeto a enviar: ", objetoAEnviar);
     const response = await actions.updateById(table, id, objetoAEnviar);
     if (response.msg) {
       toast("token expired");

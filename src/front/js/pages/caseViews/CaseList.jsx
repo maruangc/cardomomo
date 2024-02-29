@@ -14,27 +14,37 @@ const columns = [
 ];
 
 const columnFilter = [
-  { field: "id", header: "id", type: "text" },
-  { field: "customer_id", header: "id CLiente", type: "text" },
-  { field: "professional_id", header: "id Profesional", type: "text" },
-  { field: "category_id", header: "Categoria", type: "text" },
-  { field: "typeservice_id", header: "Tipo", type: "drop" },
-  { field: "is_active", header: "Activo", type: "check" },
-  { field: "started", header: "Iniciado", type: "check" },
-  { field: "closed", header: "Cerrado", type: "check" },
-  { field: "delivered", header: "Entregado", type: "check" },
+  { field: "id", header: "id", type: "int", table: "" },
+  { field: "customer_id", header: "id CLiente", type: "int", table: "" },
+  {
+    field: "professional_id",
+    header: "id Profesional",
+    type: "int",
+    table: "",
+  },
+  { field: "category_id", header: "Categoria", type: "int", table: "" },
+  {
+    field: "typeservice_id",
+    header: "Tipo",
+    type: "drop",
+    table: "typeservice",
+  },
+  { field: "is_active", header: "Activo", type: "check", table: "" },
+  { field: "started", header: "Iniciado", type: "check", table: "" },
+  { field: "closed", header: "Cerrado", type: "check", table: "" },
+  { field: "delivered", header: "Entregado", type: "check", table: "" },
 ];
 
 const initialFieldsValues = {
-  id: "",
-  is_active: "",
-  customer_id: "",
-  professional_id: "",
-  category_id: "",
-  started: "",
-  typeservice_id: "",
-  closed: "",
-  delivered: "",
+  id: null,
+  is_active: null,
+  customer_id: null,
+  professional_id: null,
+  category_id: null,
+  started: null,
+  typeservice_id: null,
+  closed: null,
+  delivered: null,
 };
 
 const CaseList = () => {

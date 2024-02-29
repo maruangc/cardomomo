@@ -66,13 +66,18 @@ const ListComponent = ({
           onClick={() => handleReload()}
         />
       </div>
-
-      <CreateModal
-        handleReload={handleReload}
-        table={table}
-        createColumn={createColumn}
-        initialValue={initialValue}
-      />
+      {table != "case" ? (
+        <>
+          <CreateModal
+            handleReload={handleReload}
+            table={table}
+            createColumn={createColumn}
+            initialValue={initialValue}
+          />
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   );
 
@@ -100,6 +105,7 @@ const ListComponent = ({
   };
 
   const getDataQuery = async (offset = 0) => {
+    // console.log("filterFields: ", filterFields);
     let response;
     if (filtered === false) {
       response = await actions.getAll(table, 10, offset);

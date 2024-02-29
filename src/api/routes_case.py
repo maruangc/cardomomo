@@ -274,6 +274,7 @@ def filter_cases():
     body=request.json
     if body=={}:
        return jsonify({'ok':False,'error':'body is empty ','status':400}),400
+    id=body.get('id',None)
     customer_id=body.get('customer_id', None)
     category_id=body.get('category_id', None)
     typeservice_id=body.get('typeservice_id', None)
@@ -292,11 +293,14 @@ def filter_cases():
     delivered_date_start=body.get('delivered_date_start', None)
     delivered_date_end=body.get('delivered_date_end', None)
     delivered_description=body.get('delivered_description', None)
-    if customer_id is None and category_id is None and typeservice_id is None:
-       if is_active is None and started is None and date_init_start is None and date_init_end in None and professional_id is None:
+    if id is None and customer_id is None and category_id is None and typeservice_id is None:
+       if is_active is None and started is None and date_init_start is None and date_init_end is None and professional_id is None:
           if initial_note is None and description is None and closed is None and close_date_start is None and close_date_end is None:
              if close_description is None and delivered is None and delivered_date_start is None and delivered_date_end is None and delivered_description is None:
                 return jsonify({'ok':False,'error':"no fields-name valid in body, you must send any field: example: {'is_active':False}",'status':400}),400
+    print('------------', body)
+    if id is not None and type(id)!=int:
+       return jsonify({'ok':False,'error':'id must be a integer ','status':400}),400
     if customer_id is not None and type(customer_id)!=int:
        return jsonify({'ok':False,'error':'customer_id must be a integer ','status':400}),400
     if category_id is not None and type(category_id)!=int:
@@ -355,50 +359,37 @@ def filter_cases():
     if len(texto)>0:
         return jsonify({'ok':False,'error':texto,'status':400}),400
     filter=Case.query.filter(
-      Case.customer_id==customer_id if customer_id is not None else (Case.id > 0))
+      Case.id==id if id is not None else (Case.id>0))
+    if customer_id is not None:
+       filter.filter(Case.customer_id==customer_id)
     if category_id is not None:
        filter=filter.filter(Case.category_id==category_id)
-      # Case.category_id==category_id if category_id is not None else (Case.id > 0),
     if typeservice_id is not None:
        filter=filter.filter(Case.typeservice_id==typeservice_id)
-      # Case.typeservice_id==typeservice_id if typeservice_id is not None else (Case.id > 0),
     if professional_id is not None:
        filter=filter.filter(Case.professional_id==professional_id)
-      # Case.professional_id==professional_id if professional_id is not None else (Case.id > 0),
     if is_active is not None:
        filter=filter.filter(Case.is_active==is_active)
-      # Case.is_active==is_active if is_active is not None else (Case.id > 0),
     if started is not None:
        filter=filter.filter(Case.started==started)
-      # Case.started==started if started is not None else (Case.id > 0),
     if date_init_start is not None:
       filter=filter.filter(Case.date_init.between(date_init_start,date_init_end))
-      # Case.date_init.between(date_init_start,date_init_end) if date_init_start is not None else (Case.id > 0),
     if close_date_start is not None:
       filter=filter.filter(Case.close_date.between(close_date_start,date_init_end))
-      # Case.close_date.between(close_date_start,date_init_end) if close_date_start is not None else (Case.id > 0),
     if delivered_date_start is not None:
       filter=filter.filter(Case.delivered_date.between(delivered_date_start,delivered_date_end))
-      # Case.delivered_date.between(delivered_date_start,delivered_date_end) if delivered_date_start is not None else (Case.id > 0),
     if initial_note is not None:
       filter=filter.filter(Case.initial_note.ilike('%'+initial_note+'%'))
-      # Case.initial_note.ilike('%'+initial_note+'%') if initial_note is not None else (Case.id > 0),
     if description is not None:
       filter=filter.filter(Case.description.ilike('%'+description+'%'))
-      # Case.description.ilike('%'+description+'%') if description is not None else (Case.id > 0),
     if closed is not None:
       filter=filter.filter(Case.closed==closed)
-      # Case.closed==closed if closed is not None else (Case.id > 0),
     if close_description is not None:
       filter=filter.filter(Case.close_description.ilike('%'+close_description+'%'))
-      # Case.close_description.ilike('%'+close_description+'%') if close_description is not None else (Case.id > 0),
     if delivered is not None:
       filter=filter.filter(Case.delivered==delivered)
-      # Case.delivered==delivered if delivered is not None else (Case.id > 0),
     if delivered_description is not None:
       filter=filter.filter(Case.delivered_description.ilike('%'+delivered_description+'%'))
-      # Case.delivered_description.ilike('%'+delivered_description+'%') if delivered_description is not None else (Case.id > 0)
-      # )
     if limit=='0':
         filter=filter.all()
     else:
