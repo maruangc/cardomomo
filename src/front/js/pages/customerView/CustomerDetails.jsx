@@ -70,15 +70,15 @@ const CustomerDetails = () => {
         <div className="flex gap-5 justify-content-between">
           <div className="flex gap-5 ">
             <Button
-              label="Actuallizar"
-              icon="fa-solid fa-rotate-right"
-              onClick={() => setReload(reload + 1)}
-              rounded
-            />
-            <Button
               label="Volver"
               icon="fa-solid fa-arrow-left"
               onClick={() => navigate("/customer")}
+              rounded
+            />
+            <Button
+              label="Actuallizar"
+              icon="fa-solid fa-rotate-right"
+              onClick={() => setReload(reload + 1)}
               rounded
             />
           </div>

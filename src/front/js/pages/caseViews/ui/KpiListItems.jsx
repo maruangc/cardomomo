@@ -27,7 +27,6 @@ const KpiListItems = () => {
     <div className="flex flex-column gap-3">
       {dataQuery ? (
         <>
-          <p className="text-xl font-bold">KPI</p>
           <div className="grid card gap-3 p-3 surface-300 border-round-md">
             <Card
               title={dataQuery.started}

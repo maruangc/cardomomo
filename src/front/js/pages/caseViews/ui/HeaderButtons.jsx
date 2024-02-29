@@ -54,6 +54,13 @@ const HeaderButtons = ({
       </div>
       <div className="flex gap-5">
         <Button
+          label="Volver"
+          icon="fa-solid fa-circle-chevron-left"
+          rounded
+          className="w-min"
+          onClick={() => navigate(-1)}
+        ></Button>
+        <Button
           rounded
           label="Iniciar caso"
           onClick={() => {
