@@ -7,10 +7,12 @@ const columns = [
   { field: "case.id", header: "Ticket" },
   { field: "case.created", header: "fecha" },
   { field: "category.category", header: "Categoria" },
-  { field: "case.customer_id", header: "id CLiente" },
-  { field: "case.professional_id", header: "id Profesional" },
-  { field: "case.typeservice_id", header: "Tipo" },
+  { field: "customer.name", header: "CLiente" },
+  { field: "professional.name", header: "Profesional" },
+  { field: "typeservice.type_service", header: "Tipo Servicio" },
   { field: "case.started", header: "Iniciado" },
+  { field: "case.closed", header: "Cerrado" },
+  { field: "case.delivered", header: "Entregado" },
 ];
 
 const columnFilter = [
@@ -48,6 +50,34 @@ const columnFilter = [
     type: "drop",
     table: "/tables/type",
     nameForDropDown: "type_service",
+  },
+  {
+    field: "initial_note",
+    header: "Nota inicial",
+    type: "text",
+    table: "",
+    nameForDropDown: "",
+  },
+  {
+    field: "description",
+    header: "Descripción",
+    type: "text",
+    table: "",
+    nameForDropDown: "",
+  },
+  {
+    field: "close_description",
+    header: "Notas al cerrar",
+    type: "text",
+    table: "",
+    nameForDropDown: "",
+  },
+  {
+    field: "delivered_description",
+    header: "Notas de la entrega",
+    type: "text",
+    table: "",
+    nameForDropDown: "",
   },
   {
     field: "is_active",
@@ -101,7 +131,7 @@ const CaseList = () => {
 
   return (
     <div className="w-full flex justify-content-center h-full">
-      <div className="flex flex-column gap-5 p-5 w-full max-container-width">
+      <div className="flex flex-column gap-5 p-2 w-full max-container-width">
         <KpiListItems />
         <ListComponent
           initialFieldsValues={initialFieldsValues}

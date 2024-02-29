@@ -2,12 +2,12 @@ import React from "react";
 import ListComponent from "../common/components/ListComponent.jsx";
 
 const columns = [
-  { field: "id", header: "id" },
   { field: "identification", header: "Identificacion" },
   { field: "name", header: "Nombre" },
   { field: "profession", header: "Profesion" },
   { field: "phone", header: "Telefono" },
   { field: "email", header: "Email" },
+  { field: "address", header: "Dirección" },
 ];
 
 const columnFilter = [
@@ -17,6 +17,7 @@ const columnFilter = [
   { field: "phone", header: "Telefono", type: "text" },
   { field: "email", header: "Email", type: "text" },
   { field: "address", header: "Direccion", type: "text" },
+  { field: "comment", header: "Comentario", type: "text" },
 ];
 
 const initialFieldsValues = {

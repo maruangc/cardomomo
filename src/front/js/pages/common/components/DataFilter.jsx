@@ -97,7 +97,7 @@ const DataFilter = ({
         footer={footerModal}
         header="Opciones de filtrado"
       >
-        <div className="flex flex-column gap-1 justify-content-between">
+        <div className="flex flex-wrap gap-1">
           {/* <div className="flex flex-column gap-3"> */}
           {!columnFilter ? (
             <h2>Sin columnas a filtrar</h2>

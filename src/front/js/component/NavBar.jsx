@@ -24,17 +24,6 @@ export default function Navbar({ vista }) {
       items: [
         {
           label: (
-            <p className=" p-0 m-0" onClick={() => navigate("/register")}>
-              Nuevo usuario
-            </p>
-          ),
-          icon: (
-            <i className="text-black-alpha-90 mr-2 font-bold fa-solid fa-plus  "></i>
-          ),
-        },
-
-        {
-          label: (
             <p className=" p-0 m-0" onClick={() => navigate("/user")}>
               Lista Usuarios
             </p>

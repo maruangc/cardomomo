@@ -45,8 +45,6 @@ const ListComponent = ({
     }
   };
 
-  console.log(filterFields);
-
   const header = (
     <div className="flex flex-row justify-content-between ">
       <div className="flex gap-3">
@@ -132,6 +130,8 @@ const ListComponent = ({
   useEffect(() => {
     getDataQuery();
   }, [reload]);
+
+  console.log("dataQuery: ", dataQuery);
 
   return (
     <div className="w-full mx-auto">
