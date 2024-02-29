@@ -13,6 +13,7 @@ const EditData = ({ fields, setFields, reload, setReload, table, id }) => {
 
   const handleSubmit = async () => {
     let objetoAEnviar = {};
+
     const a = fields.map((item) => {
       objetoAEnviar = { ...objetoAEnviar, [item.field]: item.value };
     });
@@ -23,7 +24,7 @@ const EditData = ({ fields, setFields, reload, setReload, table, id }) => {
       navigate("/login");
     }
     if (response.ok) {
-      toast(response.data);
+      toast("Datos actualizados");
       setReload(reload + 1);
       setVisible(false);
     }

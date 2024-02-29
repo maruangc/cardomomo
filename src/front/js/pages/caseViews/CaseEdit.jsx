@@ -1,31 +1,48 @@
 import React, { useEffect, useContext, useState } from "react";
 import { Context } from "../../store/appContext";
-import { Navigate, useParams } from "react-router-dom";
-import CostumerData from "./ui/CostumerData.jsx";
+import { useParams, useNavigate } from "react-router-dom";
 import { Dropdown } from "primereact/dropdown";
-import { Checkbox } from "primereact/checkbox";
-import ChekboxComponent from "./ui/CheckBoxComponent.jsx";
+import { Button } from "primereact/button";
 
-const originalState = {
-  id: "",
+import CostumerData from "./ui/CostumerData.jsx";
+import ProfessionalData from "./ui/ProfessionalData.jsx";
+import StateDetailEdit from "./ui/StateDetailEdit.jsx";
+import { toast } from "react-toastify";
+
+const initialCaseState = {
+  case: {},
+  category: {},
+  customer: {},
+  professional: {},
+  typeservice: {},
 };
 
 const CaseEdit = () => {
   const { id } = useParams();
   const { actions } = useContext(Context);
+  const navigate = useNavigate();
 
   const [dataCase, setDataCase] = useState();
   const [customerList, setCustomerList] = useState([]);
   const [professionalList, setProfessionalList] = useState([]);
+  const [serviceTypeList, setServiceTypeList] = useState([]);
+  const [categoryList, setCategoryList] = useState([]);
+
+  const [category, setCategory] = useState(null);
+  const [serviceType, setServiceType] = useState(null);
   const [customer, setCustomer] = useState(null);
-  const [object, setObject] = useState(originalState);
-  const [checked, setChecked] = useState(false);
+  const [professional, setProfessional] = useState(null);
+  const [isActive, setIsActive] = useState(true);
 
   const getData = async () => {
     const response = await actions.getById("case", `${id}`);
     if (response.ok) {
       setDataCase(response.data);
       setCustomer(response.data.customer);
+      setProfessional(response.data.professional);
+      setServiceType(response.data.typeservice);
+      setIsActive(response.data.case.is_active);
+      setCategory(response.data.category);
     }
     const customerList = await actions.getAll("customer", "0", "0");
     if (customerList.ok) {
@@ -36,6 +53,37 @@ const CaseEdit = () => {
     if (professionalList.ok) {
       setProfessionalList(professionalList.data);
     }
+
+    const serviceType = await actions.getAll("tables/type");
+    if (serviceType.ok) {
+      setServiceTypeList(serviceType.data);
+    }
+
+    const categoryList = await actions.getAll("category", "0", "0");
+    if (categoryList.ok) {
+      setCategoryList(categoryList.data);
+    }
+  };
+
+  const handleSave = async () => {
+    const fields = {
+      customer_id: customer.id,
+      is_active: isActive,
+      professional_id: professional.id ? professional.id : null,
+      category_id: category.id,
+      typeservice_id: serviceType.id,
+      //description: ""
+      //initial_notes:""
+    };
+
+    const response = await actions.updateById("case", id, fields);
+    console.log(response);
+    if (response.ok) {
+      toast("Datos Actualizados");
+      navigate(-1);
+    } else {
+      toast(response.error);
+    }
   };
 
   useEffect(() => {
@@ -45,25 +93,84 @@ const CaseEdit = () => {
   if (!dataCase) {
     return <h2>Sin dataos</h2>;
   }
+
+  console.log(professional);
   return (
     <div className="w-full flex justify-content-center">
-      <div className="flex flex-column gap-5 px-5 py-5 w-full max-container-width">
-        <div>
-          <p>Selecciona un cliente </p>
+      <div className="flex flex-column gap-7 px-5 py-5 w-full max-container-width">
+        <div className="flex justify-content-between w-full align-items-center">
+          <p className="text-2xl m-0">
+            Editar caso:
+            <span className="font-bold ml-3">#{dataCase.case.id}</span>
+          </p>
+          <div className="flex gpa-3">
+            <Button
+              label="Volver"
+              icon="fa-solid fa-circle-chevron-left"
+              rounded
+              className="w-min"
+              onClick={() => navigate(-1)}
+            ></Button>
+            <Button
+              label="Guardar cambios"
+              icon="fa-solid fa-circle-chevron-left"
+              rounded
+              className="w-min"
+              onClick={() => handleSave()}
+            ></Button>
+          </div>
         </div>
-        <Dropdown
-          value={customer}
-          onChange={(e) => {
-            setCustomer(e.value);
-            Navigate(`/${sd}`);
-          }}
-          options={customerList}
-          optionLabel="name"
-          placeholder="Selecciona un cliente"
-          className="w-full md:w-14rem"
-        />
-        <CostumerData customer={customer} />
-        <ChekboxComponent />
+        <div className="flex flex-column gap-3">
+          <div className="flex flex-column gap-3 ">
+            <span className="font-bold text-xl">
+              Asigna o cambia un cliente de la lista :
+            </span>
+            <Dropdown
+              value={customer}
+              onChange={(e) => {
+                setCustomer(e.value);
+              }}
+              options={customerList}
+              optionLabel="name"
+              placeholder="Selecciona un cliente"
+              className="w-full md:w-20rem"
+            />
+          </div>
+
+          <CostumerData customer={customer} />
+        </div>
+
+        <div className="flex flex-column gap-3">
+          <div className="flex flex-column gap-3 ">
+            <span className="font-bold text-xl">
+              Asigna o cambia un profesional de la lista :
+            </span>
+            <Dropdown
+              value={professional}
+              onChange={(e) => {
+                setProfessional(e.value);
+              }}
+              options={professionalList}
+              optionLabel="name"
+              placeholder="Selecciona un Profesional"
+              className="w-full md:w-20rem"
+            />
+          </div>
+
+          <ProfessionalData professional={professional} />
+        </div>
+        <div className="flex flex-column gap-3">
+          <StateDetailEdit
+            serviceTypeList={serviceTypeList}
+            serviceType={serviceType}
+            setServiceType={setServiceType}
+            isActive={isActive}
+            setIsActive={setIsActive}
+            categoryList={categoryList}
+            category={category}
+            setCategory={setCategory}
+          />
+        </div>
       </div>
     </div>
   );
