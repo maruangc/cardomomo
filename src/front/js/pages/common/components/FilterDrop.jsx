@@ -1,25 +1,30 @@
 import React, { useState } from "react";
 import { Dropdown } from "primereact/dropdown";
 
-const FilterDrop = ({ header }) => {
-  const [selectedCity, setSelectedCity] = useState(null);
-  const cities = [
-    { name: "New York", code: "NY" },
-    { name: "Rome", code: "RM" },
-    { name: "London", code: "LDN" },
-    { name: "Istanbul", code: "IST" },
-    { name: "Paris", code: "PRS" },
-  ];
+const FilterDrop = ({
+  data,
+  nameForDropDown,
+  field,
+  header,
+  setFilterFields,
+  filterFields,
+}) => {
+  const [selectedData, setSelectedData] = useState(null);
 
   return (
     <div className="card flex justify-content-start">
       <Dropdown
-        // value={selectedCity}
+        value={selectedData}
         onChange={(e) => {
-          console.log(e.value);
+          setSelectedData(e.value);
+          console.log("e.value: ", e.value, "e.field: ", e.field);
+          setFilterFields({
+            ...filterFields,
+            [field]: e.target.value.id,
+          });
         }}
-        options={cities}
-        optionLabel="name"
+        options={data}
+        optionLabel={nameForDropDown}
         placeholder={header}
         className="w-full md:w-14rem"
       />

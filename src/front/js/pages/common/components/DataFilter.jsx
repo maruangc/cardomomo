@@ -6,6 +6,8 @@ import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { Checkbox } from "primereact/checkbox";
 import FilterDrop from "./FilterDrop.jsx";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const DataFilter = ({
   setFiltered,
@@ -20,7 +22,9 @@ const DataFilter = ({
 }) => {
   const { actions } = useContext(Context);
   const [visible, setVisible] = useState(false);
+  const navigate = useNavigate();
   const [checked, setChecked] = useState(false);
+  const [columnCase, setColumnCase] = useState();
 
   const handleSubmit = () => {
     setVisible(false);
@@ -36,18 +40,27 @@ const DataFilter = ({
   );
 
   const onClickButtonFilter = async () => {
+    setFilterFields(initialFieldsValues);
     if (typeof setCheckValues === "function") {
+      //Solo se cumple cuando viene de case
       setCheckValues({
         is_active: false,
         started: false,
         closed: false,
         delivered: false,
       });
-      const response = await actions.getAll("type");
-      if (response.ok) {
+      for (const item of columnFilter) {
+        if (item.table != "") {
+          const response = await actions.getAll(item.table, 0, 0);
+          if (response.ok) {
+            item.data = response.data;
+          } else {
+            toast(response.msg);
+            navigate("/login");
+          }
+        }
       }
     }
-    setFilterFields(initialFieldsValues);
     setVisible(true);
   };
 
@@ -115,7 +128,14 @@ const DataFilter = ({
                         <>
                           {item.type == "drop" ? (
                             <>
-                              <FilterDrop header={item.header} />
+                              <FilterDrop
+                                data={item.data}
+                                nameForDropDown={item.nameForDropDown}
+                                field={item.field}
+                                header={item.header}
+                                setFilterFields={setFilterFields}
+                                filterFields={filterFields}
+                              />
                             </>
                           ) : (
                             <>

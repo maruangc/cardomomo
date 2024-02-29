@@ -14,25 +14,69 @@ const columns = [
 ];
 
 const columnFilter = [
-  { field: "id", header: "id", type: "int", table: "" },
-  { field: "customer_id", header: "id CLiente", type: "int", table: "" },
   {
-    field: "professional_id",
-    header: "id Profesional",
+    field: "id",
+    header: "Ticket",
     type: "int",
     table: "",
+    nameForDropDown: "",
   },
-  { field: "category_id", header: "Categoria", type: "int", table: "" },
+  {
+    field: "customer_id",
+    header: "CLiente",
+    type: "drop",
+    table: "customer",
+    nameForDropDown: "name",
+  },
+  {
+    field: "professional_id",
+    header: "Profesional",
+    type: "drop",
+    table: "professional",
+    nameForDropDown: "name",
+  },
+  {
+    field: "category_id",
+    header: "Categoria",
+    type: "drop",
+    table: "category",
+    nameForDropDown: "category",
+  },
   {
     field: "typeservice_id",
     header: "Tipo",
     type: "drop",
-    table: "typeservice",
+    table: "/tables/type",
+    nameForDropDown: "type_service",
   },
-  { field: "is_active", header: "Activo", type: "check", table: "" },
-  { field: "started", header: "Iniciado", type: "check", table: "" },
-  { field: "closed", header: "Cerrado", type: "check", table: "" },
-  { field: "delivered", header: "Entregado", type: "check", table: "" },
+  {
+    field: "is_active",
+    header: "Activo",
+    type: "check",
+    table: "",
+    nameForDropDown: "",
+  },
+  {
+    field: "started",
+    header: "Iniciado",
+    type: "check",
+    table: "",
+    nameForDropDown: "",
+  },
+  {
+    field: "closed",
+    header: "Cerrado",
+    type: "check",
+    table: "",
+    nameForDropDown: "",
+  },
+  {
+    field: "delivered",
+    header: "Entregado",
+    type: "check",
+    table: "",
+    nameForDropDown: "",
+  },
 ];
 
 const initialFieldsValues = {
