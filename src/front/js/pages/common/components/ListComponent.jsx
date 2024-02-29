@@ -8,6 +8,7 @@ import DataFilter from "./DataFilter.jsx";
 import { Button } from "primereact/button";
 import { toast } from "react-toastify";
 import CreateModal from "./CreateModal.jsx";
+import CreateCaseModal from "../../caseViews/ui/CreateCaseModal.jsx";
 
 const ListComponent = ({
   initialFieldsValues, //({}) se define en el view de la lista
@@ -66,6 +67,7 @@ const ListComponent = ({
           onClick={() => handleReload()}
         />
       </div>
+
       {table != "case" ? (
         <>
           <CreateModal
@@ -76,7 +78,9 @@ const ListComponent = ({
           />
         </>
       ) : (
-        <></>
+        <>
+          <CreateCaseModal />
+        </>
       )}
     </div>
   );
@@ -105,7 +109,6 @@ const ListComponent = ({
   };
 
   const getDataQuery = async (offset = 0) => {
-    // console.log("filterFields: ", filterFields);
     let response;
     if (filtered === false) {
       response = await actions.getAll(table, 10, offset);
