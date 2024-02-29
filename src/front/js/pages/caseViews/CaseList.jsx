@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import KpiListItems from "./ui/KpiListItems.jsx";
 // import CaseListComponent from "./ui/CaseListComponent.jsx";
 import ListComponent from "../common/components/ListComponent.jsx";
+import { refresh } from "aos";
 
 const columns = [
   { field: "case.id", header: "Ticket" },

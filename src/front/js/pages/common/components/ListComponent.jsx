@@ -43,6 +43,7 @@ const ListComponent = ({
     } else {
       getDataQuery();
     }
+    actions.setRefreshKpi();
   };
 
   const header = (
@@ -130,8 +131,6 @@ const ListComponent = ({
   useEffect(() => {
     getDataQuery();
   }, [reload]);
-
-  console.log("dataQuery: ", dataQuery);
 
   return (
     <div className="w-full mx-auto">

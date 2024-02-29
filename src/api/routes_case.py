@@ -117,6 +117,25 @@ def get_case(id):
         dic['data']['typeservice']=filter.serialize()
     return jsonify(dic),200
 
+@routes.route('/summary', endpoint='case_summary', methods=['GET'])
+@jwt_required()
+def case_summary():
+   count=Case.query.all()
+   started=Case.query.filter_by(started=True).all()
+   closed=Case.query.filter_by(closed=True).all()
+   delivered=Case.query.filter_by(delivered=True).all()
+   unassigned=Case.query.filter_by(professional_id=None).all()
+   inactive=Case.query.filter_by(is_active=None).all()
+   return jsonify({'ok':True, 'status':200, 'data':{
+      'count': len(count),
+      'started': len(started),
+      'closed': len(closed),
+      'delivered': len(delivered),
+      'unassigned': len(unassigned),
+      'inactive': len(inactive),
+   }}),200
+
+
 @routes.route('/all', endpoint='get_cases', methods=['GET'])
 @jwt_required()
 def get_cases():

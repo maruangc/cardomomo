@@ -17,7 +17,6 @@ const FilterDrop = ({
         value={selectedData}
         onChange={(e) => {
           setSelectedData(e.value);
-          console.log("e.value: ", e.value, "e.field: ", e.field);
           setFilterFields({
             ...filterFields,
             [field]: e.target.value.id,
