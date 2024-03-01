@@ -189,19 +189,6 @@ const CreateCaseModal = ({ handleReload }) => {
               />
             </div>
           </div>
-
-          <div className="flex flex-column gap-3">
-            <span className="text-sm">Estado del caso :</span>
-            <div className="flex gap-3 w-min align-items-center">
-              <span className="font-bold">
-                {isActive ? "Activo" : "Inactivo"}
-              </span>
-              <InputSwitch
-                checked={isActive}
-                onChange={(e) => setIsActive(e.value)}
-              />
-            </div>
-          </div>
         </div>
       </Dialog>
     </>
