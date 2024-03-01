@@ -38,12 +38,9 @@ export default function Navbar({ vista }) {
       items: [
         {
           label: (
-            <p className="text-red-700 p-0 m-0" onClick={borrarToken}>
-              Cerrar sesion
-            </p>
-          ),
-          icon: (
-            <i className="text-red-700 mr-2 font-bold fa-solid fa-power-off  "></i>
+              <p className="text-red-700 p-0 m-0" onClick={borrarToken}>
+              <i className="text-red-700 mr-1 font-bold fa-solid fa-power-off  "></i>  Cerrar sesion
+              </p>
           ),
         },
       ],

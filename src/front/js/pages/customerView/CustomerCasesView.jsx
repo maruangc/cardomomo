@@ -17,7 +17,7 @@ const initialFieldsValues = false;
 
 const CustomerCasesView = ({ id }) => {
   return (
-    <div className="w-full flex justify-content-center h-full mt-5">
+    <div className="w-full flex justify-content-center h-full mt-5" >
       <div className="flex flex-column gap-5 p-2 w-full max-container-width">
         <ListComponent
           initialFieldsValues={initialFieldsValues}
