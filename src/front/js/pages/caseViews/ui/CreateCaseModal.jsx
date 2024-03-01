@@ -23,6 +23,7 @@ const CreateCaseModal = ({ handleReload }) => {
   const [isActive, setIsActive] = useState(true);
   const [initialNotes, setInitialNotes] = useState("");
   const [description, setDescription] = useState("");
+  const [disabled, setDisabled] = useState(true);
   //const [isDisabled, setIsDisabled] = useState(true);
 
   const getData = async () => {
@@ -44,7 +45,6 @@ const CreateCaseModal = ({ handleReload }) => {
     const categoryList = await actions.getAll("category", "0", "0");
     if (categoryList.ok) {
       setCategoryList(categoryList.data);
-      console.log(categoryList);
     }
   };
 
@@ -53,14 +53,13 @@ const CreateCaseModal = ({ handleReload }) => {
       customer_id: customer.id, // obligatorio
       category_id: category.id, // obligatorio
       typeservice_id: serviceType.id, // obligatorio
-      professional_id: professional.id ? professional.id : null,
+      professional_id: professional ? professional.id : null,
       is_active: isActive,
       initial_note: initialNotes,
       description: description,
     };
 
     const response = await actions.insertInTable("case", fields);
-    console.log(response);
     if (response.ok) {
       toast("Caso creado");
       setVisible(false);
@@ -75,6 +74,7 @@ const CreateCaseModal = ({ handleReload }) => {
       <Button
         label="Crear caso"
         rounded
+        disabled={customer == null || category == null || serviceType == null}
         size="small"
         onClick={() => handleSave()}
       />
@@ -87,11 +87,21 @@ const CreateCaseModal = ({ handleReload }) => {
     </div>
   );
 
+  const handleCreate = () => {
+    setCategory(null);
+    setServiceType(null);
+    setCustomer(null);
+    setProfessional(null);
+    setIsActive(true);
+    setInitialNotes("");
+    setDescription("");
+    setVisible(true);
+  };
+
   useEffect(() => {
     getData();
   }, []);
 
-  // console.log(customer && customer.id);
   return (
     <>
       <Button
@@ -99,7 +109,7 @@ const CreateCaseModal = ({ handleReload }) => {
         rounded
         icon="fa-solid fa-circle-plus"
         size="small"
-        onClick={() => setVisible(true)}
+        onClick={() => handleCreate()}
       />
 
       <Dialog
