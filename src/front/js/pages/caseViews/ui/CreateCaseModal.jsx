@@ -58,7 +58,7 @@ const CreateCaseModal = ({ handleReload }) => {
 
     const response = await actions.insertInTable("case", fields);
     if (response.ok) {
-      toast.info("Caso creado");
+      toast.success("Caso creado");
       setVisible(false);
       handleReload();
     } else {

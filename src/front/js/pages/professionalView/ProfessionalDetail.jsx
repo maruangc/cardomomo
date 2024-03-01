@@ -106,43 +106,43 @@ const ProfessionalDetail = () => {
               <label className="w-2">Id del profesional:</label>
               <label className="w-max">{params.id}</label>
             </div>
-            <div className="flex gap-3 mt-2">
+            <div className="flex gap-3 mt-5">
               <label className="w-2" htmlFor="name">
                 Nombre
               </label>
               <label className="w-max">{dataQuery.name}</label>
             </div>
-            <div className="flex gap-3 mt-2">
+            <div className="flex gap-3 mt-5">
               <label className="w-2" htmlFor="identification">
                 Identificación
               </label>
               <label className="w-max">{dataQuery.identification}</label>
             </div>
-            <div className="flex gap-3 mt-2">
+            <div className="flex gap-3 mt-5">
               <label className="w-2" htmlFor="profession">
                 Profesion
               </label>
               <label className="w-max">{dataQuery.profession}</label>
             </div>
-            <div className="flex gap-3 mt-2">
+            <div className="flex gap-3 mt-5">
               <label className="w-2" htmlFor="phone">
                 Telefono
               </label>
               <label className="w-max">{dataQuery.phone}</label>
             </div>
-            <div className="flex gap-3 mt-2">
+            <div className="flex gap-3 mt-5">
               <label className="w-2" htmlFor="email">
                 Correo
               </label>
               <label className="w-max">{dataQuery.email}</label>
             </div>
-            <div className="flex gap-3 mt-2">
+            <div className="flex gap-3 mt-5">
               <label className="w-2" htmlFor="address">
                 Dirección
               </label>
               <label className="w-max">{dataQuery.address}</label>
             </div>
-            <div className="flex gap-3 mt-2">
+            <div className="flex gap-3 mt-5">
               <label className="w-2" htmlFor="comment">
                 Comentario
               </label>

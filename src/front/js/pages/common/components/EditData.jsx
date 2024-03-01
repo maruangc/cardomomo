@@ -24,7 +24,7 @@ const EditData = ({ fields, setFields, reload, setReload, table, id }) => {
       navigate("/login");
     }
     if (response.ok) {
-      toast.info("Datos actualizados");
+      toast.success("Datos actualizados");
       setReload(reload + 1);
       setVisible(false);
     }
