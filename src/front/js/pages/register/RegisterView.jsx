@@ -43,7 +43,7 @@ export const Register = () => {
           >
             <div className="text-left">
               <div className="flex justify-content-center flex-column">
-                <h1 className="text-4xl font-bold text-white pb-3">Register</h1>
+                <h1 className="text-4xl font-bold text-white pb-2">Register</h1>
                 <div className="mt-5">
                   <h5 className="m-0 p-0 pb-2 text-white">Nombre Completo</h5>
                   <InputText id="name" name="name" className="w-full" />
@@ -65,21 +65,31 @@ export const Register = () => {
                 />
               </div>
               <p className="text-red-500">{notice}</p>
-              <div className="flex justify-content-between items-center mt-8">
+              <div className="flex justify-content-between items-center mt-6">
                 
               <Button
                 type="submit"
                 label="Registrar"
-                icon=""
-                severity="success"
-                className="w-10rem  "
+                rounded
+                className="w-10rem hover:text-white-alpha-60 text-white px-5 py-3 mt-3 text-cente "
               >
-                <i className="fa-solid fa-user pr-3"></i>
+                <i className="fa-solid fa-user ml-3"></i>
               </Button>
-                <Button onClick={() => navigate("/login")} className="text-white text-xl  bg-transparent ">
-                  Volver
-                </Button>
-              </div>
+              <Button
+                onClick={() => navigate("/login")}
+                rounded
+                className="hover:text-white-alpha-60 text-white px-5 py-3 mt-3 "
+              >
+              <i class="fa-solid fa-arrow-left mr-2"></i>  Volver
+              </Button>
+              </div> 
+              <Button
+                onClick={() => navigate("/")}
+                rounded
+                className="hover:text-white-alpha-60 text-white px-5 py-3 mt-4  bg-transparent text-cente "
+              >
+              <i class="fa-solid fa-home mr-2 mb-1"></i>  Home
+              </Button>
             </div>
           </form>
         </div>

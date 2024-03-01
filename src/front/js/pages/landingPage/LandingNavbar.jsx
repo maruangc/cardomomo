@@ -12,12 +12,7 @@ const LandingNavbar = () => {
     <>
       <div className="card flex justify-content-between text-white-alpha-90 bg-primary-black  p-2">
         <div className="pl-5">
-          <Image
-            alt="logo"
-            src="https://primefaces.org/cdn/primereact/images/logo.png"
-            height="40"
-            className=""
-          ></Image>
+          <h3 className="text-2xl font-bold ">Task<span class="text-primary-600">Syncer</span></h3>
         </div>
         <div className="flex justify-content-center items-center">
           <Button

@@ -10,7 +10,7 @@ const LandingFooter = () => {
             <p>9g2Z8@example.com</p>
           </div>
           <div>
-            <h1 className="">Logo</h1>
+            <h1 className="">Task<span class="text-primary-600">Syncer</span></h1>
           </div>
           <div className="flex  gap-2 pt-1">
             <i className="text-2xl fa-brands fa-facebook"></i>

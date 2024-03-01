@@ -52,11 +52,10 @@ const Login = () => {
               <Button
                 type="submit"
                 label="Login"
-                icon=""
-                severity="success"
-                className="w-10rem mt-6 "
+                rounded
+                className="w-10rem  mt-6 hover:text-white-alpha-60 text-white px-5 py-3 mt-3 text-cente "
               >
-                <i className="fa-solid fa-user pr-3"></i>
+                <i className="fa-solid fa-user ml-3"></i>
               </Button>
               <div className="flex justify-content-between items-center mt-5">
                 <p className="text-white">No tienes cuenta?</p>
@@ -64,14 +63,14 @@ const Login = () => {
                   Registrate
                 </Link>
               </div>
-              <Link
-                to={"/"}
-                className="w-10rem mt-6 text-white flex justify-content-start align-items-center"
-              >
-                <p className="text-white text-xs m-0 mt-1 mr-2">Go home</p>
-                <i className="fa-solid fa-house pr-3 text-white"></i>
-              </Link>
             </div>
+              <Button
+                onClick={() => navigate("/")}
+                rounded
+                className="bg-transparent  hover:text-white-alpha-60 text-white px-5 py-3 mt-3 "
+              >
+                <i className=" fa-solid fa-house pr-2 mb-1 text-white"></i> Ir a inicio
+              </Button>
           </div>
         </form>
       </div>
