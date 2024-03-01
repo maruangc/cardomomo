@@ -50,26 +50,30 @@ def user_register():
         db.session.rollback()
         return jsonify({'ok':False,'error': 'internal server error','status':500}),500
 
-@routes.route('/edit',endpoint='edit_user', methods=['PUT'])
+@routes.route('/edit/<int:id>',endpoint='edit_user', methods=['PUT'])
 @jwt_required()
-def edit_user():
-    current_user = get_jwt_identity()
-    user=User.query.filter_by(id=current_user['id']).one_or_none()
+def edit_user(id):
+    # current_user = get_jwt_identity()
+    user=User.query.filter_by(id=id).one_or_none()
     if user is None:
         return jsonify({'ok':False,'error': 'user not found','status':404}),404
     body=request.json
     name=body.get('name', None)
+    email=body.get('email', None)
     texto=""
-    if name is None:
-        texto=texto+'nombre debe existir en la solicitud '+chr(10)
+    if name is None and email is None:
+        texto=texto+'nombre y correo deben existir en la solicitud '+chr(10)
     if name.strip()=="":
         texto=texto+'nombre debe tener un valor '
+    if email.strip()=="":
+        texto=texto+'email debe tener un valor '
 
     if len(texto)>0:
         return jsonify({'ok':False,'error': texto,'status':400}),400
         
-    print('--*-*-*PUT:', user.serialize())
+    print('--*-*-*PUT: ', user.serialize())
     user.name=name
+    user.email=email
     try:
         # db.session.begin_nested() # crea un checkpoint
         db.session.commit()
@@ -85,7 +89,7 @@ def get_user(id):
     user=User.query.filter_by(id=id).one_or_none()
     if user is None:
         return jsonify({'ok':False,'error': 'user not found','status':404})
-    return jsonify({'data':[user.serialize()],'ok':True,'status':200})
+    return jsonify({'data':user.serialize(),'ok':True,'status':200})
 
 @routes.route('/all',endpoint='get_users', methods=['GET'])
 @jwt_required()

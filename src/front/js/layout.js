@@ -26,6 +26,7 @@ import ProfessionalList from "./pages/professionalView/ProfessionalList.jsx";
 import CategoryList from "./pages/categoryView/CategoryList.jsx";
 import CategoryDetails from "./pages/categoryView/CategoryDetails.jsx";
 import UserList from "./pages/userViews/UserList.jsx";
+import UserDetail from "./pages/userViews/UserDetail.jsx";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -82,7 +83,7 @@ const Layout = () => {
             {/* USER ROUTES  */}
             <Route element={<Navbar vista={"Usuarios"} />} path="/user">
               <Route path="" element={<UserList />} />
-              <Route path="detail/:id" element={<UserList />} />
+              <Route path="detail/:id" element={<UserDetail />} />
               <Route element={<h1>Not found Usuarios!</h1>} path="*" />
             </Route>
 

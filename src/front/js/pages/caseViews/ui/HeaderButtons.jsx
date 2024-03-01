@@ -16,11 +16,11 @@ const HeaderButtons = ({
   isStarted,
   isClosed,
   isDelivered,
-  dataQuery,
   dataCustomer,
   setStatusCase,
   statusCase,
   setState,
+  data,
 }) => {
   const { actions } = useContext(Context);
   const navigate = useNavigate();
@@ -39,30 +39,47 @@ const HeaderButtons = ({
   return (
     <section className="flex flex-row justify-content-between align-items-center">
       <div>
-        <h2>Caso #{caseData.id} </h2>
+        <h2>Caso #{id} </h2>
         <p className="text-md">{created}</p>
-        <p className="text-md">{status}</p>
+        <div className="flex gap-3 align-items-center">
+          <p className="text-md">{status}</p>
+          <p className="text-md text-bold">
+            {data.case.is_active ? (
+              <span className="text-green-400 font-bold	text-xl">ACTIVO</span>
+            ) : (
+              <span className="text-red-600	 font-bold text-xl">INACTIVO</span>
+            )}
+          </p>
+        </div>
       </div>
       <div className="flex gap-5">
         <Button
+          label="Volver"
+          icon="fa-solid fa-circle-chevron-left"
           rounded
-          label="Editar"
-          onClick={() => navigate("/case/edit/1")}
-        />
-        <CloseCaseModal
-          closeModalvalue={closeModalvalue}
-          setCloseModalValue={setCloseModalValue}
-          dataQuery={dataQuery}
-          setState={setState}
-          statusCase={statusCase}
-        />
+          className="w-min"
+          onClick={() => navigate(-1)}
+        ></Button>
         <Button
           rounded
           label="Iniciar caso"
           onClick={() => {
             setState("started", id);
           }}
-          disabled={statusCase != "created"}
+          disabled={statusCase != "created" || !data.case.is_active}
+        />
+        <CloseCaseModal
+          closeModalvalue={closeModalvalue}
+          setCloseModalValue={setCloseModalValue}
+          setState={setState}
+          statusCase={statusCase}
+          data={data}
+        />
+
+        <Button
+          rounded
+          label="Editar"
+          onClick={() => navigate(`/case/edit/${id}`)}
         />
       </div>
     </section>
