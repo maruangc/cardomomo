@@ -95,6 +95,8 @@ const CaseEdit = () => {
       typeservice_id: serviceType.id,
       description: description,
       initial_note: initialNotes,
+      delivered_description: deliveredNotes,
+      close_description: closeNotes,
     };
 
     const response = await actions.updateById("case", id, fields);
