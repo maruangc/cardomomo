@@ -123,7 +123,7 @@ const ListComponent = ({
       }
     }
     if (response.msg) {
-      toast("token expired");
+      toast.error("token expired");
       navigate("/login");
     }
     if (response.ok) {

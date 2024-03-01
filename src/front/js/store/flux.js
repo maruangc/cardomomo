@@ -35,9 +35,9 @@ const getState = ({ getStore, getActions, setStore }) => {
           });
           const data = await resp.json();
           if (!data.ok) {
-            toast(data.error);
+            toast.error(data.error);
           } else {
-            toast(data.data);
+            toast.success(data.data);
           }
           return data;
         } catch (error) {
@@ -53,10 +53,10 @@ const getState = ({ getStore, getActions, setStore }) => {
           });
           const data = await resp.json();
           if (!data.ok) {
-            toast(data.error);
+            toast.error(data.error);
           } else {
             localStorage.setItem("token", data.token);
-            toast("granted access, token generated");
+            toast.success("granted access, token generated");
             return data;
           }
           return data;
@@ -79,7 +79,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           const data = await resp.json();
           if (!data.ok) {
-            toast(data.error);
+            toast.error(data.error);
           }
           return data;
         } catch (error) {
@@ -104,7 +104,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           const data = await resp.json();
           if (!data.ok) {
-            toast(data.error);
+            toast.error(data.error);
           }
           return data;
         } catch (error) {
@@ -128,7 +128,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           const data = await resp.json();
           if (!data.ok) {
-            toast(data.error);
+            toast.error(data.error);
           }
           return data;
         } catch (error) {
@@ -156,7 +156,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           const data = await resp.json();
           if (!data.ok) {
-            toast(data.error);
+            toast.error(data.error);
           }
           return data;
         } catch (error) {
@@ -183,7 +183,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           const data = await resp.json();
           if (!data.ok) {
-            toast(data.error);
+            toast.error(data.error);
           }
           return data;
         } catch (error) {
@@ -211,7 +211,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           const data = await resp.json();
           if (!data.ok) {
-            toast(data.error);
+            toast.error(data.error);
           }
           return data;
         } catch (error) {
@@ -232,7 +232,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           });
           const data = await resp.json();
           if (!data.ok) {
-            toast(data.error);
+            toast.error(data.error);
           }
           return data;
         } catch (error) {
@@ -253,7 +253,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           );
           const data = await resp.json();
           if (!data.ok) {
-            toast(data.error);
+            toast.error(data.error);
           }
           return data;
         } catch (error) {

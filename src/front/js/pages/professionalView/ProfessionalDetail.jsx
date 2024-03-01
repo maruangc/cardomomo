@@ -20,7 +20,7 @@ const ProfessionalDetail = () => {
   const getDataQuery = async () => {
     const response = await actions.getById("professional", params.id);
     if (response.msg) {
-      toast("token expired");
+      toast.error("token expired");
       navigate("/login");
     }
     if (response.ok) {

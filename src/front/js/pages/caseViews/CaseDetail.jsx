@@ -24,7 +24,7 @@ const CaseDetail = () => {
   const dataQuery = async () => {
     const response = await actions.getById("case", id);
     if (response.msg) {
-      toast("Token Expired");
+      toast.error("Token Expired");
       navigate("/login");
     }
     if (response.ok) {
@@ -58,7 +58,7 @@ const CaseDetail = () => {
 
     const stateStatus = await response.json();
     if (stateStatus.ok) {
-      toast(stateStatus.data);
+      toast.success(stateStatus.data);
       setStatusCase(status);
     }
   };

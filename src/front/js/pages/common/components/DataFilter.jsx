@@ -55,7 +55,7 @@ const DataFilter = ({
           if (response.ok) {
             item.data = response.data;
           } else {
-            toast(response.msg);
+            toast.error(response.msg);
             navigate("/login");
           }
         }

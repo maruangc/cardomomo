@@ -15,7 +15,7 @@ const CreateModal = ({ table, handleReload, createColumn, initialValue }) => {
   const handleSubmit = async () => {
     const response = await actions.insertInTable(table, modalField);
     if (response.msg) {
-      toast("Token expired");
+      toast.error("Token expired");
       navigate("/login");
     }
     if (response.ok) {
@@ -23,7 +23,7 @@ const CreateModal = ({ table, handleReload, createColumn, initialValue }) => {
       setModalField(initialValue);
       handleReload();
     }
-    toast(response.data);
+    toast.success(response.data);
   };
 
   const footerModal = (

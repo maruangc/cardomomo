@@ -33,7 +33,7 @@ const CaseEdit = () => {
   const getData = async () => {
     const response = await actions.getById("case", `${id}`);
     if (response.msg) {
-      toast("Token Expired");
+      toast.error("Token Expired");
       navigate("/login");
     }
     if (response.ok) {
@@ -102,10 +102,10 @@ const CaseEdit = () => {
     const response = await actions.updateById("case", id, fields);
     console.log(response);
     if (response.ok) {
-      toast("Datos Actualizados");
+      toast.info("Datos Actualizados");
       navigate(-1);
     } else {
-      toast(response.error);
+      toast.error(response.error);
     }
   };
 

@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../../../store/appContext.js";
 import { useNavigate } from "react-router-dom";
 import { Card } from "primereact/card";
+import { toast } from "react-toastify";
 
 const KpiListItems = () => {
   const { actions, store } = useContext(Context);
@@ -11,7 +12,7 @@ const KpiListItems = () => {
   const getDataQuery = async () => {
     const response = await actions.getSummary();
     if (response.msg) {
-      toast("token expired");
+      toast.error("Token expired");
       navigate("/login");
     }
     if (response.ok) {

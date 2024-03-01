@@ -14,17 +14,17 @@ export default function Delete({ table, id }) {
   const accept = async () => {
     const response = await actions.deleteById(table, id);
     if (response.msg) {
-      toast("token expired");
+      toast.error("token expired");
       navigate("/login");
     }
     if (response.ok) {
-      toast(response.data);
+      toast.success(response.data);
       navigate("/" + table);
     }
   };
 
   const reject = () => {
-    toast("No se eliminará.");
+    toast.info("No se eliminará.");
   };
 
   return (
