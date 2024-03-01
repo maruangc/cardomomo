@@ -55,9 +55,9 @@ const CaseEdit = () => {
           : response.data.case.initial_note
       );
       setCloseNotes(
-        !response.data.case.closed_description
+        !response.data.case.close_description
           ? "Sin notas de cierre"
-          : response.data.case.closed_description
+          : response.data.case.close_description
       );
       setDeliveredNotes(
         !response.data.case.delivered_description
