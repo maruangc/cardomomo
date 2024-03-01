@@ -8,7 +8,7 @@ const CostumerData = ({ customer }) => {
       <label htmlFor="customerData"> Datos del cliente</label>
       <div
         id="customerData"
-        className="grid justify-content-between surface-300 py-5 px-4 border-round-md "
+        className="grid justify-content-between p-5 surface-100 border-solid border-2	border-300	border-round-lg	"
       >
         {!customer ? (
           <p className="mx-auto m-0">Sin datos de cliente</p>

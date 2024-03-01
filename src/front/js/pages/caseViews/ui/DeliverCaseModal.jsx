@@ -35,7 +35,7 @@ const DeliverCaseModal = ({
         onClick={() => {
           setVisible(true);
         }}
-        disabled={caseData.delivered}
+        disabled={caseData.delivered || !caseData.is_active}
       />
       <Dialog
         visible={visible}

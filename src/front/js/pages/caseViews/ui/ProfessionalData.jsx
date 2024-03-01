@@ -3,15 +3,16 @@ import React from "react";
 
 const ProfessionalData = ({ professional }) => {
   const { name, phone, email, carrier, identification } = professional;
+  console.log(professional, professional.ok);
   return (
     <>
       <section className="flex flex-column gap-3">
         <label htmlFor="professionalData">Profesional asignado</label>
         <div
           id="professionalData"
-          className="grid justify-content-between surface-300 py-5 px-4  border-round-md 	"
+          className="grid justify-content-between p-5 surface-100 border-solid	border-2	border-300	border-round-lg"
         >
-          {!professional ? (
+          {professional.ok != undefined ? (
             <p className="mx-auto m-0">Sin datos de profesional</p>
           ) : (
             <>

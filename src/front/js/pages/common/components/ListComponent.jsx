@@ -8,6 +8,7 @@ import DataFilter from "./DataFilter.jsx";
 import { Button } from "primereact/button";
 import { toast } from "react-toastify";
 import CreateModal from "./CreateModal.jsx";
+import CreateCaseModal from "../../caseViews/ui/CreateCaseModal.jsx";
 
 const ListComponent = ({
   initialFieldsValues, //({}) se define en el view de la lista
@@ -42,6 +43,7 @@ const ListComponent = ({
     } else {
       getDataQuery();
     }
+    actions.setRefreshKpi();
   };
 
   const header = (
@@ -67,12 +69,20 @@ const ListComponent = ({
         />
       </div>
 
-      <CreateModal
-        handleReload={handleReload}
-        table={table}
-        createColumn={createColumn}
-        initialValue={initialValue}
-      />
+      {table != "case" ? (
+        <>
+          <CreateModal
+            handleReload={handleReload}
+            table={table}
+            createColumn={createColumn}
+            initialValue={initialValue}
+          />
+        </>
+      ) : (
+        <>
+          <CreateCaseModal handleReload={handleReload} />
+        </>
+      )}
     </div>
   );
 
