@@ -168,7 +168,7 @@ const CreateCaseModal = ({ handleReload }) => {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-5 w-full justify-content-between">
+          <div className="flex flex-wrap gap-5 w-full ">
             <div className="flex flex-column gap-3">
               <label htmlFor="">Notas iniciales</label>
               <InputTextarea

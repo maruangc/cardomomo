@@ -10,14 +10,12 @@ const LandingNavbar = () => {
 
   return (
     <>
-      <div className="card flex justify-content-between text-white-alpha-90 bg-primary-black  p-2">
+      <div className="card flex justify-content-between text-white-alpha-90 bg-primary-black">
         <div className="pl-5">
-          <Image
-            alt="logo"
-            src="https://primefaces.org/cdn/primereact/images/logo.png"
-            height="40"
-            className=""
-          ></Image>
+          <h3 className="text-2xl font-bold ">
+            <i class="fa-solid fa-seedling mr-2 text-primary-500"></i>Servy
+            <span class="text-primary-500">Track</span>
+          </h3>
         </div>
         <div className="flex justify-content-center items-center">
           <Button
@@ -25,7 +23,7 @@ const LandingNavbar = () => {
             href="https://react.dev"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-primary-black  border-transparent mr-2 p-button font-bold"
+            className="bg-transparent  border-transparent mr-2  font-bold"
           >
             <i className="mr-2 mb-1 fa-solid fa-user text-white"></i> Login
           </Button>
@@ -34,7 +32,7 @@ const LandingNavbar = () => {
             href="https://react.dev"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-primary-black  border-transparent mr-2 p-button font-bold"
+            className="bg-transparent  border-transparent mr-2  font-bold"
           >
             <i className="mr-2 mb-1 fa-solid fa-plus text-white"></i> Register
           </Button>

@@ -76,7 +76,7 @@ const DeliverCaseModal = ({
               onClick={() => {
                 handelDeliveredCase(deliverModalValue, id);
               }}
-              severity="success"
+            
             />
           </div>
         </div>

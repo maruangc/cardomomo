@@ -1,93 +1,37 @@
-import React from "react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import { Button } from "primereact/button";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const Carousel = () => {
+const Hero = () => {
   const navigate = useNavigate();
-  const settings = {
-    dots: false,
-    infinite: true,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    speed: 2000,
-    autoplaySpeed: 4000,
-    cssEase: "linear",
-    arrows: false,
-  };
   return (
-    <Slider {...settings} className="">
-      <div id="slider1" className="banner-container h-30rem ">
-        <div className="carousel-card bg-white-alpha-90 opacity-90 w-full ">
-          <div className="carousel-text py-1 px-8 ">
-            <div className="text-black-alpha-80  w-full ">
-              <h2 className=" font-bold">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              </h2>
-              <p className="font-bold ">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              </p>
-            </div>
-            <div className="text-black-alpha-80 h-3rem w-10rem justify-content-end flex mt-6">
+    <>
+      <header>
+        <div
+          class="w-full bg-center bg-cover  h-30rem"
+          style={{
+            backgroundImage: `url(https://img.freepik.com/foto-gratis/collage-diferentes-fotos-concepto-ocupacion-diferente_185193-109584.jpg?w=1380&t=st=1709244293~exp=1709244893~hmac=27414d87103e8516c1a2e684940634ce1fb1087ce1e63e6dccddcbeab49a59f6)`,
+          }}
+        >
+          <div class="flex align-items-center justify-content-center w-full h-full bg-black-alpha-70 ">
+            <div class="text-center">
+              <h1 class="text-4xl font-semibold text-white">
+                Una solución desarrollada para una nueva
+                <span class="text-primary-500"> Metodología</span> de seguimiento
+              </h1>
               <Button
                 onClick={() => navigate("/register")}
-                className="bg-white border-2 border-blue-500 text-blue-500"
-                label="Join Now"
+                className=" hover:text-white-alpha-60 text-white px-5 py-3 mt-3 text-cente "
                 rounded
-              ></Button>
+              >
+                Empezar ahora
+                <i className="fa-solid fa-arrow-right ml-2 pt-1"></i>
+              </Button>
             </div>
           </div>
         </div>
-      </div>
-      <div id="slider2" className="banner-container h-30rem">
-        <div className="carousel-card bg-white-alpha-90 opacity-90 w-full">
-          <div className="carousel-text py-1 px-8">
-            <div className="text-black-alpha-80  w-full ">
-              <h2 className=" font-bold">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              </h2>
-              <p className="font-bold ">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              </p>
-            </div>
-            <div className="text-black-alpha-80 h-3rem w-10rem justify-content-end flex mt-6">
-              <Button
-                onClick={() => navigate("/register")}
-                className="bg-white border-2 border-blue-500 text-blue-500"
-                label="Join Now"
-                rounded
-              ></Button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="slider3" className="banner-container h-30rem">
-        <div className="carousel-card bg-white-alpha-90 opacity-90 w-full">
-          <div className="carousel-text py-1 px-8">
-            <div className="text-black-alpha-80  w-full ">
-              <h2 className=" font-bold">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              </h2>
-              <p className="font-bold ">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              </p>
-            </div>
-            <div className="text-black-alpha-80 h-3rem w-10rem  justify-content-end flex mt-6">
-              <Button
-                onClick={() => navigate("/register")}
-                className="bg-white border-2 border-blue-500 text-blue-500"
-                label="Join Now"
-                rounded
-              ></Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </Slider>
+      </header>
+    </>
   );
 };
-
-export default Carousel;
+export default Hero;

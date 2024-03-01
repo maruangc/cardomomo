@@ -14,7 +14,7 @@ p {
   --font-family: "Montserrat", sans-serif;
   --text-color: #4b5563;
   --text-color-secondary: #6b7280;
-  --primary-color: #6c6868;
+  --primary-color: #413c3c;
   --primary-color-text: #ffffff;
   --black-primary: #231f20;
   --succsess-primary: white;
@@ -28,28 +28,16 @@ p {
   border-color: white;
 }
 
-.banner-container {
-  background-image: url("https://img.freepik.com/vector-gratis/fondo-azul-degradado_23-2149347096.jpg?t=st=1708556031~exp=1708559631~hmac=6cf15c4a8cdc832832db80528742389d722b9ebfe2c60e30c1328d503bd6be3f&w=740");
-  background-size: cover;
-  background-repeat: no-repeat;
-  margin: 0;
-  padding: 0;
+
+
+.midle-title{
+  text-shadow: #433b3d34 1px 0 5px;
 }
 
 .carousel-card {
-  margin-top: 318px;
   padding: 30px;
 }
 
-.login-gradient {
-  background: rgb(2, 0, 36);
-  background: linear-gradient(
-    90deg,
-    rgba(2, 0, 36, 1) 0%,
-    rgba(9, 9, 121, 1) 35%,
-    rgba(0, 212, 255, 1) 100%
-  );
-}
 .carousel-text {
   display: flex;
   justify-content: space-between;

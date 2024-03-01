@@ -1,17 +1,14 @@
 import React, { useEffect } from "react";
-
-import Carousel from "./Carousel.jsx";
-
-import Cards from "./Cards.jsx";
+import Hero from "./Carousel.jsx";
 import Grid from "./Grid.jsx";
-import MidleCard from "./MidleCard.jsx";
 import Midle from "./Midle.jsx";
+import MidleTitle from "./MidleTitle.jsx";
+
 
 import "primeicons/primeicons.css";
 
 import Aos from "aos";
 import "aos/dist/aos.css";
-import Footergeneral from "../../component/LandingFooter.jsx";
 
 const LandingPage = () => {
   useEffect(() => {
@@ -20,12 +17,13 @@ const LandingPage = () => {
 
   return (
     <div className="w-full">
-      <div className=" mx-auto bg-blue-100 bg-cover">
-        <Carousel />
-        {/* <MidleCard /> */}
-        <Midle />
+      <div className=" mx-auto  bg-cover">
+        <Hero />
+        <div className="mx-6">
+          <Midle />
+        </div>
+        <MidleTitle />
         <Grid />
-        {/* <Cards /> */}
       </div>
     </div>
   );

@@ -101,9 +101,12 @@ def get_customers():
     offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
     count=Customer.query.all()
     if limit=='0':
-        filter=Customer.query.all()
+        filter=Customer.query.order_by(Customer.name)
     else:
-        filter=Customer.query.offset(offset).limit(limit).all()
+        filter=Customer.query.order_by(Customer.name).offset(offset).limit(limit)
+
+    filter=filter.all()
+
     dic={'ok':True,'status':200,'count':len(count)}
     dic['data']=[customer.serialize() for customer in filter]
     dic['offset']=int(offset)+int(limit)
@@ -148,14 +151,12 @@ def filter_customer():
     if comment != '':
         filter=filter.filter(Customer.comment.ilike('%'+comment+'%'))
     if created_from !='':
-        filter=filter.filter(Customer.created.between(fd,fh))
-
-        
+        filter=filter.filter(Customer.created.between(fd,fh))      
 
     if limit=='0':
-        filter=filter.all()
+        filter=filter.order_by(Customer.name).all()
     else:
-        filter=filter.offset(offset).limit(limit).all()
+        filter=filter.order_by(Customer.name).offset(offset).limit(limit).all()
     dic={'ok':True,'status':200,'count':len(filter)}
     dic['data']=[customer.serialize() for customer in filter]
     return jsonify(dic)
