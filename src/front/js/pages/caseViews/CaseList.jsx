@@ -143,6 +143,7 @@ const CaseList = () => {
           createColumn={columnFilter}
           setCheckValues={setCheckValues}
           checkValues={checkValues}
+          id={"0"}
         />
       </div>
     </div>

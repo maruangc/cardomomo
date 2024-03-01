@@ -40,6 +40,7 @@ const ProfessionalList = () => {
           columnFilter={columnFilter}
           createColumn={columnFilter}
           initialValue={initialFieldsValues}
+          id={"0"}
         />
       </div>
     </div>

@@ -239,6 +239,27 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log(`Error en funcion getSummary() `, error);
         }
       },
+      getCasesFor: async (table, id) => {
+        try {
+          const resp = await fetch(
+            process.env.BACKEND_URL + "/" + table + "/cases/" + id,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
+          const data = await resp.json();
+          if (!data.ok) {
+            toast(data.error);
+          }
+          return data;
+        } catch (error) {
+          console.log(`Error en funcion getCasesFor() `, error);
+        }
+      },
       setRefreshKpi: () => {
         const store = getStore();
         setStore({ refreshKpi: store.refreshKpi + 1 });

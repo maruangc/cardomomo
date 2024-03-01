@@ -19,6 +19,7 @@ const ListComponent = ({
   initialValue,
   checkValues,
   setCheckValues,
+  id,
 }) => {
   const { actions } = useContext(Context);
   const navigate = useNavigate();
@@ -111,10 +112,15 @@ const ListComponent = ({
 
   const getDataQuery = async (offset = 0) => {
     let response;
-    if (filtered === false) {
-      response = await actions.getAll(table, 10, offset);
+    if (initialValue == false) {
+      //Viene de Vistas detalle Cliente o Professional
+      response = await actions.getCasesFor(table, id);
     } else {
-      response = await actions.getFilter(table, filterFields, 0, offset);
+      if (filtered === false) {
+        response = await actions.getAll(table, 10, offset);
+      } else {
+        response = await actions.getFilter(table, filterFields, 0, offset);
+      }
     }
     if (response.msg) {
       toast("token expired");
@@ -136,7 +142,7 @@ const ListComponent = ({
     <div className="w-full mx-auto">
       <DataTable
         value={dataQuery}
-        header={header}
+        header={initialValue == false ? "" : header}
         stripedRows
         selectionMode="single"
         onSelectionChange={(e) => {

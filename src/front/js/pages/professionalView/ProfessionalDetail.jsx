@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import Delete from "../common/components/Delete.jsx";
 import EditData from "../common/components/EditData.jsx";
 import { Card } from "primereact/card";
+import ProfessionalCasesView from "./ProfessionalCasesView.jsx";
 
 const ProfessionalDetail = () => {
   const { actions } = useContext(Context);
@@ -18,7 +19,6 @@ const ProfessionalDetail = () => {
 
   const getDataQuery = async () => {
     const response = await actions.getById("professional", params.id);
-    console.log(response);
     if (response.msg) {
       toast("token expired");
       navigate("/login");
@@ -152,6 +152,7 @@ const ProfessionalDetail = () => {
         ) : (
           <p>Obteniendo Datos...</p>
         )}
+        <ProfessionalCasesView id={params.id} />
       </div>
     </div>
   );
