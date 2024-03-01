@@ -3,7 +3,6 @@ import { Context } from "../../../store/appContext";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { Dropdown } from "primereact/dropdown";
-import { InputSwitch } from "primereact/inputswitch";
 import { InputTextarea } from "primereact/inputtextarea";
 import { toast } from "react-toastify";
 
@@ -23,7 +22,6 @@ const CreateCaseModal = ({ handleReload }) => {
   const [isActive, setIsActive] = useState(true);
   const [initialNotes, setInitialNotes] = useState("");
   const [description, setDescription] = useState("");
-  //const [isDisabled, setIsDisabled] = useState(true);
 
   const getData = async () => {
     const customerList = await actions.getAll("customer", "0", "0");
@@ -105,7 +103,7 @@ const CreateCaseModal = ({ handleReload }) => {
       <Dialog
         header="Nuevo Caso"
         visible={visible}
-        style={{ width: "70vw" }}
+        style={{ width: "80vw" }}
         onHide={() => setVisible(false)}
         footer={footer}
       >
@@ -169,7 +167,7 @@ const CreateCaseModal = ({ handleReload }) => {
           </div>
 
           <div className="flex flex-wrap gap-5 w-full ">
-            <div className="flex flex-column gap-3">
+            <div className="flex flex-column gap-3 w-full">
               <label htmlFor="">Notas iniciales</label>
               <InputTextarea
                 value={initialNotes}
@@ -179,7 +177,7 @@ const CreateCaseModal = ({ handleReload }) => {
                 className="w-full"
               />
             </div>
-            <div className="flex flex-column gap-3">
+            <div className="flex flex-column gap-3 w-full">
               <label htmlFor="">Descripcion</label>
               <InputTextarea
                 value={description}

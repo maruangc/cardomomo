@@ -9,14 +9,6 @@ import ProfessionalData from "./ui/ProfessionalData.jsx";
 import StateDetailEdit from "./ui/StateDetailEdit.jsx";
 import { toast } from "react-toastify";
 
-const initialCaseState = {
-  case: {},
-  category: {},
-  customer: {},
-  professional: {},
-  typeservice: {},
-};
-
 const CaseEdit = () => {
   const { id } = useParams();
   const { actions } = useContext(Context);
@@ -33,16 +25,41 @@ const CaseEdit = () => {
   const [customer, setCustomer] = useState(null);
   const [professional, setProfessional] = useState(null);
   const [isActive, setIsActive] = useState(true);
+  const [initialNotes, setInitialNotes] = useState();
+  const [description, setDescription] = useState();
+  const [closeNotes, setCloseNotes] = useState();
+  const [deliveredNotes, setDeliveredNotes] = useState();
 
   const getData = async () => {
     const response = await actions.getById("case", `${id}`);
     if (response.ok) {
+      console.log(response.data.case);
       setDataCase(response.data);
       setCustomer(response.data.customer);
       setProfessional(response.data.professional);
       setServiceType(response.data.typeservice);
       setIsActive(response.data.case.is_active);
       setCategory(response.data.category);
+      setDescription(
+        !response.data.case.description
+          ? "Sin descripcion"
+          : response.data.case.description
+      );
+      setInitialNotes(
+        !response.data.case.initial_note
+          ? "Sin notas iniciales"
+          : response.data.case.initial_note
+      );
+      setCloseNotes(
+        !response.data.case.closed_description
+          ? "Sin notas de cierre"
+          : response.data.case.closed_description
+      );
+      setDeliveredNotes(
+        !response.data.case.delivered_description
+          ? "Sin notas de entrega"
+          : response.data.case.delivered_description
+      );
     }
     const customerList = await actions.getAll("customer", "0", "0");
     if (customerList.ok) {
@@ -72,8 +89,8 @@ const CaseEdit = () => {
       professional_id: professional.id ? professional.id : null,
       category_id: category.id,
       typeservice_id: serviceType.id,
-      //description: ""
-      //initial_notes:""
+      description: description,
+      initial_note: initialNotes,
     };
 
     const response = await actions.updateById("case", id, fields);
@@ -93,8 +110,6 @@ const CaseEdit = () => {
   if (!dataCase) {
     return <h2>Sin dataos</h2>;
   }
-
-  console.log(professional);
   return (
     <div className="w-full flex justify-content-center">
       <div className="flex flex-column gap-7 px-5 py-5 w-full max-container-width">
@@ -103,19 +118,17 @@ const CaseEdit = () => {
             Editar caso:
             <span className="font-bold ml-3">#{dataCase.case.id}</span>
           </p>
-          <div className="flex gpa-3">
+          <div className="flex gap-3">
             <Button
               label="Volver"
               icon="fa-solid fa-circle-chevron-left"
               rounded
-              className="w-min"
               onClick={() => navigate(-1)}
             ></Button>
             <Button
               label="Guardar cambios"
-              icon="fa-solid fa-circle-chevron-left"
+              icon="fa-regular fa-floppy-disk"
               rounded
-              className="w-min"
               onClick={() => handleSave()}
             ></Button>
           </div>
@@ -169,6 +182,15 @@ const CaseEdit = () => {
             categoryList={categoryList}
             category={category}
             setCategory={setCategory}
+            initialNotes={initialNotes}
+            setInitialNotes={setInitialNotes}
+            description={description}
+            setDescription={setDescription}
+            dataCase={dataCase}
+            closeNotes={closeNotes}
+            setCloseNotes={setCloseNotes}
+            deliveredNotes={deliveredNotes}
+            setDeliveredNotes={setDeliveredNotes}
           />
         </div>
       </div>

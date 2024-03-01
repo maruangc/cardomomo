@@ -3,7 +3,7 @@ import React from "react";
 
 const ProfessionalData = ({ professional }) => {
   const { name, phone, email, carrier, identification } = professional;
-  console.log(professional, professional.ok);
+
   return (
     <>
       <section className="flex flex-column gap-3">

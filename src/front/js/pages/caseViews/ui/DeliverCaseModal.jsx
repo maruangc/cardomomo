@@ -31,7 +31,7 @@ const DeliverCaseModal = ({
     <>
       <Button
         rounded
-        label="Entregar caso"
+        label="Entregar"
         onClick={() => {
           setVisible(true);
         }}
@@ -76,7 +76,6 @@ const DeliverCaseModal = ({
               onClick={() => {
                 handelDeliveredCase(deliverModalValue, id);
               }}
-            
             />
           </div>
         </div>

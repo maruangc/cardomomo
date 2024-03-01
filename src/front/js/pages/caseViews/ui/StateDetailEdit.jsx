@@ -1,6 +1,7 @@
 import React from "react";
 import { Dropdown } from "primereact/dropdown";
 import { InputSwitch } from "primereact/inputswitch";
+import { InputTextarea } from "primereact/inputtextarea";
 
 const StateDetailEdit = ({
   serviceTypeList,
@@ -11,7 +12,17 @@ const StateDetailEdit = ({
   categoryList,
   category,
   setCategory,
+  initialNotes,
+  setInitialNotes,
+  description,
+  setDescription,
+  dataCase,
+  closeNotes,
+  setCloseNotes,
+  deliveredNotes,
+  setDeliveredNotes,
 }) => {
+  console.log(dataCase);
   return (
     <div className="flex flex-column gap-3 ">
       <label htmlFor="StateDetail" className="font-bold text-xl">
@@ -60,9 +71,59 @@ const StateDetailEdit = ({
             />
           </div>
         </div>
+        <div className="flex  gap-5 w-full ">
+          <div className="flex flex-column gap-3 w-full">
+            <label htmlFor="">Notas iniciales</label>
+            <InputTextarea
+              value={initialNotes}
+              onChange={(e) => setInitialNotes(e.target.value)}
+              rows={5}
+              cols={45}
+              className="w-full"
+            />
+          </div>
+          <div className="flex flex-column gap-3 w-full">
+            <label htmlFor="">Descripcion</label>
+            <InputTextarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={5}
+              cols={45}
+              className="w-full"
+            />
+          </div>
+        </div>
+        {dataCase.case.closed && (
+          <div className="flex flex-column gap-3 w-full">
+            <label htmlFor="">Notas de cierre</label>
+            <InputTextarea
+              value={closeNotes}
+              onChange={(e) => setCloseNotes(e.target.value)}
+              rows={5}
+              cols={45}
+              className="w-full"
+            />
+          </div>
+        )}
+        {dataCase.case.delivered && (
+          <div className="flex flex-column gap-3 w-full">
+            <label htmlFor="">Notas de entrega</label>
+            <InputTextarea
+              value={deliveredNotes}
+              onChange={(e) => setDeliveredNotes(e.target.value)}
+              rows={5}
+              cols={45}
+              className="w-full"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
 export default StateDetailEdit;
+
+/* 
+
+*/
