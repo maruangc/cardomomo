@@ -57,10 +57,6 @@ const Midle = () => {
             </div>
           </div>
         </div>
-        <h1 className="text-black-alpha-80 text-center text-5xl mt-8">
-          Únete a la nueva era de profesionales que hacen realidad proyectos
-          extraordinarios
-        </h1>
       </div>
     </>
   );

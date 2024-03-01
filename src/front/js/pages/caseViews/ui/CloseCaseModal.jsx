@@ -74,7 +74,7 @@ const CloseCaseModal = ({
               onClick={() => {
                 handelCloseCase(closeModalvalue, id);
               }}
-              severity="success"
+             
             />
           </div>
         </div>

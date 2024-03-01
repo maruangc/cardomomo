@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import Hero from "./Carousel.jsx";
 import Grid from "./Grid.jsx";
 import Midle from "./Midle.jsx";
+import MidleTitle from "./MidleTitle.jsx";
+
 
 import "primeicons/primeicons.css";
 
@@ -20,6 +22,7 @@ const LandingPage = () => {
         <div className="mx-6">
           <Midle />
         </div>
+        <MidleTitle />
         <Grid />
       </div>
     </div>

@@ -30,19 +30,14 @@ p {
 
 
 
+.midle-title{
+  text-shadow: #433b3d34 1px 0 5px;
+}
+
 .carousel-card {
   padding: 30px;
 }
 
-.login-gradient {
-  background: rgb(2, 0, 36);
-  background: linear-gradient(
-    90deg,
-    rgba(2, 0, 36, 1) 0%,
-    rgba(9, 9, 121, 1) 35%,
-    rgba(0, 212, 255, 1) 100%
-  );
-}
 .carousel-text {
   display: flex;
   justify-content: space-between;
