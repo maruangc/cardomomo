@@ -101,52 +101,54 @@ const ProfessionalDetail = () => {
           </div>
         </div>
         {dataQuery ? (
-          <Card className="surface-300 text-black-alpha-90  border-round-md">
-            <div className="flex gap-3">
-              <label className="w-2">Id del profesional:</label>
-              <label className="w-max">{params.id}</label>
-            </div>
-            <div className="flex gap-3 mt-5">
-              <label className="w-2" htmlFor="name">
-                Nombre
-              </label>
-              <label className="w-max">{dataQuery.name}</label>
-            </div>
-            <div className="flex gap-3 mt-5">
-              <label className="w-2" htmlFor="identification">
-                Identificación
-              </label>
-              <label className="w-max">{dataQuery.identification}</label>
-            </div>
-            <div className="flex gap-3 mt-5">
-              <label className="w-2" htmlFor="profession">
-                Profesion
-              </label>
-              <label className="w-max">{dataQuery.profession}</label>
-            </div>
-            <div className="flex gap-3 mt-5">
-              <label className="w-2" htmlFor="phone">
-                Telefono
-              </label>
-              <label className="w-max">{dataQuery.phone}</label>
-            </div>
-            <div className="flex gap-3 mt-5">
-              <label className="w-2" htmlFor="email">
-                Correo
-              </label>
-              <label className="w-max">{dataQuery.email}</label>
-            </div>
-            <div className="flex gap-3 mt-5">
-              <label className="w-2" htmlFor="address">
-                Dirección
-              </label>
-              <label className="w-max">{dataQuery.address}</label>
-            </div>
-            <div className="flex gap-3 mt-5">
-              <label className="w-2" htmlFor="comment">
-                Comentario
-              </label>
-              <label className="w-10">{dataQuery.comment}</label>
+            <Card className=" text-black-alpha-90  border-round-md bg-primary-50 shadow-2  ">
+            <h5 className=" text-3xl p-0 m-0 ml-3">{dataQuery.name}</h5>
+
+            <div className="grid">
+              <div className="col-4 border-right-2 border-primary-500 p-4">
+                <div className=" gap-3 flex">
+                  <p className="">Id de cliente:</p>
+                  <p className="w-max">{params.id}</p>
+                </div>
+                <div className=" gap-3 flex mt-2">
+                  <p className="" htmlFor="identification">
+                    Identificación:
+                  </p>
+                  <p className="w-max">{dataQuery.identification}</p>
+                </div>
+                <div className=" gap-3 flex mt-2">
+                  <p className="" htmlFor="identification">
+                    Profesion:
+                  </p>
+                  <p className="w-max">{dataQuery.identification}</p>
+                </div>
+              </div>
+              <div className="col-8 px-6">
+                <div className=" gap-3 flex mt-3">
+                  <p className="" htmlFor="phone">
+                    Telefono:
+                  </p>
+                  <p className="w-max">{dataQuery.phone}</p>
+                </div>
+                <div className=" gap-3 flex mt-2">
+                  <p className="" htmlFor="email">
+                    Correo:
+                  </p>
+                  <p className="w-max">{dataQuery.email}</p>
+                </div>
+                <div className=" gap-3 flex mt-2">
+                  <p className="" htmlFor="address">
+                    Dirección:
+                  </p>
+                  <p className="w-max">{dataQuery.address}</p>
+                </div>
+                <div className=" gap-3 flex mt-2">
+                  <p className="" htmlFor="comment">
+                    Comentario:
+                  </p>
+                  <p className=" max-w-5 flex flex-wrap">{dataQuery.comment}</p>
+                </div>
+              </div>
             </div>
           </Card>
         ) : (

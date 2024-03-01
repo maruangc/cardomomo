@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import Delete from "../common/components/Delete.jsx";
 import EditData from "../common/components/EditData.jsx";
 import CategoryCasesView from "./CategoryCasesView.jsx";
+import { Card } from "primereact/card";
 
 const CategoryDetails = () => {
   const { actions } = useContext(Context);
@@ -75,24 +76,24 @@ const CategoryDetails = () => {
           </div>
         </div>
         {dataQuery ? (
-          <div className="surface-300 p-7 mt-5 border-round-md text-xl">
+          <Card className="text-black-alpha-90  border-round-md bg-primary-50 shadow-2 text-xl px-2">
             <div className="flex gap-3">
               <label className="w-2">Category Id:</label>
               <label className="w-max">{params.id}</label>
             </div>
             <div className="flex gap-3 mt-5">
               <label className="w-2" htmlFor="category">
-                Categoria
+                Categoria:
               </label>
               <label className="w-max">{dataQuery.category}</label>
             </div>
             <div className="flex gap-3 mt-5">
               <label className="w-2" htmlFor="description">
-                Descripcion
+                Descripcion:
               </label>
               <label className="w-max">{dataQuery.description}</label>
             </div>
-          </div>
+          </Card>
         ) : (
           <p>Obteniendo Datos...</p>
         )}
