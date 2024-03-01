@@ -23,43 +23,64 @@ const KpiListItems = () => {
     getDataQuery();
   }, [store.refreshKpi]);
 
+  console.log(dataQuery);
+
   return (
     <div className="flex flex-column gap-3">
       {dataQuery ? (
         <>
-          <div className="grid card gap-3 p-3 surface-300 border-round-md">
-            <Card
-              title={dataQuery.started}
-              className="col flex flex-column text-center"
-            >
-              <p className="m-0 font-semibold text-lg">Abiertos</p>
-            </Card>
-            <Card
-              title={dataQuery.closed}
-              className="col flex flex-column text-center"
-            >
-              <p className="m-0 font-semibold text-lg">Cerrados</p>
-            </Card>
-            <Card
-              title={dataQuery.delivered}
-              className="col flex flex-column text-center"
-            >
-              <p className="m-0 font-semibold text-lg">Entregados</p>
-            </Card>
-            <Card
-              title={dataQuery.closed - dataQuery.delivered}
-              className="col flex flex-column text-center"
-            >
-              <p className="m-0 font-semibold text-lg">Por entregar</p>
-            </Card>
-            <Card
-              title={dataQuery.unassigned}
-              className="col flex flex-column text-center"
-            >
-              <p className="m-0 font-semibold text-lg">
-                Sin profesional asignado
-              </p>
-            </Card>
+          <div className="grid gap-3 p-4 surface-100 border-solid border-2	border-300	border-round-xl">
+            <div className="col flex w-full bg-white p-4 border-round-md gap-5 border-solid border-2	border-300">
+              <div className="flex flex-column justify-content-between">
+                <p className="m-0  text-md">Numero de casos abiertos</p>
+                <p className="text-2xl font-bold">{dataQuery.started} Casos</p>
+              </div>
+              <div>
+                <i className="fa-solid fa-circle-play text-600 text-xl p-4  border-circle	surface-200"></i>
+              </div>
+            </div>
+            <div className="col flex w-full bg-white p-4 border-round-md gap-5 border-solid border-2	border-300">
+              <div className="flex flex-column justify-content-between">
+                <p className="m-0  text-md">Numero de casos cerrados</p>
+                <p className="text-2xl font-bold">{dataQuery.closed} Casos</p>
+              </div>
+              <div>
+                <i className="fa-solid fa-circle-minus text-600 text-xl p-4  border-circle	surface-200"></i>
+              </div>
+            </div>
+            <div className="col flex w-full bg-white p-4 border-round-md gap-5 border-solid border-2	border-300">
+              <div className="flex flex-column justify-content-between">
+                <p className="m-0  text-md">Numero de casos entregados</p>
+                <p className="text-2xl font-bold">
+                  {dataQuery.delivered} Casos
+                </p>
+              </div>
+              <div>
+                <i className="fa-solid fa-circle-check text-600 text-xl p-4  border-circle	surface-200"></i>
+              </div>
+            </div>
+            <div className="col flex w-full bg-white p-4 border-round-md gap-5 border-solid border-2	border-300">
+              <div className="flex flex-column justify-content-between">
+                <p className="m-0  text-md">Numero de casos por entregar</p>
+                <p className="text-2xl font-bold">
+                  {dataQuery.closed - dataQuery.delivered} Casos
+                </p>
+              </div>
+              <div>
+                <i className="fa-solid fa-circle-right text-600 text-xl p-4  border-circle	surface-200"></i>
+              </div>
+            </div>
+            <div className="col flex w-full bg-white p-4 border-round-md gap-5 border-solid border-2	border-300">
+              <div className="flex flex-column justify-content-between">
+                <p className="m-0  text-md">Casos sin profesional asignado </p>
+                <p className="text-2xl font-bold">
+                  {dataQuery.unassigned} Casos
+                </p>
+              </div>
+              <div>
+                <i className="fa-solid fa-circle-exclamation text-600 text-xl p-4  border-circle	surface-200"></i>
+              </div>
+            </div>
           </div>
         </>
       ) : (
@@ -70,3 +91,18 @@ const KpiListItems = () => {
 };
 
 export default KpiListItems;
+
+/* 
+              title={dataQuery.closed}
+              title={dataQuery.delivered}
+              title={dataQuery.closed - dataQuery.delivered}
+              title={dataQuery.unassigned}
+
+*/
+
+/* 
+              <p className="m-0 font-semibold text-lg">Cerrados</p>
+              <p className="m-0 font-semibold text-lg">Entregados</p>
+              <p className="m-0 font-semibold text-lg">Por entregar</p>
+              <p className="m-0 font-semibold text-lg">Sin profesional asignado </p>
+*/
