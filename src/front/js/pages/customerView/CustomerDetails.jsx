@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import Delete from "../common/components/Delete.jsx";
 import EditData from "../common/components/EditData.jsx";
 import { Card } from "primereact/card";
+import CustomerCasesView from "./CustomerCasesView.jsx";
 
 const CustomerDetails = () => {
   const { actions } = useContext(Context);
@@ -140,6 +141,7 @@ const CustomerDetails = () => {
         ) : (
           <p>Obteniendo Datos...</p>
         )}
+        <CustomerCasesView id={params.id} />
       </div>
     </div>
   );

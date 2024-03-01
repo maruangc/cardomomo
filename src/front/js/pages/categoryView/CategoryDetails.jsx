@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Delete from "../common/components/Delete.jsx";
 import EditData from "../common/components/EditData.jsx";
+import CategoryCasesView from "./CategoryCasesView.jsx";
 
 const CategoryDetails = () => {
   const { actions } = useContext(Context);
@@ -95,6 +96,7 @@ const CategoryDetails = () => {
         ) : (
           <p>Obteniendo Datos...</p>
         )}
+        <CategoryCasesView id={params.id} />
       </div>
     </div>
   );

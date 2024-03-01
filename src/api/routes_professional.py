@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, Professional
+from api.models import db, Professional, Case, Customer, Category, Typeservice
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -70,6 +70,57 @@ def get_professionals():
     filter=filter.all()
     dic={'ok':True,'status':200,'count':len(count)}
     dic['data']=[professional.serialize() for professional in filter]
+    return jsonify(dic)
+
+@routes.route('/cases/<int:id>', endpoint='professional_cases', methods=['GET'])
+@jwt_required()
+def professional_cases(id):
+    limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
+    offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
+    count=Case.query.filter_by(professional_id=id).all()
+    if limit=='0':
+        filter=Case.query.filter_by(professional_id=id)
+    else:
+        filter=Case.query.filter_by(professional_id=id).offset(offset).limit(limit)
+    filter=filter.all()
+    print(str(filter))
+    dic={'ok':True, 'status': 200, 'data':[], 'count':len(count)}
+    for eachcase in filter:
+        customer_id=eachcase.customer_id
+        professional_id=eachcase.professional_id
+        category_id=eachcase.category_id
+        typeservice_id=eachcase.typeservice_id
+
+        filter_table=Customer.query.filter_by(id=customer_id).one_or_none()
+        if filter_table is None:
+            customer_json={'ok':False, 'status':404, 'data':'customer id not found'}
+        else:
+            customer_json=filter_table.serialize()
+
+        filter_table=Professional.query.filter_by(id=professional_id).one_or_none()
+        if filter_table is None:
+            professional_json={'ok':False, 'status':404, 'data':'professional id not found'}
+        else:
+            professional_json=filter_table.serialize()
+
+        filter_table=Category.query.filter_by(id=category_id).one_or_none()
+        if filter_table is None:
+            category_json={'ok':False, 'status':404, 'data':'category id not found'}
+        else:
+            category_json=filter_table.serialize()
+
+        filter_table=Typeservice.query.filter_by(id=typeservice_id).one_or_none()
+        if filter_table is None:
+            typeservice_json={'ok':False, 'status':404, 'data':'typeservice id not found'}
+        else:
+            typeservice_json=filter_table.serialize()
+            
+        dic['data'].append({'case':eachcase.serialize(),
+                            'customer':customer_json,
+                            'professional':professional_json,
+                            'category':category_json,
+                            'typeservice':typeservice_json,
+                            })
     return jsonify(dic)
 
 @routes.route('/filter',endpoint='filter_professional', methods=['POST'])
