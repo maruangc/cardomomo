@@ -54,7 +54,7 @@ export const Register = () => {
                 <InputText id="email" name="email" className="w-full" />
               </div>
               <div className="mt-5">
-                <h5 className="m-0 p-0 pb-2 text-white">Password</h5>
+                <h5 className="m-0 p-0 pb-2 text-white">Contraseña</h5>
                 <Password
                   inputStyle={{ width: "100%" }}
                   id="password"
@@ -86,7 +86,7 @@ export const Register = () => {
               <Button
                 onClick={() => navigate("/")}
                 rounded
-                className="hover:text-white-alpha-60 text-white px-5 py-3 mt-4  bg-transparent text-cente "
+                className="hover:text-white-alpha-60 text-white px-5 py-3 mt-5  bg-transparent"
               >
               <i class="fa-solid fa-home mr-2 mb-1"></i>  Home
               </Button>
