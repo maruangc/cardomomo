@@ -64,9 +64,10 @@ def get_professionals():
     offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
     count=Professional.query.all()
     if limit=='0':
-        filter=Professional.query.all()
+        filter=Professional.query.order_by(Professional.name)
     else:
-        filter=Professional.query.offset(offset).limit(limit).all()
+        filter=Professional.query.order_by(Professional.name).offset(offset).limit(limit)
+    filter=filter.all()
     dic={'ok':True,'status':200,'count':len(count)}
     dic['data']=[professional.serialize() for professional in filter]
     return jsonify(dic)
@@ -123,9 +124,12 @@ def filter_professional():
         # Professional.created.between(fd,fh) if created_from != '' else Professional.created.between('1901-01-01','3100-12-31')
         
     if limit=='0':
-        filter=filter.all()
+        filter=filter.order_by(Professional.name)
     else:
-        filter=filter.offset(offset).limit(limit).all()
+        filter=filter.order_by(Professional.name).offset(offset).limit(limit)
+    
+    filter=filter.all()
+
     dic={'ok':True,'status':200,'count':len(filter)}
     dic['data']=[professional.serialize() for professional in filter]
     return jsonify(dic)

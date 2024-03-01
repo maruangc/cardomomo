@@ -54,9 +54,10 @@ def get_categories():
     offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
     count=Category.query.all()
     if limit=='0':
-        filter=Category.query.all()
+        filter=Category.query.order_by(Category.category)
     else:
-        filter=Category.query.offset(offset).limit(limit).all()
+        filter=Category.query.order_by(Category.category).offset(offset).limit(limit)
+    filter=filter.all()
     dic={'ok':True,'status':200,'count':len(count)}
     dic['data']=[category.serialize() for category in filter]
     dic['offset']=int(offset)+int(limit)
@@ -79,10 +80,13 @@ def filter_category():
         filter=filter.filter(
             Category.description.ilike('%'+description+'%'))
     print(str(filter))
+
     if limit=='0':
-        filter=filter.all()
+        filter=filter.order_by(Category.category)
     else:
-        filter=filter.offset(offset).limit(limit).all()
+        filter=filter.order_by(Category.category).offset(offset).limit(limit)
+    
+    filter=filter.all()
     dic={'ok':True,'status':200,'count':len(filter)}
     dic['data']=[category.serialize() for category in filter]
     return jsonify(dic)
