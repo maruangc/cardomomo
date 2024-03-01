@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-
+import { useParams, useNavigate } from "react-router-dom";
 import { Context } from "../../store/appContext.js";
 import SkeletonCase from "./ui/SkeletonCase.jsx";
 import { toast } from "react-toastify";
@@ -14,6 +13,7 @@ import DeliverDetail from "./ui/DeliverDetail.jsx";
 
 const CaseDetail = () => {
   const { actions } = useContext(Context);
+  const navigate = useNavigate();
   const { id } = useParams();
 
   const [data, setData] = useState();
@@ -23,6 +23,10 @@ const CaseDetail = () => {
 
   const dataQuery = async () => {
     const response = await actions.getById("case", id);
+    if (response.msg) {
+      toast("Token Expired");
+      navigate("/login");
+    }
     if (response.ok) {
       const handleStatus = response.data.case.delivered
         ? "delivered"

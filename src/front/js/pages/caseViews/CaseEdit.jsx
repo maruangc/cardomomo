@@ -32,6 +32,10 @@ const CaseEdit = () => {
 
   const getData = async () => {
     const response = await actions.getById("case", `${id}`);
+    if (response.msg) {
+      toast("Token Expired");
+      navigate("/login");
+    }
     if (response.ok) {
       console.log(response.data.case);
       setDataCase(response.data);
