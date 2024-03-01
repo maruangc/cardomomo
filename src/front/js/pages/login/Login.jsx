@@ -35,7 +35,7 @@ const Login = () => {
             <div className="flex justify-content-center flex-column">
               <h1 className="text-5xl font-bold text-white pb-3">Login</h1>
               <div className="">
-                <h5 className="m-0 p-0 pb-4 text-white">Username</h5>
+                <h5 className="m-0 p-0 pb-2 text-white">Username</h5>
                 <InputText id="login-email" name="email" className="w-full" />
               </div>
               <div className="mt-5">
@@ -59,7 +59,7 @@ const Login = () => {
               </Button>
               <div className="flex justify-content-between items-center mt-5">
                 <p className="text-white">No tienes cuenta?</p>
-                <Link to="/register" className=" mt-3 font-bold text-white">
+                <Link to="/register" className="hover:text-white-alpha-60 mt-3 font-bold text-white">
                   Registrate
                 </Link>
               </div>
@@ -67,9 +67,9 @@ const Login = () => {
               <Button
                 onClick={() => navigate("/")}
                 rounded
-                className="bg-transparent  hover:text-white-alpha-60 text-white px-5 py-3 mt-3 "
+                className="bg-transparent  hover:text-white-alpha-60 text-white px-5 py-3 mt-6 "
               >
-                <i className=" fa-solid fa-house pr-2 mb-1 text-white"></i> Ir a inicio
+                <i className=" fa-solid fa-house pr-2 mb-1 text-white "></i> Home
               </Button>
           </div>
         </form>
