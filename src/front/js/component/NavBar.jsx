@@ -71,7 +71,7 @@ export default function Navbar({ vista }) {
             <div className="flex flex-column gap-3 mt-3">
               <div className="w-full">
                 <Button
-                  className="w-full bg-primary-black text-white  hover:text-primary-700 hover:shadow-5 border-transparent "
+                  className="w-full bg-primary-black text-white  hover:text-primary-500 hover:shadow-5 border-transparent "
                   onClick={() => {
                     navigate("/case");
                     setVisible(false);
@@ -82,7 +82,7 @@ export default function Navbar({ vista }) {
               </div>
               <div className="w-full">
                 <Button
-                  className="w-full bg-primary-black text-white   hover:text-primary-700 hover:shadow-5 border-transparent	"
+                  className="w-full bg-primary-black text-white   hover:text-primary-500 hover:shadow-5 border-transparent	"
                   onClick={() => {
                     navigate("/customer");
                     setVisible(false);
@@ -94,7 +94,7 @@ export default function Navbar({ vista }) {
 
               <div className="w-full">
                 <Button
-                  className="w-full bg-primary-black text-white  hover:text-primary-700 hover:shadow-5 border-transparent"
+                  className="w-full bg-primary-black text-white  hover:text-primary-500 hover:shadow-5 border-transparent"
                   onClick={() => {
                     navigate("/professional");
                     setVisible(false);
@@ -105,7 +105,7 @@ export default function Navbar({ vista }) {
               </div>
               <div className="w-full">
                 <Button
-                  className="w-full bg-primary-black text-white  hover:text-primary-700 hover:shadow-5 border-transparent"
+                  className="w-full bg-primary-black text-white  hover:text-primary-500 hover:shadow-5 border-transparent"
                   onClick={() => {
                     navigate("/category");
                     setVisible(false);

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Delete from "../common/components/Delete.jsx";
 import EditData from "../common/components/EditData.jsx";
+import { Card } from "primereact/card";
 
 const UserDetail = () => {
   const { actions } = useContext(Context);
@@ -45,7 +46,7 @@ const UserDetail = () => {
 
   return (
     <div className="w-full flex justify-content-center">
-      <div className="flex flex-column gap-5 px-5 py-5 w-full max-container-width">
+      <div className="flex flex-column gap-5 px-5 py-5 w-full max-container-width ">
         <div className="flex gap-5 justify-content-between">
           <div className="flex gap-5">
             <Button
@@ -74,24 +75,24 @@ const UserDetail = () => {
           </div>
         </div>
         {dataQuery ? (
-          <div className="surface-300 p-7 mt-5 border-round-md text-xl">
+          <Card className="text-black-alpha-90  border-round-md bg-primary-50 shadow-2 text-xl px-5">
             <div className="flex gap-3">
               <label className="w-2">User Id:</label>
               <label className="w-max">{params.id}</label>
             </div>
             <div className="flex gap-3 mt-5">
-              <label className="w-2" htmlFor="category">
-                Correo
-              </label>
-              <label className="w-max">{dataQuery.email}</label>
-            </div>
-            <div className="flex gap-3 mt-5">
               <label className="w-2" htmlFor="description">
-                Nombre
+                Nombre:
               </label>
               <label className="w-max">{dataQuery.name}</label>
             </div>
-          </div>
+            <div className="flex gap-3 mt-5">
+              <label className="w-2" htmlFor="category">
+                Correo:
+              </label>
+              <label className="w-max">{dataQuery.email}</label>
+            </div>
+          </Card>
         ) : (
           <p>Obteniendo Datos...</p>
         )}
