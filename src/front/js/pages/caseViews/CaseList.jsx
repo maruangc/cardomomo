@@ -8,7 +8,7 @@ const columns = [
   { field: "case.id", header: "Ticket" },
   { field: "case.created", header: "fecha" },
   { field: "category.category", header: "Categoria" },
-  { field: "customer.name", header: "CLiente" },
+  { field: "customer.name", header: "Cliente" },
   { field: "professional.name", header: "Profesional" },
   { field: "typeservice.type_service", header: "Tipo Servicio" },
   { field: "case.started", header: "Iniciado" },
@@ -26,7 +26,7 @@ const columnFilter = [
   },
   {
     field: "customer_id",
-    header: "CLiente",
+    header: "Cliente",
     type: "drop",
     table: "customer",
     nameForDropDown: "name",

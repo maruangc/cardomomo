@@ -143,9 +143,9 @@ def get_cases():
     offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
     count=Case.query.all()
     if limit=='0':
-        filter=Case.query.order_by(Case.id).all()
+        filter=Case.query.order_by(Case.id.desc()).all()
     else:
-        filter=Case.query.order_by(Case.id).offset(offset).limit(limit).all()
+        filter=Case.query.order_by(Case.id.desc()).offset(offset).limit(limit).all()
     dic={'ok':True,'status':200,'data':[],'count':len(count)}
 
     for eachcase in filter:
@@ -411,9 +411,9 @@ def filter_cases():
     if delivered_description is not None:
       filter=filter.filter(Case.delivered_description.ilike('%'+delivered_description+'%'))
     if limit=='0':
-        filter=filter.order_by(Case.id).all()
+        filter=filter.order_by(Case.id.desc()).all()
     else:
-        filter=filter.order_by(Case.id).offset(offset).limit(limit).all()
+        filter=filter.order_by(Case.id.desc()).offset(offset).limit(limit).all()
     # filter=filter.all()
     dic={'ok':True,'status':200,'data':[],'count':len(filter)}
 
