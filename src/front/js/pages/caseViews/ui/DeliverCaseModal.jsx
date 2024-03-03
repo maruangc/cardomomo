@@ -52,6 +52,11 @@ const DeliverCaseModal = ({
       <Button
         rounded
         label={!caseData.delivered ? "Entregar" : "Revertir entrega"}
+        icon={
+          caseData.delivered
+            ? "fa-solid fa-rotate-left"
+            : "fa-solid fa-handshake"
+        }
         onClick={() => {
           buttonDelivered();
         }}
@@ -83,6 +88,7 @@ const DeliverCaseModal = ({
           <div className="flex gap-3">
             <Button
               label="Cancelar"
+              icon="fa-solid fa-ban"
               rounded
               onClick={() => {
                 setVisible(false);
@@ -92,6 +98,7 @@ const DeliverCaseModal = ({
 
             <Button
               label="Entregar Caso"
+              icon="fa-solid fa-handshake"
               rounded
               onClick={() => {
                 handelDeliveredCase(deliverModalValue, id);

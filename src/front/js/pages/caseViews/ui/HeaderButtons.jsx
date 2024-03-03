@@ -83,6 +83,9 @@ const HeaderButtons = ({
         <Button
           rounded
           label={data.case.started ? "Revertir Inicio" : "Iniciar caso"}
+          icon={
+            data.case.started ? "fa-solid fa-rotate-left" : "fa-solid fa-play"
+          }
           onClick={() => {
             buttonStart();
           }}
@@ -107,6 +110,7 @@ const HeaderButtons = ({
         <Button
           rounded
           label="Editar"
+          icon="fa-solid fa-pen-to-square"
           onClick={() => navigate(`/case/edit/${id}`)}
         />
       </div>

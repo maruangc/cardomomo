@@ -53,6 +53,9 @@ const CloseCaseModal = ({
       <Button
         rounded
         label={data.case.closed ? "Revertir cierre" : "Cerrar caso"}
+        icon={
+          data.case.closed ? "fa-solid fa-rotate-left" : "fa-solid fa-check"
+        }
         onClick={() => {
           buttonClose();
         }}
@@ -84,6 +87,7 @@ const CloseCaseModal = ({
           <div className="flex gap-3">
             <Button
               label="Cancelar"
+              icon="fa-solid fa-ban"
               rounded
               onClick={() => {
                 setVisible(false);
@@ -93,6 +97,7 @@ const CloseCaseModal = ({
 
             <Button
               label="Cerrar caso"
+              icon="fa-solid fa-check"
               rounded
               onClick={() => {
                 handelCloseCase(closeModalvalue, id);
