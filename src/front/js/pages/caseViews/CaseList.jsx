@@ -14,6 +14,7 @@ const columns = [
   { field: "case.started", header: "Iniciado" },
   { field: "case.closed", header: "Cerrado" },
   { field: "case.delivered", header: "Entregado" },
+  { field: "case.is_active", header: "Act" },
 ];
 
 const columnFilter = [
