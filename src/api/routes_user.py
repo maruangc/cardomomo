@@ -98,9 +98,9 @@ def get_users():
     offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
     count=User.query.all()
     if limit=='0':
-        users=User.query.all()
+        users=User.query.order_by(User.email).all()
     else:
-        users=User.query.offset(offset).limit(limit).all()
+        users=User.query.order_by(User.email).offset(offset).limit(limit).all()
     if users is None:
         return jsonify({'ok':False,'error':'Sin datos','status':404})
     dic={'ok':True,'status':200,'count':len(count)}
@@ -127,7 +127,10 @@ def login():
     
     user=User.query.filter_by(email=email).one_or_none()
     if user is None:
-        return jsonify({'ok':False,'error': 'email does not exist', 'status':404}),404
+        return jsonify({'ok':False,'error': 'Credencial no valida', 'status':404}),404
+    print('------------', user.is_active)
+    if user.is_active is False:
+        return jsonify({'ok':False,'error': 'Usuario inactivo', 'status':404}),404
     pass_match=check_password_hash(user.password,password)
     if not pass_match:
         return jsonify({'ok':False,'error': 'Credencial inválida', 'status':401}),401
@@ -155,9 +158,26 @@ def filter_user():
             User.email.ilike('%'+email+'%'))
     print(str(filter))
     if limit=='0':
-        filter=filter.all()
+        filter=filter.order_by(User.email).all()
     else:
-        filter=filter.offset(offset).limit(limit).all()
+        filter=filter.order_by(User.email).offset(offset).limit(limit).all()
     dic={'ok':True,'status':200,'count':len(filter)}
     dic['data']=[user.serialize() for user in filter]
     return jsonify(dic)
+
+@routes.route('/DELETE/<int:id>', endpoint='del_user', methods=['DELETE'])
+@jwt_required()
+def del_user(id):
+    filter=User.query.filter_by(id=id).one_or_none()
+    if filter is None:
+      return jsonify({'ok':False,'error':f'Usuario id:{id} no encontrado ','status':404}),404
+    if filter.is_active==False:
+      return jsonify({'ok':False,'error':f'Usuario id:{id} desactivado ','status':400}),400
+    filter.is_active=False
+    try:
+       db.session.commit()
+       return jsonify({'ok':True,'data': f'Usuario desactivado','status':202}),202
+    except Exception as error:
+       print('-*-*-*-*-*-*-*-*---DELETE Error: ', error)
+       db.session.rollback()
+       return jsonify({'ok':False,'error': 'internal server error','status':500}),500
