@@ -117,7 +117,7 @@ const ListComponent = ({
   const getDataQuery = async (offset = 0) => {
     let response;
     if (initialValue == false) {
-      //Viene de Vistas detalle Cliente o Professional
+      //Viene de Vistas detalle Cliente / Professional / Categoria
       response = await actions.getCasesFor(table, id);
     } else {
       if (filtered === false) {

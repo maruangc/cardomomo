@@ -319,7 +319,6 @@ def filter_cases():
           if initial_note is None and description is None and closed is None and close_date_start is None and close_date_end is None:
              if close_description is None and delivered is None and delivered_date_start is None and delivered_date_end is None and delivered_description is None:
                 return jsonify({'ok':False,'error':"no fields-name valid in body, you must send any field: example: {'is_active':False}",'status':400}),400
-    print('------------', body)
     if id is not None and type(id)!=int:
        return jsonify({'ok':False,'error':'id must be a integer ','status':400}),400
     if customer_id is not None and type(customer_id)!=int:
@@ -382,17 +381,17 @@ def filter_cases():
     filter=Case.query.filter(
       Case.id==id if id is not None else (Case.id>0))
     if customer_id is not None:
-       filter.filter(Case.customer_id==customer_id)
+      filter=filter.filter(Case.customer_id==customer_id)
     if category_id is not None:
-       filter=filter.filter(Case.category_id==category_id)
+      filter=filter.filter(Case.category_id==category_id)
     if typeservice_id is not None:
-       filter=filter.filter(Case.typeservice_id==typeservice_id)
+      filter=filter.filter(Case.typeservice_id==typeservice_id)
     if professional_id is not None:
-       filter=filter.filter(Case.professional_id==professional_id)
+      filter=filter.filter(Case.professional_id==professional_id)
     if is_active is not None:
-       filter=filter.filter(Case.is_active==is_active)
+      filter=filter.filter(Case.is_active==is_active)
     if started is not None:
-       filter=filter.filter(Case.started==started)
+      filter=filter.filter(Case.started==started)
     if date_init_start is not None:
       filter=filter.filter(Case.date_init.between(date_init_start,date_init_end))
     if close_date_start is not None:
