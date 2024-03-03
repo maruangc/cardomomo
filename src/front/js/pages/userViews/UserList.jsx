@@ -6,7 +6,7 @@ const columns = [
   { field: "email", header: "Correo" },
   { field: "name", header: "Nombre" },
   { field: "created", header: "Fecha creado" },
-  { field: "is_active", header: "Activo?" },
+  { field: "is_active", header: "Activo" },
 ];
 
 const columnFilter = [
