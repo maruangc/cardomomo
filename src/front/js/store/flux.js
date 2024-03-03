@@ -56,7 +56,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             toast.error(data.error);
           } else {
             localStorage.setItem("token", data.token);
-            toast.success("granted access, token generated");
+            toast.success("Acceso concedido");
             return data;
           }
           return data;
@@ -112,6 +112,28 @@ const getState = ({ getStore, getActions, setStore }) => {
             `Error en funcion updateTable(${table}, ${id}, ${fields})`,
             error
           );
+        }
+      },
+      setEstate: async (id, fields) => {
+        try {
+          const resp = await fetch(
+            process.env.BACKEND_URL + "/case/setstate/" + id,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+              body: JSON.stringify(fields),
+            }
+          );
+          const data = await resp.json();
+          if (!data.ok) {
+            toast.error(data.error);
+          }
+          return data;
+        } catch (error) {
+          console.log(`Error en funcion setState(${id}, ${fields})`, error);
         }
       },
       deleteById: async (table, id) => {

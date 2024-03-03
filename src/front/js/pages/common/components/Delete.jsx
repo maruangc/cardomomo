@@ -14,7 +14,7 @@ export default function Delete({ table, id }) {
   const accept = async () => {
     const response = await actions.deleteById(table, id);
     if (response.msg) {
-      toast.error("token expired");
+      toast.error("Credencial vencida");
       navigate("/login");
     }
     if (response.ok) {

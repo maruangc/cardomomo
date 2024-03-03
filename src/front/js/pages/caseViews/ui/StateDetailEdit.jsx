@@ -22,7 +22,6 @@ const StateDetailEdit = ({
   deliveredNotes,
   setDeliveredNotes,
 }) => {
-  console.log(closeNotes);
   return (
     <div className="flex flex-column gap-3 ">
       <label htmlFor="StateDetail" className="font-bold text-xl">

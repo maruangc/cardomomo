@@ -15,7 +15,7 @@ const CreateModal = ({ table, handleReload, createColumn, initialValue }) => {
   const handleSubmit = async () => {
     const response = await actions.insertInTable(table, modalField);
     if (response.msg) {
-      toast.error("Token expired");
+      toast.error("Credencial vencida");
       navigate("/login");
     }
     if (response.ok) {

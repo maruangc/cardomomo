@@ -33,15 +33,15 @@ def add_case():
     delivered_description=body.get('delivered_description', None) if body.get('delivered_description', None) is not None else ''
     texto=""
     if customer_id is None:
-        texto="the customer_id must exist in the request "+chr(10)
+        texto="No se recibio al cliente "+chr(10)
     elif type(customer_id)!=int:
         texto+="the customer_id parameter has an invalid value, must be integer and greather than zero "+chr(10)
     if category_id is None:
-        texto+="the category_id must exist in the request "+chr(10)
+        texto+="No se recibio la categoria "+chr(10)
     elif type(category_id)!=int:
         texto+="the category_id parameter has an invalid value, must be integer and greather than zero "+chr(10)
     if typeservice_id is None:
-        texto="the typeservice_id must exist in the request "+chr(10)
+        texto="No se recibio el tipo de servicio "+chr(10)
     elif type(typeservice_id)!=int:
         texto+="the typeservice_id parameter has an invalid value, must be integer and greather than zero "+chr(10)
     if type(started)!=bool or type(closed)!=bool or type(delivered)!=bool:
@@ -77,7 +77,7 @@ def add_case():
                         delivered_description=delivered_description))
     try:
         db.session.commit()
-        return jsonify({'ok':True, 'data': 'case created', 'status':201}),201
+        return jsonify({'ok':True, 'data': 'Ticket o Caso creado', 'status':201}),201
     except Exception as error:
         print("-*-*-*-*commit error: ", error)
         db.session.rollback()
@@ -88,7 +88,7 @@ def add_case():
 def get_case(id):
     filter=Case.query.filter_by(id=id).one_or_none()
     if filter is None:
-        return jsonify({'ok':False,'error':'case id not found','status':404}),404
+        return jsonify({'ok':False,'error':'Nro ticket/caso no encontrado','status':404}),404
     dic={'ok':True,'status':200,'data':{}}
     dic['data']['case']=filter.serialize()
     customer_id=filter.customer_id
@@ -155,7 +155,7 @@ def get_cases():
       typeservice_id=eachcase.typeservice_id
       filter_table=Customer.query.filter_by(id=customer_id).one_or_none()
       if filter_table is None:
-        customer_json={'ok':False, 'status':404, 'data':'customer id not found'}
+        customer_json={'ok':False, 'status':404, 'data':'Cliente no encontrado'}
       else:
         customer_json=filter_table.serialize()
       filter_table=Professional.query.filter_by(id=professional_id).one_or_none()
@@ -186,10 +186,11 @@ def get_cases():
 def edit_case(id):
     filter=Case.query.filter_by(id=id).one_or_none()
     if filter is None:
-        return jsonify({'ok':False,'error':'case id not found ','status':404}),404
+        return jsonify({'ok':False,'error':'Nro ticket/caso no encontrado ','status':404}),404
     body=request.json
+    print('-----------------', body)
     if body=={}:
-       return jsonify({'ok':False,'error':'body is empty ','status':400}),400
+       return jsonify({'ok':False,'error':'No se recibieron datos ','status':400}),400
     customer_id=body.get('customer_id', None) 
     category_id=body.get('category_id', None) 
     typeservice_id=body.get('typeservice_id', None) 
@@ -241,7 +242,7 @@ def edit_case(id):
     texto+='delivered_description:'+delivered_description+', ' if delivered_description != None else ''
     try:
        db.session.commit()
-       return jsonify({'ok':True,'data': f'case id updated '+chr(10)+texto,'status':200}),200
+       return jsonify({'ok':True,'data': f'ticket/caso actualizado '+chr(10)+texto,'status':200}),200
     except Exception as error:
        print('-*-*-*-*-*-*-*-*-Update Error: ', error+chr(10)+texto)
        db.session.rollback()
@@ -255,7 +256,7 @@ def set_state(id):
   filter=Case.query.filter_by(id=id).one_or_none()
   
   if filter is None:
-      return jsonify({'ok':False,'error':'case id not found ','status':404}),404
+      return jsonify({'ok':False,'error':'ticket/caso no encontrado ','status':404}),404
   body=request.json
   if body=={}:
     return jsonify({'ok':False,'error':'body is empty ','status':400}),400
@@ -279,7 +280,7 @@ def set_state(id):
   
   try:
       db.session.commit()
-      return jsonify({'ok':True,'data': 'case id updated','status':200}),200
+      return jsonify({'ok':True,'data': 'ticket/caso actualizado','status':200}),200
   except Exception as error:
       print('-*-*-*-*-*-*-*-*-Update Error: ', error)
       db.session.rollback()
@@ -455,13 +456,13 @@ def filter_cases():
 def del_case(id):
     filter=Case.query.filter_by(id=id).one_or_none()
     if filter is None:
-      return jsonify({'ok':False,'error':f'case id:{id} not found ','status':404}),404
+      return jsonify({'ok':False,'error':f'Ticket/caso id:{id} no encontrado ','status':404}),404
     if filter.is_active==False:
-      return jsonify({'ok':False,'error':f'case id:{id} is deactivated ','status':400}),400
+      return jsonify({'ok':False,'error':f'Ticket/caso id:{id} desactivado ','status':400}),400
     filter.is_active=False
     try:
        db.session.commit()
-       return jsonify({'ok':True,'data': f'is_active set to false, cases are not deleted, they are deactivated','status':202}),202
+       return jsonify({'ok':True,'data': f'Ticket/caso desactivado','status':202}),202
     except Exception as error:
        print('-*-*-*-*-*-*-*-*---DELETE Error: ', error)
        db.session.rollback()

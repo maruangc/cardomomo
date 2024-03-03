@@ -38,7 +38,7 @@ def create_customer(count):
             print("-*-*-*-*commit error: ", error)
             db.session.rollback()
             return jsonify({'ok':False, 'error': 'internal server error','status':500}),500
-    return jsonify({'ok':True, 'data': str(count)+' customers created', 'status':201}),201
+    return jsonify({'ok':True, 'data': str(count)+' Clientes creados', 'status':201}),201
 
 #--------------------------------------------- /customer
 @routes.route('/new',endpoint='add_customer', methods=['POST'])
@@ -55,21 +55,21 @@ def add_customer():
     texto=""
     
     if name is None:
-        texto="the name must exist in the request "+chr(10)
+        texto="El nombre no se ha recibido "+chr(10)
     elif len(name)==0 or name.strip()=="":
-        texto=texto+"the name cannot be left empty "+chr(10)
+        texto=texto+"El nombre no debe estar vacio "+chr(10)
     if identification is None:
-        texto=texto+"the identification must exist in the request "+chr(10)
+        texto=texto+"Identificacion no se ha recibido"+chr(10)
     elif len(identification)==0 or identification.strip()=="":
-        texto=texto+"the identification cannot be left empty "
+        texto=texto+"Identificacion no debe estar vacia "
     if len(texto)>0:
         return jsonify({'ok':False,'error':texto,'status':400}),400
     customer_filter=Customer.query.filter_by(name=name).one_or_none()
     if customer_filter is not None:
-        return jsonify({'ok':False,'error':'name allready exists ','status':400}),400
+        return jsonify({'ok':False,'error':'El nombre ya existe, no puede duplicarse ','status':400}),400
     customer_filter=Customer.query.filter_by(identification=identification).one_or_none()
     if customer_filter is not None:
-        return jsonify({'ok':False,'error':'identification allready exists ','status':400}),400
+        return jsonify({'ok':False,'error':'Identificacion ya existe, no debe duplicarse ','status':400}),400
     phone='' if phone is None else phone
     email='' if email is None else email
     address='' if address is None else address
@@ -77,7 +77,7 @@ def add_customer():
     db.session.add(Customer(name=name,identification=identification,phone=phone,email=email,address=address,comment=comment))
     try:
         db.session.commit()
-        return jsonify({'ok':True, 'data': 'customer created', 'status':201}),201
+        return jsonify({'ok':True, 'data': 'Cliente creado', 'status':201}),201
     except Exception as error:
         print("-*-*-*-*commit error: ", error)
         db.session.rollback()
@@ -88,7 +88,7 @@ def add_customer():
 def get_customer(id):
     customer_filter=Customer.query.filter_by(id=id).one_or_none()
     if customer_filter is None:
-        return jsonify({'ok':False,'error':'customer id not found ','status':404}),404
+        return jsonify({'ok':False,'error':'Cliente no encontrado ','status':404}),404
     dic={'ok':True,'status':200}
     dic['data']=customer_filter.serialize()
     return jsonify(dic)
@@ -132,13 +132,13 @@ def customer_cases(id):
 
         filter_table=Customer.query.filter_by(id=customer_id).one_or_none()
         if filter_table is None:
-            customer_json={'ok':False, 'status':404, 'data':'customer id not found'}
+            customer_json={'ok':False, 'status':404, 'data':'Cliente no encontrado'}
         else:
             customer_json=filter_table.serialize()
 
         filter_table=Professional.query.filter_by(id=professional_id).one_or_none()
         if filter_table is None:
-            professional_json={'ok':False, 'status':404, 'data':'professional id not found'}
+            professional_json={'ok':False, 'status':404, 'data':'Profesional no encontrado'}
         else:
             professional_json=filter_table.serialize()
 
@@ -179,7 +179,7 @@ def filter_customer():
     created_until=body.get('created_until', None) if body.get('created_until', None) is not None else ''
     print('------Body: ', body)
     if (name+identification+phone+email+address+comment).strip()=="":
-        return jsonify({'ok':False,'error':'all fields are missing ','status':400}),400
+        return jsonify({'ok':False,'error':'Ningun dato no recibido ','status':400}),400
     
     if len(created_from)>0 and len(created_until)>0:
         fdd=datetime.strptime(created_from+' 00:00:00','%Y-%m-%d %H:%M:%S') # convierte de string a date
@@ -249,11 +249,11 @@ def edit_customer(id):
     address=body.get('address', None) if body.get('address', None) is not None else ''
     comment=body.get('comment', None) if body.get('comment', None) is not None else ''
     if (name+identification+phone+email+address+comment).strip()=="":
-        return jsonify({'ok':False,'error':'all fields are missing ','status':400}),400
+        return jsonify({'ok':False,'error':'Ningun dato reibido ','status':400}),400
     
     customer_filter=Customer.query.filter_by(id=id).one_or_none()
     if customer_filter is None:
-        return jsonify({'ok':False,'error':'customer id not found ','status':404}),404
+        return jsonify({'ok':False,'error':'Cliente no encontrado ','status':404}),404
     
     customer_filter.name=name if len(name)>0 else customer_filter.name
     customer_filter.identification=identification if len(identification)>0 else customer_filter.identification
@@ -269,7 +269,7 @@ def edit_customer(id):
         texto+='email:'+email+', ' if email != '' else ''
         texto+='address:'+address+', ' if address != '' else ''
         texto+='comment:'+comment+', ' if comment != '' else ''
-        return jsonify({'ok':True,'data': f'customer id updated - '+texto,'status':201}),201
+        return jsonify({'ok':True,'data': f'Cliente actualizado - '+texto,'status':201}),201
     except Exception as error:
         print('-*-*-*-*Update Error:', error)
         db.session.rollback()
@@ -280,11 +280,11 @@ def edit_customer(id):
 def del_customer(id):
     filter=Customer.query.filter_by(id=id).one_or_none()
     if filter is None:
-        return jsonify({'ok':False,'error':f'customer id:{id} not found ','status':404}),404
+        return jsonify({'ok':False,'error':f'Cliente id:{id} no encontrado ','status':404}),404
     db.session.delete(filter)
     try: 
       db.session.commit()
-      return jsonify({'ok':True,'data': f'customer id:{id} DELETED','status':202}),202
+      return jsonify({'ok':True,'data': f'Cliente id:{id} Eliminado','status':202}),202
     except Exception as error:
       print('-*-*-*-*--- DELETE Error:', error)
       db.session.rollback()

@@ -23,25 +23,25 @@ def add_professional():
     comment=body.get('comment', None) if body.get('comment', None) is not None else ''
     texto=""
     if name is None:
-        texto="the name must exist in the request "+chr(10)
+        texto="El nombre no se ha recibido "+chr(10)
     elif len(name)==0 or name.strip()=="":
-        texto=texto+"the name cannot be left empty "+chr(10)
+        texto=texto+"Nombre no debe estar vacio "+chr(10)
     if identification is None:
-        texto=texto+"the identification must exist in the request "+chr(10)
+        texto=texto+"No se recibio la identificación"+chr(10)
     elif len(identification)==0 or identification.strip()=="":
-        texto=texto+"the identification cannot be left empty "
+        texto=texto+"Identificacion no debe estar vacia "
     if len(texto)>0:
         return jsonify({'ok':False,'error':texto,'status':400}),400
     filter=Professional.query.filter_by(name=name).one_or_none()
     if filter is not None:
-        return jsonify({'ok':False,'error':'name allready exists ','status':400}),400
+        return jsonify({'ok':False,'error':'Nombre ya existe ','status':400}),400
     filter=Professional.query.filter_by(identification=identification).one_or_none()
     if filter is not None:
-        return jsonify({'ok':False,'error':'identification allready exists ','status':400}),400
+        return jsonify({'ok':False,'error':'Identificación ya existe ','status':400}),400
     db.session.add(Professional(name=name,identification=identification,profession=profession,phone=phone,email=email,address=address,comment=comment))
     try:
         db.session.commit()
-        return jsonify({'ok':True, 'data': 'professional created', 'status':201}),201
+        return jsonify({'ok':True, 'data': 'Profesional creado', 'status':201}),201
     except Exception as error:
         print("-*-*-*-*commit error: ", error)
         db.session.rollback()
@@ -52,7 +52,7 @@ def add_professional():
 def get_professional(id):
     filter=Professional.query.filter_by(id=id).one_or_none()
     if filter is None:
-        return jsonify({'ok':False,'error':'professional id not found ','status':404}),404
+        return jsonify({'ok':False,'error':'Profesional no encontrado','status':404}),404
     dic={'ok':True,'status':200}
     dic['data']=filter.serialize()
     return jsonify(dic)
@@ -139,7 +139,7 @@ def filter_professional():
     created_from=body.get('created_from', None) if body.get('created_from', None) is not None else ''
     created_until=body.get('created_until', None) if body.get('created_until', None) is not None else ''
     if (name+identification+phone+email+address+comment+profession).strip()=="":
-        return jsonify({'ok':False,'error':'all fields are missing ','status':400}),400
+        return jsonify({'ok':False,'error':'Ningun dato recibido ','status':400}),400
     
     if len(created_from)>0 and len(created_until)>0:
         fdd=datetime.strptime(created_from+' 00:00:00','%Y-%m-%d %H:%M:%S') # convierte de string a date
@@ -197,11 +197,11 @@ def edit_professional(id):
     address=body.get('address', None) if body.get('address', None) is not None else ''
     comment=body.get('comment', None) if body.get('comment', None) is not None else ''
     if (name+identification+phone+email+address+comment).strip()=="":
-        return jsonify({'ok':False,'error':'all fields are missing ','status':400}),400
+        return jsonify({'ok':False,'error':'Ningun dato recibido ','status':400}),400
     
     filter=Professional.query.filter_by(id=id).one_or_none()
     if filter is None:
-        return jsonify({'ok':False,'error':'professional id not found ','status':404}),404
+        return jsonify({'ok':False,'error':'Profesional no encontrado ','status':404}),404
     
     filter.name=name if len(name)>0 else filter.name
     filter.identification=identification if len(identification)>0 else filter.identification
@@ -219,7 +219,7 @@ def edit_professional(id):
         texto+='email:'+email+', ' if email != '' else ''
         texto+='address:'+address+', ' if address != '' else ''
         texto+='comment:'+comment+', ' if comment != '' else ''
-        return jsonify({'ok':True,'data': f'professional id updated - '+texto,'status':201}),201
+        return jsonify({'ok':True,'data': f'Datos del profesional actualizado - '+texto,'status':201}),201
     except Exception as error:
         print('-*-*-*-*Update Error:', error)
         db.session.rollback()
@@ -230,11 +230,11 @@ def edit_professional(id):
 def del_professional(id):
     filter=Professional.query.filter_by(id=id).one_or_none()
     if filter is None:
-        return jsonify({'ok':False,'error':f'professional id:{id} not found ','status':404}),404
+        return jsonify({'ok':False,'error':f'profesional id:{id} no encontrado ','status':404}),404
     db.session.delete(filter)
     try: 
       db.session.commit()
-      return jsonify({'ok':True,'data': f'professional id:{id} DELETED','status':202}),202
+      return jsonify({'ok':True,'data': f'profesional id:{id} Eliminado','status':202}),202
     except Exception as error:
       print('-*-*-*-*--- DELETE Error:', error)
       db.session.rollback()

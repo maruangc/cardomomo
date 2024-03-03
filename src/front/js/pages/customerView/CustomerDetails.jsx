@@ -9,7 +9,6 @@ import EditData from "../common/components/EditData.jsx";
 import { Card } from "primereact/card";
 import CustomerCasesView from "./CustomerCasesView.jsx";
 
-
 const CustomerDetails = () => {
   const { actions } = useContext(Context);
   const navigate = useNavigate();
@@ -21,7 +20,7 @@ const CustomerDetails = () => {
   const getDataQuery = async () => {
     const response = await actions.getById("customer", params.id);
     if (response.msg) {
-      toast.error("token expired");
+      toast.error("Credencial vencida");
       navigate("/login");
     }
     if (response.ok) {

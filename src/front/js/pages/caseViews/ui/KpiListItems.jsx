@@ -12,7 +12,7 @@ const KpiListItems = () => {
   const getDataQuery = async () => {
     const response = await actions.getSummary();
     if (response.msg) {
-      toast.error("Token expired");
+      toast.error("Credencial vencida");
       navigate("/login");
     }
     if (response.ok) {
@@ -23,8 +23,6 @@ const KpiListItems = () => {
   useEffect(() => {
     getDataQuery();
   }, [store.refreshKpi]);
-
-  console.log(dataQuery);
 
   return (
     <div className="flex flex-column gap-3">
