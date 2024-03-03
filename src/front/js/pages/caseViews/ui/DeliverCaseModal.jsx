@@ -5,12 +5,15 @@ import { useParams } from "react-router-dom";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import { InputTextarea } from "primereact/inputtextarea";
+import { toast } from "react-toastify";
 
 const DeliverCaseModal = ({
   deliverModalValue,
   setDeliverModalValue,
   setState,
   caseData,
+  reload,
+  setReload,
 }) => {
   const { id } = useParams();
   const [visible, setVisible] = useState(false);
@@ -20,10 +23,27 @@ const DeliverCaseModal = ({
     const response = await actions.updateById("case", id, {
       delivered_description: value,
     });
-    console.log(response);
     if (response.ok) {
       setVisible(false);
       setState("delivered", id);
+    }
+    setReload(reload + 1);
+  };
+
+  const buttonDelivered = async () => {
+    let response;
+    if (caseData.delivered) {
+      const response = await actions.setEstate(id, {
+        delivered: false,
+      });
+      if (response.ok) {
+        toast.success("Reversada la entrega");
+      } else {
+        toast.error(response.error);
+      }
+      setReload(reload + 1);
+    } else {
+      setVisible(true);
     }
   };
 
@@ -31,11 +51,16 @@ const DeliverCaseModal = ({
     <>
       <Button
         rounded
-        label="Entregar"
+        label={!caseData.delivered ? "Entregar" : "Revertir entrega"}
+        icon={
+          caseData.delivered
+            ? "fa-solid fa-rotate-left"
+            : "fa-solid fa-handshake"
+        }
         onClick={() => {
-          setVisible(true);
+          buttonDelivered();
         }}
-        disabled={caseData.delivered || !caseData.is_active}
+        disabled={!caseData.is_active}
       />
       <Dialog
         visible={visible}
@@ -63,6 +88,7 @@ const DeliverCaseModal = ({
           <div className="flex gap-3">
             <Button
               label="Cancelar"
+              icon="fa-solid fa-ban"
               rounded
               onClick={() => {
                 setVisible(false);
@@ -72,6 +98,7 @@ const DeliverCaseModal = ({
 
             <Button
               label="Entregar Caso"
+              icon="fa-solid fa-handshake"
               rounded
               onClick={() => {
                 handelDeliveredCase(deliverModalValue, id);

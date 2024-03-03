@@ -20,23 +20,23 @@ def user_register():
 
     texto=""
     if email is None:
-        texto=texto+'email must exist in the request '+chr(10)
+        texto=texto+'email no recibido '+chr(10)
     elif len(email)==0:
-        texto=texto+'email must not be empty '+chr(10)
+        texto=texto+'email recibido vacio '+chr(10)
     if password is None:
-        texto=texto+'password must exist in the request '+chr(10)
+        texto=texto+'password no recibido '+chr(10)
     elif len(password)==0:
-        texto=texto+'password must not be empty '+chr(10)
+        texto=texto+'password no debe ser vacio '+chr(10)
     if name is None:
-        texto=texto+'name must exist in the request '+chr(10)
+        texto=texto+'no se recibio el nombre '+chr(10)
     elif len(name)==0:
-        texto=texto+'name should not be empty '
+        texto=texto+'nombre no debe estar vacio '
     if len(texto)>0:
         return jsonify({'ok':False,'error': texto,'status':400}),400
     
     resp=User.query.filter_by(email = email).one_or_none()
     if resp is not None:
-        return jsonify({'ok':False,'error': 'email/user allready exists','status':409}),409
+        return jsonify({'ok':False,'error': 'email/usuario ya existe','status':409}),409
     
     password_hash=generate_password_hash(password)
     new_user=User(email=email, password=password_hash, name=name, is_active=True)
@@ -44,7 +44,7 @@ def user_register():
     try:
         # db.session.begin_nested() # crea un checkpoint
         db.session.commit()
-        return jsonify({'ok':True,'data': 'user created','status':201}),201
+        return jsonify({'ok':True,'data': 'Usuario creado','status':201}),201
     except Exception as error:
         print ('-*-*-*-*Register error:', error)
         db.session.rollback()
@@ -56,7 +56,7 @@ def edit_user(id):
     # current_user = get_jwt_identity()
     user=User.query.filter_by(id=id).one_or_none()
     if user is None:
-        return jsonify({'ok':False,'error': 'user not found','status':404}),404
+        return jsonify({'ok':False,'error': 'No fue encontrado el usuario','status':404}),404
     body=request.json
     name=body.get('name', None)
     email=body.get('email', None)
@@ -77,7 +77,7 @@ def edit_user(id):
     try:
         # db.session.begin_nested() # crea un checkpoint
         db.session.commit()
-        return jsonify({'ok':True,'data': 'user updated','status':201}),201
+        return jsonify({'ok':True,'data': 'Datos de usuario actualizados','status':201}),201
     except Exception as error:
         print ('-*-*-*-*Update error:', error)
         db.session.rollback()
@@ -88,7 +88,7 @@ def edit_user(id):
 def get_user(id):
     user=User.query.filter_by(id=id).one_or_none()
     if user is None:
-        return jsonify({'ok':False,'error': 'user not found','status':404})
+        return jsonify({'ok':False,'error': 'No se ha encontrado el usuario','status':404})
     return jsonify({'data':user.serialize(),'ok':True,'status':200})
 
 @routes.route('/all',endpoint='get_users', methods=['GET'])
@@ -102,7 +102,7 @@ def get_users():
     else:
         users=User.query.offset(offset).limit(limit).all()
     if users is None:
-        return jsonify({'ok':False,'error':'No data','status':404})
+        return jsonify({'ok':False,'error':'Sin datos','status':404})
     dic={'ok':True,'status':200,'count':len(count)}
     dic['data']=[user.serialize() for user in users]
     dic['offset']=int(offset)+int(limit)
@@ -130,7 +130,7 @@ def login():
         return jsonify({'ok':False,'error': 'email does not exist', 'status':404}),404
     pass_match=check_password_hash(user.password,password)
     if not pass_match:
-        return jsonify({'ok':False,'error': 'invalid password', 'status':401}),401
+        return jsonify({'ok':False,'error': 'Credencial inválida', 'status':401}),401
     
     # token=create_access_token({'email': user.email, 'id': user.id})
     expires = timedelta(minutes=60)
@@ -146,7 +146,7 @@ def filter_user():
     name=body.get('name', None)
     email=body.get('email', None)
     if name is None and email is None:
-        return jsonify({'ok':False,'error':'at least one field is required ','status':400}),400
+        return jsonify({'ok':False,'error':'Es requerido al menos un campo ','status':400}),400
     filter=User.query.filter(
         User.name.ilike('%'+name+'%') if name is not None else (User.id>0)
     )

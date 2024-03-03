@@ -11,6 +11,8 @@ const CloseDetail = ({
   setDeliverModalValue,
   caseData,
   setState,
+  reload,
+  setReload,
 }) => {
   const { actions } = useContext(Context);
 
@@ -36,6 +38,8 @@ const CloseDetail = ({
                 setDeliverModalValue={setDeliverModalValue}
                 setState={setState}
                 caseData={caseData}
+                reload={reload}
+                setReload={setReload}
               />
             </div>
           )}

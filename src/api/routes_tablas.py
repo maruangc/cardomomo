@@ -48,7 +48,7 @@ def init_tables():
 def get_typeservice(id):
     filter=Typeservice.query.filter_by(id=id).one_or_none()
     if filter is None:
-        return jsonify({'ok':False,'error':'typeservice id not found ','status':404}),404
+        return jsonify({'ok':False,'error':'Tipo de servicio no encontrado ','status':404}),404
     dic={'ok':True,'status':200}
     dic['data']=filter.serialize()
     return jsonify(dic)

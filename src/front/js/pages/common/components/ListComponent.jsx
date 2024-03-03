@@ -100,6 +100,10 @@ const ListComponent = ({
               date_init: actions.getDate(dataList.case.date_init),
               close_date: actions.getDate(dataList.case.close_date),
               delivered_date: actions.getDate(dataList.case.delivered_date),
+              started: dataList.case.started ? "Iniciado" : "",
+              closed: dataList.case.closed ? "Cerrado" : "",
+              delivered: dataList.case.delivered ? "Entregado" : "",
+              is_active: dataList.case.is_active ? "" : "NO",
             },
           };
         } else {
@@ -113,7 +117,7 @@ const ListComponent = ({
   const getDataQuery = async (offset = 0) => {
     let response;
     if (initialValue == false) {
-      //Viene de Vistas detalle Cliente o Professional
+      //Viene de Vistas detalle Cliente / Professional / Categoria
       response = await actions.getCasesFor(table, id);
     } else {
       if (filtered === false) {
@@ -123,7 +127,7 @@ const ListComponent = ({
       }
     }
     if (response.msg) {
-      toast.error("token expired");
+      toast.error("Credencial vencida");
       navigate("/login");
     }
     if (response.ok) {

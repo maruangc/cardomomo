@@ -20,7 +20,7 @@ const ProfessionalDetail = () => {
   const getDataQuery = async () => {
     const response = await actions.getById("professional", params.id);
     if (response.msg) {
-      toast.error("token expired");
+      toast.error("Credencial vencida");
       navigate("/login");
     }
     if (response.ok) {
@@ -101,7 +101,7 @@ const ProfessionalDetail = () => {
           </div>
         </div>
         {dataQuery ? (
-            <Card className=" text-black-alpha-90  border-round-md bg-primary-50 shadow-2  ">
+          <Card className=" text-black-alpha-90  border-round-md bg-primary-50 shadow-2  ">
             <h5 className=" text-3xl p-0 m-0 ml-3">{dataQuery.name}</h5>
 
             <div className="grid">

@@ -4,6 +4,7 @@ import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import { useParams } from "react-router-dom";
 import { InputTextarea } from "primereact/inputtextarea";
+import { toast } from "react-toastify";
 
 const CloseCaseModal = ({
   closeModalvalue,
@@ -11,6 +12,8 @@ const CloseCaseModal = ({
   setState,
   statusCase,
   data,
+  reload,
+  setReload,
 }) => {
   const [visible, setVisible] = useState(false);
   const { id } = useParams();
@@ -27,15 +30,38 @@ const CloseCaseModal = ({
       setVisible(false);
     }
   };
+
+  const buttonClose = async () => {
+    let response;
+    if (data.case.closed) {
+      const response = await actions.setEstate(id, {
+        closed: false,
+      });
+      if (response.ok) {
+        toast.success("Reversado el cierre");
+      } else {
+        toast.error(response.error);
+      }
+      setReload(reload + 1);
+    } else {
+      setVisible(true);
+    }
+  };
+
   return (
     <>
       <Button
         rounded
-        label="Cerrar caso"
+        label={data.case.closed ? "Revertir cierre" : "Cerrar caso"}
+        icon={
+          data.case.closed ? "fa-solid fa-rotate-left" : "fa-solid fa-check"
+        }
         onClick={() => {
-          setVisible(true);
+          buttonClose();
         }}
-        disabled={statusCase != "started" || !data.case.is_active}
+        disabled={
+          !data.case.is_active || data.case.delivered || !data.case.started
+        }
       />
       <Dialog
         visible={visible}
@@ -61,6 +87,7 @@ const CloseCaseModal = ({
           <div className="flex gap-3">
             <Button
               label="Cancelar"
+              icon="fa-solid fa-ban"
               rounded
               onClick={() => {
                 setVisible(false);
@@ -70,11 +97,12 @@ const CloseCaseModal = ({
 
             <Button
               label="Cerrar caso"
+              icon="fa-solid fa-check"
               rounded
               onClick={() => {
                 handelCloseCase(closeModalvalue, id);
+                setReload(reload + 1);
               }}
-             
             />
           </div>
         </div>

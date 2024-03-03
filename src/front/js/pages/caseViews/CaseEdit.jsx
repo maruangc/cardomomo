@@ -33,7 +33,7 @@ const CaseEdit = () => {
   const getData = async () => {
     const response = await actions.getById("case", `${id}`);
     if (response.msg) {
-      toast.error("Token Expired");
+      toast.error("Credencial vencida");
       navigate("/login");
     }
     if (response.ok) {

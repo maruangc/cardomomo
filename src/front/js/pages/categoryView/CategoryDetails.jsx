@@ -20,7 +20,7 @@ const CategoryDetails = () => {
   const getDataQuery = async () => {
     const response = await actions.getById("category", params.id);
     if (response.msg) {
-      toast.error("token expired");
+      toast.error("Credencial vencida");
       navigate("/login");
     }
     if (response.ok) {

@@ -19,22 +19,24 @@ const CaseDetail = () => {
   const [data, setData] = useState();
   const [closeModalvalue, setCloseModalValue] = useState("");
   const [deliverModalvalue, setDeliverModalValue] = useState("");
-  const [statusCase, setStatusCase] = useState("created");
+  const [statusCase, setStatusCase] = useState("Creado");
+  const [reload, setReload] = useState(0);
 
   const dataQuery = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 100));
     const response = await actions.getById("case", id);
     if (response.msg) {
-      toast.error("Token Expired");
+      toast.error("Credencial expirada");
       navigate("/login");
     }
     if (response.ok) {
       const handleStatus = response.data.case.delivered
-        ? "delivered"
+        ? "Entregado"
         : response.data.case.closed
-        ? "closed"
+        ? "Cerrado"
         : response.data.case.started
-        ? "started"
-        : "created";
+        ? "Iniciado"
+        : "Creado";
       setData(response.data);
       setStatusCase(handleStatus);
     }
@@ -43,7 +45,6 @@ const CaseDetail = () => {
   const setState = async (status, id) => {
     const bodyQuery = {};
     bodyQuery[status] = true;
-
     const response = await fetch(
       process.env.BACKEND_URL + `/case/setstate/${id}`,
       {
@@ -55,7 +56,6 @@ const CaseDetail = () => {
         body: JSON.stringify(bodyQuery),
       }
     );
-
     const stateStatus = await response.json();
     if (stateStatus.ok) {
       toast.success(stateStatus.data);
@@ -65,12 +65,11 @@ const CaseDetail = () => {
 
   useEffect(() => {
     dataQuery();
-  }, [statusCase]);
+  }, [reload]);
 
   if (!data) {
     return <SkeletonCase />;
   }
-
   return (
     <>
       <div className="w-full flex justify-content-center">
@@ -86,6 +85,8 @@ const CaseDetail = () => {
             statusCase={statusCase}
             setState={setState}
             data={data}
+            reload={reload}
+            setReload={setReload}
           />
           <CostumerData customer={data.customer} />
           <ProfessionalData professional={data.professional} />
@@ -98,6 +99,8 @@ const CaseDetail = () => {
                 setDeliverModalValue={setDeliverModalValue}
                 caseData={data.case}
                 setState={setState}
+                reload={reload}
+                setReload={setReload}
               />
               {data.case.delivered && (
                 <DeliverDetail

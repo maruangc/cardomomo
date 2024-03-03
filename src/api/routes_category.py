@@ -122,6 +122,7 @@ def filter_category():
     limit=request.args.get('limit', None) if request.args.get('limit', None) is not None else 30
     offset=request.args.get('offset', None) if request.args.get('offset', None) is not None else 0
     body=request.json
+    # print('--------', body)
     category=body.get('category', None)
     description=body.get('description', None)
     if category is None and description is None:

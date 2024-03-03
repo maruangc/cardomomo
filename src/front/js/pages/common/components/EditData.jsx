@@ -20,7 +20,7 @@ const EditData = ({ fields, setFields, reload, setReload, table, id }) => {
     console.log("objeto a enviar: ", objetoAEnviar);
     const response = await actions.updateById(table, id, objetoAEnviar);
     if (response.msg) {
-      toast.error("token expired");
+      toast.error("Credencial vencida");
       navigate("/login");
     }
     if (response.ok) {
