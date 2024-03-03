@@ -6,6 +6,7 @@ import { Button } from "primereact/button";
 /* Data */
 import dataJson from "../caseData.json";
 import CloseCaseModal from "./CloseCaseModal.jsx";
+import Delete from "../../common/components/Delete.jsx";
 import { toast } from "react-toastify";
 
 const statusData = dataJson.data.status;
@@ -96,7 +97,13 @@ const HeaderButtons = ({
           reload={reload}
           setReload={setReload}
         />
-
+        {data.case.is_active ? (
+          <>
+            <Delete table={"case"} id={id} />
+          </>
+        ) : (
+          <></>
+        )}
         <Button
           rounded
           label="Editar"
