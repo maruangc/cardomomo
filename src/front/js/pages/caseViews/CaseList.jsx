@@ -121,6 +121,10 @@ const initialFieldsValues = {
   typeservice_id: null,
   closed: null,
   delivered: null,
+  initial_note: "",
+  description: "",
+  close_description: "",
+  delivered_description: "",
 };
 
 const CaseList = () => {

@@ -20,7 +20,6 @@ const CloseCaseModal = ({
   const { actions } = useContext(Context);
 
   const handelCloseCase = async (value, id) => {
-    console.log(value);
     const response = await actions.updateById("case", id, {
       close_description: value,
     });

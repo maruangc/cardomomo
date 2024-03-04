@@ -100,7 +100,6 @@ const CaseEdit = () => {
     };
 
     const response = await actions.updateById("case", id, fields);
-    console.log(response);
     if (response.ok) {
       toast.success("Datos Actualizados");
       navigate(-1);
