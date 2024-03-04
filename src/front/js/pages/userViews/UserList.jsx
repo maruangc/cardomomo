@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ListComponent from "../common/components/ListComponent.jsx";
 
 const columns = [
@@ -12,6 +12,11 @@ const columns = [
 const columnFilter = [
   { field: "email", header: "Correo", type: "text" },
   { field: "name", header: "Nombre", type: "text" },
+  {
+    field: "is_active",
+    header: "Activo?",
+    type: "check",
+  },
 ];
 
 const createColumn = [
@@ -23,9 +28,15 @@ const createColumn = [
 const initialFieldsValues = {
   email: "",
   name: "",
+  password: "",
+  is_active: true,
 };
 
 const UserList = () => {
+  const [checkValues, setCheckValues] = useState({
+    is_active: true,
+  });
+
   return (
     <div className="w-full flex justify-content-center h-full">
       <div className="flex flex-column gap-5 p-5 w-full max-container-width">
@@ -36,6 +47,8 @@ const UserList = () => {
           columnFilter={columnFilter}
           createColumn={createColumn}
           initialValue={initialFieldsValues}
+          checkValues={checkValues}
+          setCheckValues={setCheckValues}
         />
       </div>
     </div>
