@@ -5,10 +5,16 @@ from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, jwt_required , get_jwt_identity
+import re
 
 routes = Blueprint('routes_user', __name__)
 # Allow CORS requests to this API
 CORS(routes)
+
+def validate_email(email):
+    # Expresión regular para validar correos electrónicos
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return re.match(pattern, email)
 
 #----------------------------------------------- /user
 @routes.route('/new',endpoint='user_register', methods=['POST'])
@@ -31,6 +37,8 @@ def user_register():
         texto=texto+'no se recibio el nombre '+chr(10)
     elif len(name)==0:
         texto=texto+'nombre no debe estar vacio '
+    if validate_email(email) is None:
+        texto=texto+'Formato de correo incorrecto'
     if len(texto)>0:
         return jsonify({'ok':False,'error': texto,'status':400}),400
     
