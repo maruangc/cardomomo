@@ -5,10 +5,16 @@ from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token, jwt_required , get_jwt_identity
+import re
 
 routes = Blueprint('routes_user', __name__)
 # Allow CORS requests to this API
 CORS(routes)
+
+def validate_email(email):
+    # Expresión regular para validar correos electrónicos
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return re.match(pattern, email)
 
 #----------------------------------------------- /user
 @routes.route('/new',endpoint='user_register', methods=['POST'])
@@ -31,6 +37,8 @@ def user_register():
         texto=texto+'no se recibio el nombre '+chr(10)
     elif len(name)==0:
         texto=texto+'nombre no debe estar vacio '
+    if validate_email(email) is None:
+        texto=texto+'Formato de correo incorrecto'
     if len(texto)>0:
         return jsonify({'ok':False,'error': texto,'status':400}),400
     
@@ -60,20 +68,12 @@ def edit_user(id):
     body=request.json
     name=body.get('name', None)
     email=body.get('email', None)
-    texto=""
-    if name is None and email is None:
-        texto=texto+'nombre y correo deben existir en la solicitud '+chr(10)
-    if name.strip()=="":
-        texto=texto+'nombre debe tener un valor '
-    if email.strip()=="":
-        texto=texto+'email debe tener un valor '
+    is_active=body.get('is_active',None)
 
-    if len(texto)>0:
-        return jsonify({'ok':False,'error': texto,'status':400}),400
-        
-    print('--*-*-*PUT: ', user.serialize())
-    user.name=name
-    user.email=email
+    user.name=name if name is not None else user.name
+    user.email=email if email is not None else user.email
+    user.is_active=is_active if is_active is not None else user.is_active
+
     try:
         # db.session.begin_nested() # crea un checkpoint
         db.session.commit()
@@ -148,14 +148,17 @@ def filter_user():
     body=request.json
     name=body.get('name', None)
     email=body.get('email', None)
-    if name is None and email is None:
+    is_active=body.get('is_active', None)
+    if name is None and email is None and is_active is None:
         return jsonify({'ok':False,'error':'Es requerido al menos un campo ','status':400}),400
-    filter=User.query.filter(
-        User.name.ilike('%'+name+'%') if name is not None else (User.id>0)
-    )
+    
+    filter=User.query.filter_by(is_active=is_active)
+    if name is not None and name !='':
+        filter=filter.filter(User.name.ilike('%'+name+'%'))
     if email is not None and email != '':
-        filter=filter.filter(
-            User.email.ilike('%'+email+'%'))
+        filter=filter.filter(User.email.ilike('%'+email+'%'))
+    # if is_active is not None:
+
     print(str(filter))
     if limit=='0':
         filter=filter.order_by(User.email).all()

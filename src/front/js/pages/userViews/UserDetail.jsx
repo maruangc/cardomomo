@@ -40,6 +40,20 @@ const UserDetail = () => {
     }
   };
 
+  const updateUser = async () => {
+    const response = await actions.updateById("user", params.id, {
+      is_active: true,
+    });
+    if (response.msg) {
+      toast.error("Credencial vencida");
+      navigate("/login");
+    }
+    if (response.ok) {
+      toast.success("Usuario ReActivado");
+      setReload(reload + 1);
+    }
+  };
+
   useEffect(() => {
     getDataQuery();
   }, [reload]);
@@ -71,7 +85,25 @@ const UserDetail = () => {
               table="user"
               id={params.id}
             />
-            <Delete table={"user"} id={params.id} />
+            {dataQuery ? (
+              dataQuery.is_active ? (
+                <>
+                  <Delete table={"user"} id={params.id} />
+                </>
+              ) : (
+                <>
+                  {" "}
+                  <Button
+                    label="Reactivar"
+                    icon="fa-solid fa-recycle"
+                    onClick={() => updateUser()}
+                    rounded
+                  />
+                </>
+              )
+            ) : (
+              <></>
+            )}
           </div>
         </div>
         {dataQuery ? (
@@ -79,6 +111,18 @@ const UserDetail = () => {
             <div className="flex gap-3">
               <label className="w-2">User Id:</label>
               <label className="w-max">{params.id}</label>
+            </div>
+            <div className="flex gap-3 mt-5">
+              <label className="w-2" htmlFor="description">
+                Condición:
+              </label>
+              <label
+                className={
+                  !dataQuery.is_active ? "w-max text-red-500" : "w-max"
+                }
+              >
+                {dataQuery.is_active ? "Activo" : "DESACTIVADO"}
+              </label>
             </div>
             <div className="flex gap-3 mt-5">
               <label className="w-2" htmlFor="description">

@@ -60,6 +60,7 @@ const ListComponent = ({
           columnFilter={columnFilter}
           checkValues={checkValues}
           setCheckValues={setCheckValues}
+          table={table}
         />
         <Button
           icon="fa-solid fa-rotate-right"
@@ -107,7 +108,11 @@ const ListComponent = ({
             },
           };
         } else {
-          return dataList;
+          if (dataList.email && !dataList.identification) {
+            return { ...dataList, is_active: dataList.is_active ? "" : "NO" };
+          } else {
+            return dataList;
+          }
         }
       });
       setDataQuery(newDataQuery);

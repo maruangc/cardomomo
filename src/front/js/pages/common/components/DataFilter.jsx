@@ -19,6 +19,7 @@ const DataFilter = ({
   columnFilter,
   setCheckValues,
   checkValues,
+  table,
 }) => {
   const { actions } = useContext(Context);
   const [visible, setVisible] = useState(false);
@@ -43,20 +44,26 @@ const DataFilter = ({
     setFilterFields(initialFieldsValues);
     if (typeof setCheckValues === "function") {
       //Solo se cumple cuando viene de case
-      setCheckValues({
-        is_active: false,
-        started: false,
-        closed: false,
-        delivered: false,
-      });
-      for (const item of columnFilter) {
-        if (item.table != "") {
-          const response = await actions.getAll(item.table, 0, 0);
-          if (response.ok) {
-            item.data = response.data;
-          } else {
-            toast.error(response.msg);
-            navigate("/login");
+      setCheckValues(
+        table == "user"
+          ? { is_active: true }
+          : {
+              is_active: false,
+              started: false,
+              closed: false,
+              delivered: false,
+            }
+      );
+      if (table != "user") {
+        for (const item of columnFilter) {
+          if (item.table != "") {
+            const response = await actions.getAll(item.table, 0, 0);
+            if (response.ok) {
+              item.data = response.data;
+            } else {
+              toast.error(response.msg);
+              navigate("/login");
+            }
           }
         }
       }
